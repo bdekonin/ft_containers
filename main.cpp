@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/22 13:48:17 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/01 15:52:51 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/01 21:56:29 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ int main(void)
 
 	list.insert();
 	list.print();
+
+
+	// it = list
 
 	// list
 }

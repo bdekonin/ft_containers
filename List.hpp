@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/22 13:03:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/01 15:52:47 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/01 21:57:15 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,28 @@ class ListIterator
 {
 	public:
 		// test
+		ListIterator()
+		{
+		}
 	private:
 		typedef typename List<T>::_node _node;
 		
 		_node *_n;
+
+		ListIterator<T>  &operator=(const ListIterator<T>  &o)
+		{
+			this->_n = o._n;
+		}
+		
+		ListIterator(_node *node) : _n(node)
+		{
+		}
+	public:
+		// So List can call a private constructor
+		template <typename _T>
+		friend class List;
+		template <typename _T>
+		friend class ListIterator;
 };
 
 
@@ -86,6 +104,10 @@ class List
 				std::cout << nodee->content;
 				nodee = nodee->next;
 			}
+		}
+		ListIterator<T> begin()
+		{
+			return ListIterator<T>(this->_head);
 		}
 	private:
 		template <typename _T>
