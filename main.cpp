@@ -1,0 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   main.cpp                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/02/22 13:48:17 by bdekonin      #+#    #+#                 */
+/*   Updated: 2021/03/01 15:52:51 by bdekonin      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "List.hpp"
+
+#include <iostream> 
+#include <list> 
+#include <iterator>
+
+
+int main(void)
+{
+	::List<int>::iterator it;
+	::List<int> list;
+
+	list.insert();
+	list.print();
+
+	// list
+}
+
+// NULL == nullptr
