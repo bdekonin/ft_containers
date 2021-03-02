@@ -20,15 +20,12 @@
 int main(void)
 {
 	::List<int>::iterator it;
-	::List<int> list;
+	::List<int> list (4, 100);
 
-	list.insert();
-	list.print();
-
-
-	// it = list
-
-	// list
+	it = list.begin();
+	it.print();
+	it++;
+	it.print();
 }
 
 // NULL == nullptr

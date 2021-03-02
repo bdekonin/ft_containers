@@ -28,20 +28,36 @@ class ListIterator
 		ListIterator()
 		{
 		}
-	private:
-		typedef typename List<T>::_node _node;
-		
-		_node *_n;
-
-		ListIterator<T>  &operator=(const ListIterator<T>  &o)
+		void print()
 		{
-			this->_n = o._n;
+			std::cout << "node = " << _n->content << std::endl;
 		}
+	private:
+		typedef typename List<T>::_node _node;		
+		_node *_n;
 		
-		ListIterator(_node *node) : _n(node)
+		ListIterator(_node *node) : _n(node) // only accessed by friend classes
 		{
 		}
 	public:
+
+		ListIterator<T>  operator=(const ListIterator<T>  &o)
+		{
+			this->_n = o._n;
+			return *this;
+		}
+		ListIterator<T>  operator++(int)
+		{
+			this->_n = this->_n->next;
+			return *this;
+		}
+		ListIterator<T>  operator--(int)
+		{
+			this->_n = this->_n->prev;
+			return *this;
+		}
+
+
 		// So List can call a private constructor
 		template <typename _T>
 		friend class List;
@@ -56,6 +72,7 @@ class List
 	public: // typedef
 		typedef size_t size_type;
 		typedef ListIterator<T> iterator;
+		typedef T value_type;
 	private:
 		/*
 		**	Double Linked List
@@ -65,12 +82,12 @@ class List
 			struct _node	*next;
 			struct _node	*prev;
 			
-			int				content;
+			T				content;
 
 			_node(_node *_prev, _node *_next)
 				: prev(_prev), next(_next)
 			{}
-			_node(_node *_prev, _node *_next, int _content)
+			_node(_node *_prev, _node *_next, T _content)
 				: prev(_prev), next(_next), content(_content)
 			{}
 		};
@@ -82,32 +99,48 @@ class List
 		/* Constructor  */
 		List()
 		{
-			this->_head = new _node(nullptr, nullptr, 0);
+			this->_head = new _node(nullptr, nullptr);
+			this->_tail = this->_head;
+		}
 
+		List(size_type n, value_type val)
+		{
+			this->_head = new _node(nullptr, nullptr, val);
+			this->_tail = this->_head;
+			this->insert(this->begin(), n, val);
 		}
 
 		/* Methods */
-		void insert()
+		void insert(iterator position, size_type n, value_type val)
 		{
-			this->_head->next = new _node(this->_head, nullptr, 1);
-			this->_head->next->next = new _node(this->_head->next, nullptr, 2);
-			this->_head->next->next->next = new _node(this->_head->next->next, nullptr, 3);
-			this->_head->next->next->next->next = new _node(this->_head->next->next->next, nullptr, 4);
-		}
-
-		void print()
-		{
-			_node *nodee = this->_head;
-
-			while (nodee)
+			_node *alst = new _node(nullptr, nullptr, val);
+			_node *last = alst;
+			_node *newNode;
+			for (size_type i = 0; i < (n - 1); i++)
 			{
-				std::cout << nodee->content;
-				nodee = nodee->next;
+				newNode = new _node(nullptr, nullptr, val);
+				last->next = newNode;
+				newNode->prev = last;
+			}
+			_node *positionNode = position._n;
+			if (positionNode->prev)
+			{
+				positionNode->prev->next = 
 			}
 		}
-		ListIterator<T> begin()
+
+
+				/* Methods */
+				void insert()
+				{
+					this->_head->next = new _node(this->_head, nullptr, 1);
+					this->_head->next->next = new _node(this->_head->next, nullptr, 2);
+					this->_head->next->next->next = new _node(this->_head->next->next, nullptr, 3);
+					this->_head->next->next->next->next = new _node(this->_head->next->next->next, nullptr, 4);
+				}
+		iterator begin()
 		{
-			return ListIterator<T>(this->_head);
+			return iterator(this->_head);
 		}
 	private:
 		template <typename _T>
