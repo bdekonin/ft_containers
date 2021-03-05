@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/22 13:03:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/04 19:03:19 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/05 17:40:07 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,20 @@ class ListIterator
 			std::cout << "node = " << _n->content << std::endl;
 		}
 	private:
-		typedef typename List<T>::_node _node;		
+		typedef typename List<T>::_node _node;
 		_node *_n;
 		
 		ListIterator(_node *node) : _n(node) // only accessed by friend classes
 		{
 		}
 
-		/* Methods */
-		_node *getHead(_node *node)
-		{
-			while (node->prev)
-			{
-				node = node->prev;
-				std::cout << "i";
-			}
-			std::cout << "\n";
-			return (node);
-		}
 	public:
-
+		_node *getNode() {return this->_n;}
+		bool operator==(const ListIterator<T>& rhs) const
+		{
+			return (this->_n == rhs._n);
+			// return false;
+		}
 		ListIterator<T>  operator=(const ListIterator<T>  &o)
 		{
 			this->_n = o._n;
@@ -58,10 +52,7 @@ class ListIterator
 		}
 		ListIterator<T>  operator++(int)
 		{
-			if (this->_n->next == nullptr)
-				this->_n = this->getHead(this->_n);
-			else
-				this->_n = this->_n->next;
+			this->_n = this->_n->next;
 			return *this;
 		}
 		ListIterator<T>  operator--(int)
@@ -92,26 +83,9 @@ class List
 		typedef ListIterator<T> iterator;
 		typedef T value_type;
 	private:
-		/*
-		**	Double Linked List
-		*/
-		struct _node
-		{
-			struct _node	*next;
-			struct _node	*prev;
-			
-			T				content;
-
-			_node(_node *_prev, _node *_next)
-				: prev(_prev), next(_next)
-			{}
-			_node(_node *_prev, _node *_next, T _content)
-				: prev(_prev), next(_next), content(_content)
-			{}
-		};
-		
-		_node	*_head; // last
-		_node	*_tail; // last _node
+		_node		*_head; // last
+		_node		*_tail; // last _node
+		size_type	_size; // size
 	
 	public:
 		/* Constructor  */
@@ -122,41 +96,35 @@ class List
 		}
 
 		List(size_type n, value_type val)
+		: _head(nullptr), _tail(nullptr)
 		{
 			this->_head = new _node(nullptr, nullptr, val);
-			this->_tail = this->_head;
-			if (n > 1)
-				this->insert(this->begin(), n - 1, val);
+			this->insert(this->begin(), n - 1, val);
+		}
+
+		void insert(iterator position, value_type val)
+		{
+			_node *insertion = new _node(nullptr, nullptr, val);
+			_node *one = position._n;
+
+			if (this->_head == nullptr)
+			{
+				this->_head = insertion;
+				return;
+			}
+			if (one == nullptr)
+				this->ft_lstadd_back(&this->_head, insertion);
+			else
+				ft_node_insert_before(&this->_head, insertion, one);
 		}
 		
 		/* Methods */
 		void insert(iterator position, size_type n, value_type val)
 		{
-			_node *newHead = new _node(nullptr, nullptr, val);
-			_node *lastNewHead;
-			for (size_type i = 1; i < n; i++)
-				this->ft_lstadd_back(&newHead, new _node(nullptr, nullptr, val));
-			lastNewHead = this->ft_lstlast(newHead);
-			
-			if (position._n->prev == nullptr)
+			while (n > 0)
 			{
-				position._n->prev = lastNewHead;
-				lastNewHead->next = position._n;
-				this->_head = newHead;
-			}
-			else if (position._n == this->ft_lstlast(this->_head))
-			{
-				this->ft_lstadd_back(&this->_head, newHead);
-			}
-			else
-			{
-				_node *left = position._n->prev;
-				
-				left->next = newHead;
-				newHead->prev = left;
-				
-				position._n->prev = lastNewHead;
-				lastNewHead->next = position._n;
+				this->insert(position, val);
+				n--;
 			}
 		}
 
@@ -192,7 +160,25 @@ class List
 			this->_tail = lst;
 			return (lst);
 		}
-		
+		void	ft_node_add_front(_node **head, _node *neww)
+		{
+			neww->next = *head;
+			if (*head)
+				(*head)->prev = neww;
+			*head = neww;
+		}
+		void	ft_node_insert_before(_node **head, _node *node, _node *before_this)
+		{
+			if (before_this == *head)
+			{
+				ft_node_add_front(head, node);
+				return ;
+			}
+			node->prev = before_this->prev;
+			node->next = before_this;
+			before_this->prev = node;
+			node->prev->next = node;	
+		}
 		template <typename _T>
 		friend class ListIterator; // So ListIterator can access private rights
 };
