@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/22 13:48:17 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/08 19:41:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/08 23:10:37 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,12 @@
 // three
 // null
 
-
 template<typename L, typename I>
 void print(int fd, L list, I it, char *ptr)
 {
 	it = list.begin();
-
-	// ++
-	it++;
-	it++;
-	it++;
-
-
-
-	list.insert(it, 6, 5);
+	
+	// list.insert(it, 6, 5);
 
 	int i = 0;
 
@@ -56,16 +48,18 @@ void print(int fd, L list, I it, char *ptr)
 
 int main(void)
 {
-	// int fd1 = open("/dev/ttys000", 0x0002);
-	// std::list<int> list2 (4, 100);
-	// std::list<int>::iterator it2;
-	// print(fd1, list2, it2, "OG");
+	std::list<int> gert (0, 42);
+	std::list<int> list2 (4, 100);
+	std::list<int>::iterator it2;
+	list2.insert(list2.begin(), gert.begin(), gert.end());
+	print(1, list2, it2, "OG");
 
-	int fd2 = open("/dev/ttys001", 0x0002);
+
+	::List<int> kaas (-1, 42);
 	::List<int> list1 (4, 100);
 	::List<int>::iterator it1;
-	print(1, list1, it1, "MY");
-
-	list1.print(10);
+	list1.insert(list1.begin(), kaas.begin(), kaas.end());
+	// print(1, list1, it1, "MY");
+	list1.print();
 }
 
