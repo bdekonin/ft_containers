@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/22 13:48:17 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/08 11:25:24 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/08 19:41:17 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,77 +16,56 @@
 #include <list> 
 #include <iterator>
 
-// insertion
+#include "unistd.h"
+#include "stdio.h"
+#include <sys/stat.h> 
+#include <fcntl.h>
 
 // null
 // one
 // two
 // three
 // null
-void print()
+
+
+template<typename L, typename I>
+void print(int fd, L list, I it, char *ptr)
 {
-	std::list<int> list1 (4, 100);
-	std::list<int>::iterator og = list1.begin();
+	it = list.begin();
 
-	::List<int> list2 (4, 100);
-	::List<int>::iterator my = list2.begin();
-
-		og++;
-	my++;
-		og++;
-	my++;
-		og++;
-	my++;
-		og++;
-	my++;
-	
-		og++;
-	// my++;
-	std::list<int>::iterator ptr_og = og;
-	::List<int>::iterator ptr_my = my;
-
-	// list1.insert(og, 5, 1);
-	// list2.insert(my, 5, 1);
+	// ++
+	it++;
+	it++;
+	it++;
 
 
-	og = list1.begin();
-	my = list2.begin();
-	std::cout << "OG\t|     MY\n";
-	int kaas = list1.size();
-	for (int i = 0; i < list1.size(); i++)
+
+	list.insert(it, 6, 5);
+
+	int i = 0;
+
+	dprintf(fd, "%s\n", ptr);
+	dprintf(fd, "head = %d | tail = %d\n\n", *list.begin(), *list.end());
+	for (I iterator = list.begin(); iterator != list.end(); iterator++)
 	{
-		if (ptr_og == og)
-		{
-			std::cout << "\033[1;31m";
-			std::cout << *og;
-			std::cout << "\033[0m";
-		}
-		else
-			std::cout << *og;
-		std::cout << "\t|     ";
-		if (ptr_my == my)
-		{
-			std::cout << "\033[1;31m";
-			std::cout << *my;
-			std::cout << "\033[0m";
-		}
-		else
-			std::cout << *my;
-		std::cout << "\n";
-
-		og++;
-		my++;
-	}	
+		dprintf(fd, "(%d)\t- [%d]\n", i, *iterator);
+		i++;
+	}
+	dprintf(fd, "list.size() = %d\n", *list.end());
 }
 
 int main(void)
 {
-	// print();
-	
-	::List<int> list (4, 100);
-	::List<int>::iterator it = list.begin();
+	// int fd1 = open("/dev/ttys000", 0x0002);
+	// std::list<int> list2 (4, 100);
+	// std::list<int>::iterator it2;
+	// print(fd1, list2, it2, "OG");
 
-	it.print();
+	int fd2 = open("/dev/ttys001", 0x0002);
+	::List<int> list1 (4, 100);
+	::List<int>::iterator it1;
+	print(1, list1, it1, "MY");
 
-	
+	list1.print(10);
 }
+

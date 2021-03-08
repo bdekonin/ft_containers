@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/22 13:03:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/08 11:27:36 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/08 19:42:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,33 +40,40 @@ class List
 		node_pointer	_head;
 		node_pointer	_tail;
 		// allocator_type	_alloc;
-		size_type		_size;
 	
 	public:
-		List() : _size(0)
+		List()
 		{
 			this->_head = new Node<T>();
-			this->_tail = this->_head;
+			this->_tail = new Node<int>(1);
+
+			this->_head->prev = this->_tail;
+			this->_head->next = this->_tail;
+			this->_tail->prev = this->_head;
+			this->_tail->next = this->_head;
 		}
-		List(size_type n, value_type val) : _size(0)
+		List(size_type n, value_type val)
 		{
 			this->_head = new Node<T>(val);
-			this->_tail = this->_head;
+			this->_tail = new Node<int>(1);
+
+			this->_head->prev = this->_tail;
+			this->_head->next = this->_tail;
+			this->_tail->prev = this->_head;
+			this->_tail->next = this->_head;
+			
 			this->insert(this->begin(), n - 1, val);
 		}
-		void insert(iterator position, value_type val)
+
+		iterator insert(iterator position, value_type val)
 		{
-			node_pointer node = new Node<T>(position.ptr->getPrev(), position.ptr, val);
-			
-			if (node->getPrev())
-				node->prev->next = node;
-			else
-				this->_head = node;
-			node->next->prev = node;
-			this->_size++;
-			// if (!node->next)
-			// 	this->_tail = node;
-			// return iterator(node);
+			node_pointer node = new Node<T>(nullptr, nullptr, val);
+
+			this->ft_node_insert_before(&this->_head, node, position.ptr);
+			this->_tail->next = this->_head;
+			this->_head->prev = this->_tail;
+			this->_tail->content++;
+			return iterator(node);
 		}
 		void insert(iterator position, size_type n, value_type val)
 		{
@@ -84,17 +91,84 @@ class List
 		{
 			return iterator(this->_tail);
 		}
+		size_type size()
+		{
+			return (size_type)this->end().ptr->content;
+		}
+	private:
+		void	ft_node_insert_after(Node<T> *node, Node<T> *after_this)
+		{
+			node->prev = after_this;
+			node->next = after_this->next;
+			after_this->next = node;
+			if (node->next)
+				node->next->prev = node;
+		}
+		void	ft_node_insert_before(Node<T> **head, Node<T> *node, Node<T> *before_this)
+		{
+			if (before_this == *head)
+			{
+				ft_node_add_front(head, node);
+				return ;
+			}
+			node->prev = before_this->prev;
+			node->next = before_this;
+			before_this->prev = node;
+			node->prev->next = node;
+		}
+		void	ft_node_add_front(Node<T> **head, Node<T> *neww)
+		{
+			neww->next = *head;
+			if (*head)
+				(*head)->prev = neww;
+			*head = neww;
+		}
+		void	ft_node_add_back(Node<T> **head, Node<T> *neww)
+		{
+			Node<T>	*tmp;
 
+			if (!*head)
+				ft_node_add_front(head, neww);
+			else
+			{
+				tmp = ft_node_last(*head);
+				tmp->next = neww;
+				neww->prev = tmp;
+			}
+		}
+		Node<T>	*ft_node_last(Node<T> *node)
+		{
+			Node<T>	*tmp;
+
+			if (!node)
+				return (NULL);
+			tmp = node;
+			while (tmp->next)
+				tmp = tmp->next;
+			return (tmp);
+		}
+	public:
 		void print()
 		{
-			std::cout << "head = " << *(this->begin()) << " | tail = " << *(this->end()) << "\n\n";
+			this->print((int)this->size());
+		}
+		void print(int size)
+		{
+			std::cout << "head = " << this->_head << " | tail = " << this->_tail << "\n\n";
 			ListIterator<value_type> it = this->begin();
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < size; i++)
 			{
-				std::cout << *it << "\n";
+				std::cout << "(" << i + 1 << ")\t- " << "[" << *it << "]\t - " << it.ptr << " ----> " << it.ptr->next <<"\n";
+				if (it == head)
 				it++;
 			}
 		}
 };
 
 #endif // LIST_HPP
+
+
+
+
+// (1) list 1
+// (2) size

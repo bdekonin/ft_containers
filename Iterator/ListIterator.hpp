@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/05 17:41:40 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/08 11:29:59 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/08 13:34:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,9 @@ class ListIterator
 		{
 			return (lhs.ptr == rhs.ptr);
 		}
-
-		void print()
+		friend inline bool operator!=(const ListIterator<T> &lhs, const ListIterator<T> &rhs)
 		{
-			for (node_pointer node = this->ptr; node; node = node->next)
-			{
-				std::cout << node->content << "\n";
-			}
+			return (lhs.ptr != rhs.ptr);
 		}
 };
 
