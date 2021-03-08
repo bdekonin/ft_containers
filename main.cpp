@@ -6,11 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/22 13:48:17 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/05 16:29:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/08 11:25:24 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "List.hpp"
+#include "List/List.hpp"
 
 #include <iostream> 
 #include <list> 
@@ -44,15 +44,15 @@ void print()
 	// my++;
 	std::list<int>::iterator ptr_og = og;
 	::List<int>::iterator ptr_my = my;
-	_node *test = ptr_my.getNode();
-	test = my.getNode();
-	list1.insert(og, 5, 1);
-	list2.insert(my, 5, 1);
+
+	// list1.insert(og, 5, 1);
+	// list2.insert(my, 5, 1);
 
 
 	og = list1.begin();
 	my = list2.begin();
 	std::cout << "OG\t|     MY\n";
+	int kaas = list1.size();
 	for (int i = 0; i < list1.size(); i++)
 	{
 		if (ptr_og == og)
@@ -81,5 +81,12 @@ void print()
 
 int main(void)
 {
-	print();
+	// print();
+	
+	::List<int> list (4, 100);
+	::List<int>::iterator it = list.begin();
+
+	it.print();
+
+	
 }
