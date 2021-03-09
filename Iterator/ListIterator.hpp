@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/05 17:41:40 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/08 13:34:04 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/09 16:00:26 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ class ListIterator
 		}
 		reference	operator*() const
 		{
-			return this->ptr->content;
+			return *this->ptr->content;
 		}
 		pointer		operator->() const
 		{

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/22 13:03:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/08 23:10:25 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/09 15:59:59 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,40 +41,34 @@ class List
 		node_pointer	_head;
 		node_pointer	_tail;
 		// allocator_type	_alloc;
+		size_type		_size;
 	
 	public:
 	/* Member functions */
 		List()
+		: _size(0)
 		{
 			this->_head = new Node<T>();
-			this->_tail = new Node<int>(0);
+			this->_tail = new Node<T>();
 
-			this->_head->prev = this->_tail;
-			this->_head->next = this->_tail;
-			this->_tail->prev = this->_head;
-			this->_tail->next = this->_head;
+			this->_setHeadAndTail();
 		}
 		List(size_type n, value_type val)
+		: _size(1)
 		{
 			if (n == 0)
 			{
 				this->_head = new Node<T>();
-				this->_tail = new Node<int>(0);
+				this->_tail = new Node<T>();
+				this->_size = 0;
+				this->_setHeadAndTail();
+				return ;
 			}
-			else
-			{
-				this->_head = new Node<T>(val);
-				this->_tail = new Node<int>(1);
-			}
+			this->_head = new Node<T>(val);
+			this->_tail = new Node<T>(NULL);
 
-			this->_head->prev = this->_tail;
-			this->_head->next = this->_tail;
-			this->_tail->prev = this->_head;
-			this->_tail->next = this->_head;
-			if (n == 0)
-				;
-			else
-				this->insert(this->begin(), n - 1, val);
+			this->_setHeadAndTail();
+			this->insert(this->begin(), n - 1, val);
 		}
 	/* M̶e̶m̶b̶e̶r̶ ̶f̶u̶n̶c̶t̶i̶o̶n̶s̶ */
 		
@@ -109,7 +103,7 @@ class List
 		}
 		size_type size()
 		{
-			return (size_type)this->end().ptr->content;
+			return this->_size;
 		}
 		/* max_size */
 	/* C̶a̶p̶a̶c̶i̶t̶y̶ */
@@ -144,7 +138,8 @@ class List
 			this->ft_node_insert_before(&this->_head, node, position.ptr);
 			this->_tail->next = this->_head;
 			this->_head->prev = this->_tail;
-			this->_tail->content++;
+			
+			this->_size++;
 			return iterator(node);
 		}
 		void insert(iterator position, size_type n, value_type &val)
@@ -173,6 +168,13 @@ class List
 	/* O̶p̶e̶r̶a̶t̶i̶o̶n̶s̶ */
 		
 	private:
+		void	_setHeadAndTail() //  sets the head and tail correctly
+		{
+			this->_head->prev = this->_tail;
+			this->_head->next = this->_tail;
+			this->_tail->prev = this->_head;
+			this->_tail->next = this->_head;
+		}
 		void	ft_node_insert_before(Node<T> **head, Node<T> *node, Node<T> *before_this)
 		{
 			if (before_this == *head)

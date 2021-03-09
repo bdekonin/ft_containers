@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/05 16:30:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/08 22:54:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/09 16:00:08 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ struct Node
 	Node	*prev;
 	Node	*next;
 
-	T		content;
+	T		*content;
 	/* Constructor */
 	Node(Node *_prev, Node *_next)
 	: prev(_prev), next(_next)
 	{
 	}
-	Node(Node *_prev, Node *_next, T _content)
+	Node(Node *_prev, Node *_next, T *_content)
 	: prev(_prev), next(_next), content(_content)
 	{
 	}
-	Node(T _content)
+	Node(T *_content)
 	: prev(nullptr), next(nullptr), content(_content)
 	{
 	}
