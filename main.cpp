@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/22 13:48:17 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/08 23:10:37 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/09 14:10:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,30 @@ void print(int fd, L list, I it, char *ptr)
 
 	int i = 0;
 
-	dprintf(fd, "%s\n", ptr);
-	dprintf(fd, "head = %d | tail = %d\n\n", *list.begin(), *list.end());
+	std::cout << ptr << std::endl;
+	std::cout << "head = " << *list.begin() << " | tail = " << *list.end() << "\n\n";
 	for (I iterator = list.begin(); iterator != list.end(); iterator++)
 	{
-		dprintf(fd, "(%d)\t- [%d]\n", i, *iterator);
+		std::cout << "(" << i << ")\t- [" << *iterator << "]\n";
 		i++;
 	}
-	dprintf(fd, "list.size() = %d\n", *list.end());
+	std::cout << "list.size() = " << *list.end() << "\n";
 }
 
 int main(void)
 {
-	std::list<int> gert (0, 42);
+	std::list<int> gert (5, 42);
 	std::list<int> list2 (4, 100);
 	std::list<int>::iterator it2;
 	list2.insert(list2.begin(), gert.begin(), gert.end());
 	print(1, list2, it2, "OG");
 
 
-	::List<int> kaas (-1, 42);
+	::List<int> kaas (5, 42);
 	::List<int> list1 (4, 100);
 	::List<int>::iterator it1;
 	list1.insert(list1.begin(), kaas.begin(), kaas.end());
-	// print(1, list1, it1, "MY");
-	list1.print();
+	print(1, list1, it1, "MY");
+	// list1.print();
 }
 
