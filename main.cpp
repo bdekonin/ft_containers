@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/22 13:48:17 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/09 16:08:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/13 14:23:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,119 +29,103 @@
 # include <sstream>
 # include <unistd.h>
 
-// null
+// tail
+// head
 // one
 // two
 // three
-// null
+// tail
+// head
 
 template<typename L, typename I>
-void print(int size, L list, I it)
+void print(L list, I it)
 {
 	it = list.begin();
-	
-	// list.insert(it, 6, 5);
 
-	// int i = 0;
-
-	// std::cout << "head = " << *list.begin() << " | tail = " << *list.end() << "\n";
-	// for (I iterator = list.begin(); iterator != list.end(); iterator++)
-	// {
-	// 	std::cout << "(" << i << ")\t- [" << *iterator << "]\n";
-	// 	i++;
-	// }
-
-	for (int i = 0; i < size; i++)
+	for (int i = 0; it != list.end(); i++)
 	{
 		std::cout << "(" << i + 1 << ")\t- " << "[" << *it << "]";
 		if (it == list.begin())
-			std::cout << " --> HEAD";
-		else if (it == list.end())
-			std::cout << " --> TAIL";
+			std::cout << " --> head";
 		std::cout << "\n";
 		it++;		
 	}
-	std::cout << "list.end() = " << *list.end() << "\n";
-	std::cout << "list.size() = " << list.size() << "\n";
+	std::cout << "list.front() = [" << list.front() << "]"<< "\n";
+	std::cout << "list.back()  = [" << list.back() << "]"<< "\n";
+	std::cout << "list.size()  = [" << list.size() << "]"<< "\n";
+	std::cout << "list.size()" << "\n";
+
 }
 
-# define SIZE 10
-
-
-
-template < class T, class Alloc = std::allocator<T> >
-void test()
+void inserttesting()
 {
-	const allocator_type &alloc = allocator_type();
+	// std::cout << "---------------------------------------------\n\t\tString\n";
+	// {	
+	// 	std::list<std::string> list (5, "stringerd");
+	// 	std::list<std::string>::iterator it;
+	// 	list.insert(list.end(), 2, "kaas");
+	// 	print(list, it);
+	// }
+	// std::cout << std::endl;
+	// {
+	// 	::List<std::string> list (5, "stringerd");
+	// 	::List<std::string>::iterator it;
+	// 	list.insert(list.end(), 2, "kaas");
+	// 	print(list, it);
+	// }
+	// std::cout << "---------------------------------------------\n";
 
-	alloc.
+	// std::cout << "---------------------------------------------\n\t\tDouble\n";
+	// {
+	// 	std::list<double> list (5, 42.6);
+	// 	std::list<double>::iterator it;
+	// 	list.insert(list.end(), 3, 69.420);
+	// 	print(list, it);
+	// }
+	// std::cout << std::endl;
+	// {
+	// 	::List<double> list (5, 42.6);
+	// 	::List<double>::iterator it;
+	// 	list.insert(list.end(), 3, 69.420);
+	// 	print(list, it);
+	// }
+	// std::cout << "---------------------------------------------\n";
+
+	// std::cout << "---------------------------------------------\n\t\tChar\n";
+	// {
+	// 	std::list<char> list (5, '+');
+	// 	std::list<char>::iterator it;
+	// 	print(list, it);
+	// }
+	// std::cout << std::endl;
+	// {
+	// 	::List<char> list (5, '+');
+	// 	::List<char>::iterator it;
+	// 	print(list, it);
+	// }
+	// std::cout << "---------------------------------------------\n";
+
+	std::cout << "---------------------------------------------\n\t\tInteger\n";
+	{
+		std::list<int> list (5, 42);
+		std::list<int>::iterator it;
+		list.insert(list.begin(), 4, 8);
+		list.clear();
+		print(list, it);
+	}
+	std::cout << std::endl;
+	{
+		::List<int> list (5, 42);
+		::List<int>::iterator it;
+		list.insert(list.begin(), 4, 8);
+		list.clear();
+		print(list, it);
+	}
+	std::cout << "---------------------------------------------\n";
 }
 
 int main(void)
 {
-	test();
-
-	// std::cout << "---------------------------------------------\n\t\tString\n";
-	// {	
-	// 	std::list<std::string> gert (5, "stringerd");
-	// 	std::list<std::string>::iterator it2;
-	// 	print(1, gert, it2);
-	// }
-	// std::cout << std::endl;
-	// {
-	// 	::List<std::string> jan (5, "stringerd");
-	// 	::List<std::string>::iterator it1;
-	// 	print(SIZE, jan, it1);
-	// 	// list1.print();
-	// }
-	// std::cout << "---------------------------------------------\n";
-
-
-	// std::cout << "---------------------------------------------\n\t\tInteger\n";
-	// {
-	// 	std::list<int> gert2 (5, 42);
-	// 	std::list<int>::iterator it;
-	// 	print(SIZE, gert2, it);
-	// }
-	// std::cout << std::endl;
-	// {
-	// 	::List<int> jan2 (5, 42);
-	// 	::List<int>::iterator it;
-	// 	print(SIZE, jan2, it);
-	// 	// jan2.print();
-	// }
-	// std::cout << "---------------------------------------------\n";
- 
-
-	// std::cout << "---------------------------------------------\n\t\tDouble\n";
-	// {
-	// 	std::list<double> gert2 (5, 42.6);
-	// 	std::list<double>::iterator it;
-	// 	print(SIZE, gert2, it);
-	// }
-	// std::cout << std::endl;
-	// {
-	// 	::List<double> jan2 (5, 42.6);
-	// 	::List<double>::iterator it;
-	// 	print(SIZE, jan2, it);
-	// 	// list1.print();
-	// }
-	// std::cout << "---------------------------------------------\n";
-
-	
-	// std::cout << "---------------------------------------------\n\t\tChar\n";
-	// {
-	// 	std::list<char> gert2 (5, '+');
-	// 	std::list<char>::iterator it;
-	// 	print(SIZE, gert2, it);
-	// }
-	// std::cout << std::endl;
-	// {
-	// 	::List<char> jan2 (5, '+');
-	// 	::List<char>::iterator it;
-	// 	print(SIZE, jan2, it);
-	// 	// list1.print();
-	// }
-	// std::cout << "---------------------------------------------\n";
+	inserttesting();	
 }
 

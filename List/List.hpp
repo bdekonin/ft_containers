@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/22 13:03:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/03/09 15:59:59 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/03/16 13:19:24 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,13 @@ class List
 			{
 				this->_head = new Node<T>();
 				this->_tail = new Node<T>();
+
 				this->_size = 0;
 				this->_setHeadAndTail();
 				return ;
 			}
 			this->_head = new Node<T>(val);
-			this->_tail = new Node<T>(NULL);
+			this->_tail = new Node<T>();
 
 			this->_setHeadAndTail();
 			this->insert(this->begin(), n - 1, val);
@@ -99,7 +100,7 @@ class List
 	/* Capacity */
 		bool empty()
 		{
-			return (this->_tail->content == 0);
+			return (this->size() == 0);
 		}
 		size_type size()
 		{
@@ -129,9 +130,13 @@ class List
 	/* E̶l̶e̶m̶e̶n̶t̶ ̶a̶c̶c̶e̶s̶s̶ */
 		
 		
+
+		// CHANGE NULLPTR TO NULL
+
+		
 	/* Modifiers */
 		/* assign */
-		iterator insert(iterator position, value_type &val)
+		iterator insert(iterator position, const value_type &val)
 		{
 			node_pointer node = new Node<T>(nullptr, nullptr, val);
 
@@ -142,7 +147,7 @@ class List
 			this->_size++;
 			return iterator(node);
 		}
-		void insert(iterator position, size_type n, value_type &val)
+		void insert(iterator position, size_type n, const value_type &val)
 		{
 			while (n > 0)
 			{
@@ -153,12 +158,36 @@ class List
 		template <class InputIterator>
 		void insert (iterator position, InputIterator first, InputIterator last)
 		{
+			
 			while (first != last)
 			{
-				std::cout << "kees " << *first << "\n";
+				// value_type t = first;
 				this->insert(position, *first);
+				// std::cout << "kanker ding " << 51 << std::endl;
 				first++;
 			}
+		}
+		
+		void pop_back()
+		{
+			if (this->size())
+			{
+				node_pointer tmp = this->_tail->prev->prev;
+				tmp->next = this->_tail;
+				delete this->_tail->prev;
+				this->_tail->prev = tmp;
+				this->_size--;
+			}
+		}
+		void clear()
+		{
+			while (!this->empty())
+			{
+				this->pop_back();
+			}
+			// this->_head->content = 1;
+			this->_head = nullptr;
+			this->_tail = nullptr;
 		}
 	/* M̶o̶d̶i̶f̶i̶e̶r̶s̶ */
 
@@ -193,22 +222,24 @@ class List
 	public:
 		void print()
 		{
-			this->print((int)this->size() + 1);
+			this->print((int)this->size());
 		}
 		void print(int size)
 		{
-			std::cout << "head = " << this->_head << " | tail = " << this->_tail << "\n\n";
+			std::cout << "head = " << this->_head << " | tail = " << this->_tail << "\n";
 			ListIterator<value_type> it = this->begin();
 			for (int i = 0; i < size; i++)
 			{
 				std::cout << "(" << i + 1 << ")\t- " << "[" << *it << "]";
-				if (it == this->_head)
-					std::cout << " --> HEAD";
-				else if (it == this->_tail)
-					std::cout << " --> TAIL";
+				if (it.ptr == this->_head)
+					std::cout << " ---> HEAD";
+				else if (it.ptr == this->_tail)
+					std::cout << " ---> TAIL";
+				std::cout << " <--- " << it.ptr;
 				std::cout << "\n";
 				it++;
 			}
+			std::cout << "\n";
 		}
 };
 
