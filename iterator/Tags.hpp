@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.cpp                                           :+:    :+:            */
+/*   Tags.hpp                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/09/20 14:38:55 by bdekonin      ########   odam.nl         */
+/*   Created: 2021/09/20 13:34:10 by bdekonin      #+#    #+#                 */
+/*   Updated: 2021/09/20 13:34:18 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "iterator/iterator.hpp"
-#include "vector/vector.hpp"
+#ifndef TAGS_HPP
+# define TAGS_HPP
 
-int main(void)
-{
-    Vector<int> test;
-    
-    Vector<int>::iterator test;
-}
+class random_access_iterator_tag { };
+
+#endif // TAGS_HPP
