@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:53:29 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/09/22 15:22:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/09/22 21:01:36 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ class Vector
 		this->_list = new DoubleLinkedList<value_type>();
 	};
 
-
+	iterator begin()
+	{
+		return iterator(&this->_list->begin()->_content);
+	}
 
 
 

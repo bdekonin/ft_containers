@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/09/22 15:49:45 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/09/22 21:02:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,22 @@
 #include "vector/vector.hpp"
 #include "node/node.hpp"
 #include "node/DoubleLinkedList.hpp"
+#include <vector>
 
 int main(void)
 {
     Vector<int> test;
+
+    test.add(4);
+        test.add(2);
+            test.add(3);
+            
     
-    Vector<int>::iterator test1;
-    Vector<int>::iterator test2;
+    Vector<int>::iterator test1 = test.begin();
+    // Vector<int>::iterator test2 = test.end();
+
+    std::cout << *test1._value;
     
-    if (test1 != test2)
-        test.add(5);
-    
-    test.print();
     return 1;
 
 
