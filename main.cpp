@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/09/22 15:42:44 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/09/22 15:49:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int main(void)
     Vector<int> test;
     
     Vector<int>::iterator test1;
+    Vector<int>::iterator test2;
     
-    test.add(5);
+    if (test1 != test2)
+        test.add(5);
     
-test++;
-
     test.print();
     return 1;
 

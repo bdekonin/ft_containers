@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:56:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/09/22 15:43:53 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/09/22 15:51:18 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,13 @@ class iterator
 
 
 template <typename T>
-class random_access_iterator: public iterator<random_access_iterator_tag ,T>
+class random_access_iterator : public iterator<random_access_iterator_tag, T>
 {
-    
+    bool operator !=(const Iterator<this->iterator_category> &rhs)
+    {
+        std::cout << "kees"
+        return false;
+    }
 };
 template<typename T>
 class reverse_iterator: public iterator<random_access_iterator_tag, T>
