@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/09/21 14:37:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/09/22 15:42:44 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,34 @@ int main(void)
     Vector<int> test;
     
     Vector<int>::iterator test1;
+    
+    test.add(5);
+    
+test++;
+
+    test.print();
+    return 1;
 
 
-    Node<int> *node1 = new Node<int>(5);
+    Node<int> *node1 = new Node<int>(9);
     
 
     DoubleLinkedList<int> gert;
     
     gert.push_front(3);
     gert.push_front(1);
-    gert.push_back(9);
+    gert.push_front(node1);
+    gert.push_front(-1);
+    gert.push_front(500);
 
+    gert.insert(new Node<int>(18), node1);
 
-    // list.push_back(new Node<int>(4));
-    for (Node<int> *head = gert.getHead(); head; head = head->_next)
+    for (Node<int> *head = gert.begin(); head; head = head->_next)
         std::cout << head->_content << std::endl;
 
-    // delete node1;
+    std::cout << "\t\t" << gert[2]->_content << std::endl;
+
+
+    for (Node<int> *head = gert.begin(); head; head = head->_next)
+        std::cout << head->_content << std::endl;
 }

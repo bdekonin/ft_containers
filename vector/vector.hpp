@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   Vector.hpp                                         :+:    :+:            */
+/*   vector.hpp                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:53:29 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/09/21 11:14:37 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/09/22 15:22:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,27 @@ class Vector
 		typedef typename allocator_type::size_type          	size_type;
 
 	Vector()
-	{};
+	{
+		this->_list = new DoubleLinkedList<value_type>();
+	};
+
+
+
+
+
+
+
+	void add(value_type data)
+	{
+		this->_list->push_back(data);
+	}
+	void print() const
+	{
+		for (Node<value_type> *temp = this->_list->begin(); temp; temp = temp->_next)
+			std::cout << temp->_content << std::endl;
+	}
+	private:
+		DoubleLinkedList<value_type> *_list;
 };
 
 #endif // VECTOR_HPP
