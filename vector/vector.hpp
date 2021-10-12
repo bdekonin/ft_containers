@@ -56,8 +56,70 @@ class Vector
 		}
 	}
 
+	/* Iterators ✅ */ 
+		/* return iterator to beginning */
+		iterator begin()
+		{
+			return iterator(this->_begin);
+		}
+		const_iterator begin() const
+		{
+			return const_iterator(this->_begin);
+		}
+		/* return iterator to end */
+		iterator end()
+		{
+			return iterator(this->_begin + this->_size);
+		}
+		const_iterator end() const
+		{
+			return const_iterator(this->_begin + this->_size);
+		}
+		/* return reverse iterator to reverse beginning */
+		reverse_iterator rbegin()
+		{
+			return reverse_iterator(this->_begin + this->_size);
+		}
+		const_reverse_iterator rbegin() const
+		{
+			return const_reverse_iterator(this->_begin + this->_size);
+		}
+		/* Return reverse iterator to reverse end */
+		reverse_iterator rend()
+		{
+			return reverse_iterator(this->_begin);
+		}
+		const_reverse_iterator rend() const
+		{
+			return const_reverse_iterator(this->_begin);
+		}
+		/* return const_iterator to beginning */
+		const_iterator cbegin() const
+		{
+			return const_iterator(this->_begin);
+		}
+		/* return const_iterator to end */
+		const_iterator cend() const
+		{
+			return const_iterator(this->_begin + this->_size);
+		}		
+		/* return const_reverse_iterator to reverse beginning */
+		const_reverse_iterator crbegin() const
+		{
+			return const_reverse_iterator(this->_begin + this->_size);
+		}
+		/* return const_reverse_iterator to reverse end */
+		const_iterator crend() const
+		{
+			return const_iterator(this->_begin);
+		}
 
-	/* Capacity */
+
+ /*
+	https://stackoverflow.com/questions/7397768/choice-between-vectorresize-and-vectorreserve
+
+ */
+	/* Capacity ❌ */
 		/* Return size. */
 		size_type size() const
 		{
@@ -73,7 +135,10 @@ class Vector
 		{
 
 			// protects
-
+			if (n < this->size())
+			{
+				this->_size = n;
+			}
 
 
 			// bigger > size
@@ -92,32 +157,27 @@ class Vector
 			this->_capacity = n;
 			this->_size = n;
 		}
-
-
-
-
-
-
-
-
-
-
-
-		
+		/* Return size of allocated storage capacity */
+		size_type capacity() const
+		{
+			return this->_capacity;
+		}
+		/* Test wether vector is empty */
+		bool empty() const
+		{
+			return this->_size == 0;
+		}
 		/* Reserves storage */
 		void reserve(size_type new_cap)
 		{
+			pointer new_begin;
+
 			if (new_cap <= this->capacity())
 				return ;
 			if (new_cap > this->max_size())
 				throw std::length_error("vector::reserve");
 
-			pointer new_begin;
-			// size_type new_size;
-
-			// new_begin = this->_alloc.allocate(new_cap);
 			new_begin = new value_type[new_cap];
-			// new_size = this->size();
 			
 			if (this->_begin) // copy elements
 			{
@@ -131,17 +191,14 @@ class Vector
 
 			this->_begin = new_begin;
 			this->_capacity = new_cap;
-			// this->_size = new_size;
 		}
-
-
-
-			
-		/*Return ize of allocated storage capacity */
-		size_type capacity() const
+		/* Shrink to fit */
+		void shrink_to_fit()
 		{
-			return this->_capacity;
 		}
+
+
+	/* Modifiers */
 
 
 		/* temporary */
@@ -155,7 +212,7 @@ class Vector
 				std::cout << "\t\t\t| " << this->capacity() << " " << this->size();
 				std::cout  << std::endl;
 			}
-	public:
+	private:
 		allocator_type		_alloc;
 		pointer				_begin;
 		size_type			_size;

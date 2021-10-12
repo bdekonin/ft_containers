@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/10/12 15:09:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/10/12 16:24:22 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void printy(T my, K og)
 	std::cout << "og: ";
 	printvec(og);
 	std::cout << "my: ";
-	my.print(my.capacity());
+	my.print(my.size());
 	std::cout << "\n";
 }
 
@@ -42,9 +42,6 @@ int main(void)
 {
 	// Vector<int> myvector(2, 2);
 	// myvector.print(myvector.capacity());
-
-
-
 	{
 		Vector<int> myvector(2, 2);
 		std::vector<int> ogvector(2, 2);
@@ -55,12 +52,8 @@ int main(void)
 		myvector.reserve(8);
 		printy(myvector, ogvector);
 
-		ogvector.resize(10);
-		myvector.resize(10);
+		ogvector.resize(6);
+		myvector.resize(6);
 		printy(myvector, ogvector);
-		
-
-
-
 	}
 }
