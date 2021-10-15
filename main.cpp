@@ -6,14 +6,12 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/10/12 16:24:22 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/10/15 10:51:36 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "iterator/iterator.hpp"
 #include "vector/vector.hpp"
-#include "node/node.hpp"
-#include "node/DoubleLinkedList.hpp"
 #include <vector>
 
 template<typename T>
@@ -56,4 +54,28 @@ int main(void)
 		myvector.resize(6);
 		printy(myvector, ogvector);
 	}
+
+
+	Vector<int> myvector (1, 1);
+
+	myvector.resize(2, 2);
+	myvector.resize(3, 3);
+
+
+	Vector<int>::iterator it = myvector.begin();
+
+	if (myvector.begin() == myvector.begin())
+		std::cout << "Same\n";
+	else
+		std::cout << "Different\n";
+
+
+	if (myvector.begin() == myvector.end())
+		std::cout << "Same\n";
+	else
+		std::cout << "Different\n";
+
+		it->
+	
+
 }

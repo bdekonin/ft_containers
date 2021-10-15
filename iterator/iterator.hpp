@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:56:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/09/22 21:01:59 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/10/15 10:53:21 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,40 @@ class random_access_iterator : public iterator<random_access_iterator_tag, T>
 			return *this;
 		}
 	public:
-		// bool operator!=(const iterator<random_access_iterator_tag, T> &rhs) const
+		/* Input */
+			bool operator==(const random_access_iterator &rhs)
+			{
+				return this->_value == rhs._value;
+			}
+			bool operator!=(const random_access_iterator &rhs)
+			{
+				return this->_value != rhs._value;
+			}
+
+
+
+
+
+
+
+		// /* https://stackoverflow.com/questions/28592798/i-have-problems-implementing-the-increment-operator */
+		// random_access_iterator &operator++()
 		// {
-		// 	return &T == &rhs;
+		// 	this->_value++;
+		// 	return *this; // return new value by reference
+		// }
+		// random_access_iterator operator++(int)
+		// {
+		// 	random_access_iterator ret = *this;
+		// 	this->operator++();
+		// 	return ret; // return new value by reference
+		// }
+    	// reference operator*()
+    	// {
+    	//     return *this->_value;;
 		// }
 
-	// private:
+	private:
 		pointer _value;
 };
 template<typename T>
