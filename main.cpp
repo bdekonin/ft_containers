@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/10/15 10:51:36 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/10/15 15:16:58 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,30 @@ int main(void)
 		std::cout << "Same\n";
 	else
 		std::cout << "Different\n";
+	std::cout << std::endl;
 
-		it->
-	
 
+	myvector.resize(4, 4);
+	myvector.resize(5, 5);
+
+	for (Vector<int>::iterator gert = myvector.begin(); gert != myvector.end(); gert++)
+		std::cout << *gert << " ";
+
+
+	std::cout << "\n";
+
+	Vector<int>::reverse_iterator keesjes = myvector.rbegin();
+
+
+	int i = 0;
+	for (Vector<int>::reverse_iterator gert = myvector.rbegin(); gert != myvector.rend(); gert++)
+	{
+		if ( i == 20)
+			break;
+		std::cout << *gert << " ";
+		i++;
+	}
 }
+
+
+

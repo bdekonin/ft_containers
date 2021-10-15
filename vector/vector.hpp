@@ -31,10 +31,10 @@ class Vector
 	
 		typedef ::random_access_iterator<value_type>					iterator;
 		typedef ::random_access_iterator<const value_type>				const_iterator;
-		typedef ::reverse_iterator<iterator>							reverse_iterator;
-		typedef ::reverse_iterator<const_iterator>      				const_reverse_iterator;
+		typedef ::reverse_iterator<value_type>							reverse_iterator;
+		typedef ::reverse_iterator<const value_type>					const_reverse_iterator;
 		typedef typename iterator_traits<iterator>::difference_type		difference_type; 
-		typedef typename allocator_type::size_type          			size_type;
+		typedef typename allocator_type::size_type						size_type;
 
 	Vector(const allocator_type &alloc = allocator_type())
 	: _begin(nullptr), _size(0), _capacity(0), _alloc(alloc)
@@ -75,7 +75,7 @@ class Vector
 		/* return reverse iterator to reverse beginning */
 		reverse_iterator rbegin()
 		{
-			return reverse_iterator(this->_begin + this->_size);
+			return reverse_iterator(this->_begin + this->_size - 1);
 		}
 		const_reverse_iterator rbegin() const
 		{
@@ -84,7 +84,7 @@ class Vector
 		/* Return reverse iterator to reverse end */
 		reverse_iterator rend()
 		{
-			return reverse_iterator(this->_begin);
+			return reverse_iterator(this->_begin - 1);
 		}
 		const_reverse_iterator rend() const
 		{
@@ -114,7 +114,6 @@ class Vector
 
  /*
 	https://stackoverflow.com/questions/7397768/choice-between-vectorresize-and-vectorreserve
-
  */
 	/* Capacity ❌ */
 		/* Return size. */
@@ -127,10 +126,9 @@ class Vector
 		{
 			return this->_alloc.max_size();
 		}
-		/* Reiszes the container so that it contains n elements. */
+		/* Resizes the container so that it contains n elements. */
 		void resize(size_type n, value_type val = value_type())
 		{
-
 			// protects
 			if (n < this->size())
 			{
