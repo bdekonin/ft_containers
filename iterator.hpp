@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:56:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/10/15 15:05:29 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/10/18 11:44:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,20 @@
 ** https://www.cplusplus.com/reference/iterator/
 */
 
-#include <iostream>
+# include <iostream>
 # include "Tags.hpp"
+
+namespace ft {
+
+class input_iterator_tag { };
+
+class output_iterator_tag { };
+
+class forward_iterator_tag { };
+
+class bidirectional_iterator_tag { };
+
+class random_access_iterator_tag { };
 
 template< class Category,
 	class T,
@@ -95,6 +107,7 @@ class random_access_iterator : public iterator<random_access_iterator_tag, T>
 		random_access_iterator	operator -= (int const &value) { this->_value -= value;	return *this; }
 		random_access_iterator	operator + (int const &value) { return this->_value + value; }
 		random_access_iterator	operator - (int const &value) { return this->_value - value; }
+		value_type			&operator [] (int i) { return *(this->_value + i) ; }
 };
 
 template<typename T>
@@ -168,5 +181,6 @@ struct iterator_traits
 	typedef typename iterator::reference             reference;
 	typedef typename iterator::iterator_category     iterator_category;
 };
+}
 
 #endif // ITERATOR_HPP

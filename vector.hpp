@@ -15,11 +15,12 @@
 # define VECTOR_HPP
 
 #include <iostream>
+#include "iterator.hpp"
 
-#define STARTING_CAPACITY 4
+namespace ft {
 
-template < class T, class Alloc = std::allocator<T> >
-class Vector
+template <class T, class Alloc = std::allocator<T> >
+class vector
 {
 	public: //  Member types
 		typedef T														value_type;
@@ -29,18 +30,18 @@ class Vector
 		typedef typename allocator_type::pointer						pointer;
 		typedef typename allocator_type::const_pointer					const_pointer;
 	
-		typedef ::random_access_iterator<value_type>					iterator;
-		typedef ::random_access_iterator<const value_type>				const_iterator;
-		typedef ::reverse_iterator<value_type>							reverse_iterator;
-		typedef ::reverse_iterator<const value_type>					const_reverse_iterator;
-		typedef typename iterator_traits<iterator>::difference_type		difference_type; 
+		typedef ft::random_access_iterator<value_type>					iterator;
+		typedef ft::random_access_iterator<const value_type>				const_iterator;
+		typedef ft::reverse_iterator<value_type>							reverse_iterator;
+		typedef ft::reverse_iterator<const value_type>					const_reverse_iterator;
+		typedef typename ft::iterator_traits<iterator>::difference_type		difference_type; 
 		typedef typename allocator_type::size_type						size_type;
 
-	Vector(const allocator_type &alloc = allocator_type())
+	vector(const allocator_type &alloc = allocator_type())
 	: _begin(nullptr), _size(0), _capacity(0), _alloc(alloc)
 	{
 	};
-	Vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
+	vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
 	: _begin(nullptr), _size(0), _capacity(0), _alloc(alloc)
 	{
 		this->_begin = this->_alloc.allocate(n);
@@ -52,6 +53,17 @@ class Vector
 			this->_begin[i] = val;
 		}
 	}
+
+	// template <class InputIterator>
+	// vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+	// {
+
+	// }
+
+	// vector (const vector& x)
+	// {
+
+	// }
 
 	/* Iterators ✅ */ 
 		/* return iterator to beginning */
@@ -111,10 +123,6 @@ class Vector
 			return const_iterator(this->_begin);
 		}
 
-
- /*
-	https://stackoverflow.com/questions/7397768/choice-between-vectorresize-and-vectorreserve
- */
 	/* Capacity ❌ */
 		/* Return size. */
 		size_type size() const
@@ -129,13 +137,21 @@ class Vector
 		/* Resizes the container so that it contains n elements. */
 		void resize(size_type n, value_type val = value_type())
 		{
+
+
+
+
+
+
+
+
+			// times * 2
+
 			// protects
 			if (n < this->size())
 			{
 				this->_size = n;
 			}
-
-
 			// bigger > size
 			pointer new_begin;
 			
@@ -166,15 +182,17 @@ class Vector
 		void reserve(size_type new_cap)
 		{
 			pointer new_begin;
-
+			
+			if (new_cap == 0)
+				return ;
 			if (new_cap <= this->capacity())
 				return ;
 			if (new_cap > this->max_size())
 				throw std::length_error("vector::reserve");
 
 			new_begin = new value_type[new_cap];
-			
-			if (this->_begin) // copy elements
+
+			if (this->empty())
 			{
 				pointer p1 = new_begin;
 				pointer p2 = this->_begin;
@@ -183,7 +201,6 @@ class Vector
 					*p1 = *p2;
 			}
 			delete [] this->_begin;
-
 			this->_begin = new_begin;
 			this->_capacity = new_cap;
 		}
@@ -191,27 +208,69 @@ class Vector
 		void shrink_to_fit()
 		{
 		}
-
-
+	/* Element Access */
+		reference operator[](size_type n)
+		{
+			return *(this->_begin + n);
+		}
+		const_reference operator[](size_type n) const
+		{
+			return *(this->_begin + n);
+		}
+		reference at (size_type n)
+		{
+			return this[n];
+		}
+		const_reference at (size_type n) const
+		{
+			return this[n];
+		}
+		reference front()
+		{
+			return *this->begin();
+		}
+		const_reference front() const
+		{
+			return *this->begin();
+		}
+		reference back()
+		{
+			return *this->end();
+		}
+		const_reference back() const
+		{
+			return *this->end();
+		}
+		// value_type *data() noexcept
+		// {
+		// 	return this->_begin;
+		// }
+		// const value_type *data() const noexcept
+		// {
+		// 	return this->_begin;
+		// }
+	
 	/* Modifiers */
 
-
 		/* temporary */
-			void print(size_type const n) const
+			void print()
 			{
-
-				for (size_type i = 0; i < n; i++)
-				{
-					std::cout << ' ' << this->_begin[i];
-				}
+				iterator it = this->begin();
+				
+				for (int i = 0; i < this->capacity(); i++, it++)
+					std::cout << ' ' << *it;
 				std::cout << "\t\t\t| " << this->capacity() << " " << this->size();
 				std::cout  << std::endl;
 			}
+
+
+		
 	private:
 		allocator_type		_alloc;
 		pointer				_begin;
 		size_type			_size;
 		size_type			_capacity;
 };
+}
 
 #endif // VECTOR_HPP
