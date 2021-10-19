@@ -134,16 +134,62 @@ class vector
 		{
 			return this->_alloc.max_size();
 		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		/* Resizes the container so that it contains n elements. */
 		void resize(size_type n, value_type val = value_type())
 		{
+			if (n < this->size())
+			{
+				while (n != this->size())
+					this->pop_back();
+				return ;
+			}
 
+			if (n > this->capacity())
+			{
+				pointer new_begin;
 
+				// WIP
 
+				new_begin = new value_type[n];
+				
+				for (size_type i = 0; i < n; i++)
+					new_begin[i] = val;
+				for (size_type i = 0; i < this->size(); i++)
+					new_begin[i] = this->_begin[i];
 
+				delete [] this->_begin;
 
+				this->_begin = new_begin;
+				this->_capacity = n;
+				this->_size = n;
+			}
 
+			if (n > this->size())
+			{
 
+				for (int i = this->size(); i < (int)n; i++)
+				{
+					*(this->_begin + i) = val;
+					this->_size++;
+				}
+
+			}
+			return;
 
 			// times * 2
 
@@ -152,22 +198,17 @@ class vector
 			{
 				this->_size = n;
 			}
-			// bigger > size
-			pointer new_begin;
-			
-			new_begin = new value_type[n];
-			
-			for (size_type i = 0; i < n; i++)
-				new_begin[i] = val;
-			for (size_type i = 0; i < this->size(); i++)
-				new_begin[i] = this->_begin[i];
-
-			delete [] this->_begin;
-
-			this->_begin = new_begin;
-			this->_capacity = n;
-			this->_size = n;
 		}
+
+
+
+
+
+
+
+
+
+
 		/* Return size of allocated storage capacity */
 		size_type capacity() const
 		{
@@ -192,7 +233,7 @@ class vector
 
 			new_begin = new value_type[new_cap];
 
-			if (this->empty())
+			if (!this->empty())
 			{
 				pointer p1 = new_begin;
 				pointer p2 = this->_begin;
@@ -203,6 +244,9 @@ class vector
 			delete [] this->_begin;
 			this->_begin = new_begin;
 			this->_capacity = new_cap;
+
+			for (int i = 0; i < this->capacity(); i++)
+				this->_begin[i] = value_type();
 		}
 		/* Shrink to fit */
 		void shrink_to_fit()
@@ -251,18 +295,58 @@ class vector
 		// }
 	
 	/* Modifiers */
+		void pop_back()
+		{
+			this->_size--;
+		}
+		iterator insert (iterator position, const value_type &val)
+		{
+			this->insert(position, 1, val);
+		}
+		void insert (iterator position, size_type n, const value_type &val)
+		{
+			size_type index = &(*position) - this->_begin;
 
-		/* temporary */
-			void print()
+				// 6(n) + 5(size) = 11
+			// if (n + this->size() > this->capacity)
+			// {
+			// 	int newcap = 0;
+			// 	int newsize = n + this->size();
+			// 	if ()
+			// }
+			this->reserve(this->size() + n);
+
+			for (size_type i = this->size() - 1; i >= index; i--)
 			{
-				iterator it = this->begin();
-				
-				for (int i = 0; i < this->capacity(); i++, it++)
-					std::cout << ' ' << *it;
-				std::cout << "\t\t\t| " << this->capacity() << " " << this->size();
-				std::cout  << std::endl;
+				this->_begin[i + 1] = this->_begin[i];
 			}
 
+			for (size_type i = index; i < index + n; i++)
+				this->_begin[i] = val;
+
+			this->_size += n;
+
+
+
+			
+
+// return this->end();
+
+
+// 			if (n + this->size() > this->capacity()) // check total size
+// 				this->reserve(this->capacity() * 2);
+
+			
+
+// 			for (int j = 0; j < n; j++)
+// 			{
+// 				for (int i = this->size(); i >= 0; i--)
+// 					this->_begin[i + 1] = this->_begin[i];
+// 				this->_begin[0] = val; // val
+// 			}
+// 			// this->_size += 5;
+// 			return this->end();
+// 		}
 
 		
 	private:

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:56:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/10/18 11:44:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/10/19 17:46:11 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,23 @@ struct iterator_traits
 	typedef typename iterator::reference             reference;
 	typedef typename iterator::iterator_category     iterator_category;
 };
+
+
+template<class InputIterator>
+	typename ft::iterator_traits<InputIterator>::difference_type
+		distance (InputIterator first, InputIterator last)
+		{
+			typename ft::iterator_traits<InputIterator>::difference_type res;
+
+			res = 0;
+			while (first != last)
+			{
+				res++;
+				first++;
+			}
+			return res;
+		}
+
 }
 
 #endif // ITERATOR_HPP
