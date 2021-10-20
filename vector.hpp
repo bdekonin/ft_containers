@@ -233,6 +233,9 @@ class vector
 
 			new_begin = new value_type[new_cap];
 
+			for (int i = this->size(); i < new_cap; i++)
+				this->_begin[i] = value_type();
+
 			if (!this->empty())
 			{
 				pointer p1 = new_begin;
@@ -245,8 +248,6 @@ class vector
 			this->_begin = new_begin;
 			this->_capacity = new_cap;
 
-			for (int i = 0; i < this->capacity(); i++)
-				this->_begin[i] = value_type();
 		}
 		/* Shrink to fit */
 		void shrink_to_fit()
@@ -303,29 +304,29 @@ class vector
 		{
 			this->insert(position, 1, val);
 		}
+
+// template <class T>
+void swap ( value_type &a, value_type &b )
+{
+	value_type	c(a);
+	a=b;	
+	b=c;
+}
+
 		void insert (iterator position, size_type n, const value_type &val)
 		{
 			size_type index = &(*position) - this->_begin;
 
-				// 6(n) + 5(size) = 11
-			// if (n + this->size() > this->capacity)
-			// {
-			// 	int newcap = 0;
-			// 	int newsize = n + this->size();
-			// 	if ()
-			// }
 			this->reserve(this->size() + n);
 
-			for (size_type i = this->size() - 1; i >= index; i--)
+			for (; n > 0; n--)
 			{
-				this->_begin[i + 1] = this->_begin[i];
+				for (int i = this->size(); i > 0; i--)
+					this->_begin[i] = this->_begin[i - 1];
+				this->_size++;
+				this->_begin[0] = val;
 			}
-
-			for (size_type i = index; i < index + n; i++)
-				this->_begin[i] = val;
-
-			this->_size += n;
-
+		}
 
 
 			

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/10/19 21:58:59 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/10/20 20:19:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void printog(std::vector<int> &vec)
 {
 	std::vector<int>::iterator it = vec.begin();
 
-	for (int i = 0; i < vec.capacity(); i++, it++)
+	for (int i = 0; i < vec.size(); i++, it++)
 	{
 		if (i >= vec.size())
 			std::cout << RED;
@@ -50,7 +50,7 @@ void printmy(ft::vector<int> &vec)
 {
 	ft::vector<int>::iterator it = vec.begin();
 
-	for (int i = 0; i < vec.capacity(); i++, it++)
+	for (int i = 0; i < vec.size(); i++, it++)
 	{
 		if (i >= vec.size())
 			std::cout << RED;
@@ -73,74 +73,20 @@ void printy(ft::vector<int> &my, std::vector<int> &og)
 
 int main(int argc, char **argv)
 {
-	// ft::vector<int> myvector(2, 2);
-	// myvector.print(myvector.capacity());
-	// {
-	// 	ft::vector<int> myvector(2, 2);
-	// 	std::vector<int> ogvector(2, 2);
-	// 	printy(myvector, ogvector);
-		
-
-	// 	ogvector.reserve(8);
-	// 	myvector.reserve(8);
-	// 	printy(myvector, ogvector);
-
-	// 	ogvector.resize(6);
-	// 	myvector.resize(6);
-	// 	printy(myvector, ogvector);
-	// }
-
-
-	// ft::vector<int> myvector (1, 1);
-
-	// myvector.resize(2, 2);
-	// myvector.resize(3, 3);
-
-
-	// ft::vector<int>::iterator it = myvector.begin();
-
-	// if (myvector.begin() == myvector.begin())
-	// 	std::cout << "Same\n";
-	// else
-	// 	std::cout << "Different\n";
-
-
-	// if (myvector.begin() == myvector.end())
-	// 	std::cout << "Same\n";
-	// else
-	// 	std::cout << "Different\n";
-	// std::cout << std::endl;
-
-
-	// myvector.resize(4, 4);
-	// myvector.resize(5, 5);
-
-	// for (ft::vector<int>::iterator gert = myvector.begin(); gert != myvector.end(); gert++)
-	// 	std::cout << *gert << " ";
-
-
-	// std::cout << "\n";
-
-	// ft::vector<int>::reverse_iterator keesjes = myvector.rbegin();
-
-
-	// int i = 0;
-	// for (ft::vector<int>::reverse_iterator gert = myvector.rbegin(); gert != myvector.rend(); gert++)
-	// {
-	// 	if ( i == 20)
-	// 		break;
-	// 	std::cout << *gert << " ";
-	// 	i++;
-	// }
-
-
-	ft::vector<int> my(5, 5);
 	std::vector<int> og(5, 5);
-	printy(my, og);
+	ft::vector<int> my(5, 5);
+	// printy(my, og);
+
+	og.insert(og.begin(), 10, 9);
+	// my.insert(my.begin(), 10, 9);
+	// printy(my, og);
 
 	og.insert(og.begin(), 6, 1);
-	my.insert(my.begin(), 6, 1);
-	printy(my, og);
+	// my.insert(my.begin(), 6, 1);
+	// printy(my, og);
+
+	for (std::vector<int>::iterator it = og.begin(); it != og.end(); it++)
+		std::cout << *it << " ";
 
 	// og.insert(og.begin(), 4, 2);
 	// my.insert(my.begin(), 4, 2);
@@ -157,6 +103,8 @@ int main(int argc, char **argv)
 	// og.insert(og.begin(), 5, 7);
 	// my.insert(my.begin(), 5, 7);
 	// printy(my, og);
+
+	// output: 000001999999999955555
 
 	
 
