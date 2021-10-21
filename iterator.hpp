@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:56:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/10/19 17:46:11 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/10/21 12:47:44 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,10 @@
 */
 
 # include <iostream>
-# include "Tags.hpp"
+
+# include "utils.hpp"
 
 namespace ft {
-
-class input_iterator_tag { };
-
-class output_iterator_tag { };
-
-class forward_iterator_tag { };
-
-class bidirectional_iterator_tag { };
-
-class random_access_iterator_tag { };
 
 template< class Category,
 	class T,
@@ -46,9 +37,6 @@ class iterator
 		typedef Reference       reference;
 		typedef Category        iterator_category;
 };
-
-/* https://en.cppreference.com/w/cpp/iterator */
-
 template <typename T>
 class random_access_iterator : public iterator<random_access_iterator_tag, T>
 {
@@ -109,7 +97,6 @@ class random_access_iterator : public iterator<random_access_iterator_tag, T>
 		random_access_iterator	operator - (int const &value) { return this->_value - value; }
 		value_type			&operator [] (int i) { return *(this->_value + i) ; }
 };
-
 template<typename T>
 class reverse_iterator: public iterator<bidirectional_iterator_tag, T>
 {
@@ -168,7 +155,6 @@ class reverse_iterator: public iterator<bidirectional_iterator_tag, T>
 		reverse_iterator	operator + (int const &value) { return this->_value + value; }
 		reverse_iterator	operator - (int const &value) { return this->_value - value; }
 };
-
 /*
 ** https://stackoverflow.com/questions/6742008/what-are-the-typical-use-cases-of-an-iterator-trait
 */
@@ -181,8 +167,6 @@ struct iterator_traits
 	typedef typename iterator::reference             reference;
 	typedef typename iterator::iterator_category     iterator_category;
 };
-
-
 template<class InputIterator>
 	typename ft::iterator_traits<InputIterator>::difference_type
 		distance (InputIterator first, InputIterator last)

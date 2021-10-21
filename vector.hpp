@@ -15,7 +15,9 @@
 # define VECTOR_HPP
 
 #include <iostream>
-#include "iterator.hpp"
+
+# include "iterator.hpp"
+# include "utils.hpp"
 
 namespace ft {
 
@@ -233,8 +235,8 @@ class vector
 
 			new_begin = new value_type[new_cap];
 
-			for (int i = this->size(); i < new_cap; i++)
-				this->_begin[i] = value_type();
+			for (int i = 0; i < new_cap; i++)
+				new_begin[i] = value_type();
 
 			if (!this->empty())
 			{
@@ -303,31 +305,36 @@ class vector
 		iterator insert (iterator position, const value_type &val)
 		{
 			this->insert(position, 1, val);
+			return this->begin();
 		}
-
-// template <class T>
-void swap ( value_type &a, value_type &b )
-{
-	value_type	c(a);
-	a=b;	
-	b=c;
-}
-
 		void insert (iterator position, size_type n, const value_type &val)
 		{
 			size_type index = &(*position) - this->_begin;
 
-			this->reserve(this->size() + n);
+			if (this->size() + n <= this->capacity())
+				;
+			else if ((this->size() + n) > this->capacity() * 2)
+				this->reserve(this->size() + n);
+			else
+				this->reserve((this->capacity()) * 2);
 
 			for (; n > 0; n--)
 			{
-				for (int i = this->size(); i > 0; i--)
+				for (int i = this->size(); i > index; i--)
 					this->_begin[i] = this->_begin[i - 1];
 				this->_size++;
-				this->_begin[0] = val;
+				this->_begin[index] = val;
 			}
 		}
-
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last)
+		{
+			while (first != last)
+			(
+				this->insert(position, *first);
+				first++;
+			)
+		}
 
 			
 

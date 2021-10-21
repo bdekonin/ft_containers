@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/10/20 20:19:55 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/10/21 12:24:05 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void printog(std::vector<int> &vec)
 {
 	std::vector<int>::iterator it = vec.begin();
 
-	for (int i = 0; i < vec.size(); i++, it++)
+	for (int i = 0; i < vec.capacity(); i++, it++)
 	{
 		if (i >= vec.size())
 			std::cout << RED;
@@ -50,7 +50,7 @@ void printmy(ft::vector<int> &vec)
 {
 	ft::vector<int>::iterator it = vec.begin();
 
-	for (int i = 0; i < vec.size(); i++, it++)
+	for (int i = 0; i < vec.capacity(); i++, it++)
 	{
 		if (i >= vec.size())
 			std::cout << RED;
@@ -75,19 +75,17 @@ int main(int argc, char **argv)
 {
 	std::vector<int> og(5, 5);
 	ft::vector<int> my(5, 5);
-	// printy(my, og);
+	printy(my, og);
 
 	og.insert(og.begin(), 10, 9);
 	// my.insert(my.begin(), 10, 9);
-	// printy(my, og);
+	printy(my, og);
 
-	og.insert(og.begin(), 6, 1);
-	// my.insert(my.begin(), 6, 1);
-	// printy(my, og);
+	og.insert(og.begin(), 6);
+	// my.insert(my.begin(), 6);
+	printy(my, og);
 
-	for (std::vector<int>::iterator it = og.begin(); it != og.end(); it++)
-		std::cout << *it << " ";
-
+	my.insert(my.begin(), og.begin(), og.end());
 	// og.insert(og.begin(), 4, 2);
 	// my.insert(my.begin(), 4, 2);
 	// printy(my, og);
