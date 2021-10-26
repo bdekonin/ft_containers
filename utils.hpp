@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/21 12:36:57 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/10/21 16:39:14 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/10/26 12:59:25 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,143 @@ namespace ft
 		class random_access_iterator_tag { }; /* https://www.cplusplus.com/reference/iterator/RandomAccessIterator/ */
 
 	
+
+/*
+** https://stackoverflow.com/questions/6742008/what-are-the-typical-use-cases-of-an-iterator-trait
+*/
+template <class iterator>
+struct iterator_traits
+{
+	typedef typename iterator::difference_type       difference_type;
+	typedef typename iterator::value_type            value_type;
+	typedef typename iterator::pointer               pointer;
+	typedef typename iterator::reference             reference;
+	typedef typename iterator::iterator_category     iterator_category;
+};
+template<class InputIterator>
+	typename ft::iterator_traits<InputIterator>::difference_type
+		distance (InputIterator first, InputIterator last)
+		{
+			typename ft::iterator_traits<InputIterator>::difference_type res;
+
+			res = 0;
+			while (first != last)
+			{
+				res++;
+				first++;
+			}
+			return res;
+		}
+
+
+
+
+
+
+    /*
+    ** All the next part is an adaptation of is_integral.
+    ** "is_integral" for this project in C++98 is a structure 
+    ** that contain if the type given to it is a type from this list :
+    **  - bool
+    **  - char
+    **  - char16_t
+    **  - char32_t
+    **  - wchar_t
+    **  - signed char
+    **  - short int
+    **  - int
+    **  - long int
+    **  - long long int
+    **  - unsigned char
+    **  - unsigned short int
+    **  - unsigned int
+    **  - unsigned long int
+    **  - unsigned long long int
+    */
+
+    /*
+    ** @brief The basic struct of is_integral has
+    ** has a boolean ("value") that contain true if the type is from.
+    ** the list, otherwise false.
+    */
+    template <bool is_integral, typename T>
+        struct is_integral_res {
+            typedef T type;
+            static const bool value = is_integral;
+            };
+
+    /*
+    ** @brief default template of the structure is_integral_type.
+    ** If the type given in argument is from the list, the structure
+    ** will be overide by nexts, in according to it type.
+    ** If the type given is argument isn't in the list, 
+    ** stocked value will be false. So it's not a integral type.
+    */
+    template <typename>
+        struct is_integral_type : public is_integral_res<false, bool> {};
+
+    /* @brief is_integral_type for bool. "value is true".*/
+    template <>
+        struct is_integral_type<bool> : public is_integral_res<true, bool> {};
+
+    /* @brief is_integral_type for char. "value is true".*/
+    template <>
+        struct is_integral_type<char> : public is_integral_res<true, char> {};
+
+    /* @brief is_integral_type for signed char. "value is true".*/
+    template <>
+        struct is_integral_type<signed char> : public is_integral_res<true, signed char> {};
+
+    /* @brief is_integral_type for short int. "value is true".*/
+    template <>
+        struct is_integral_type<short int> : public is_integral_res<true, short int> {};
+    
+    /* @brief is_integral_type for int. "value is true".*/
+    template <>
+        struct is_integral_type<int> : public is_integral_res<true, int> {};
+
+    /* @brief is_integral_type for long int. "value is true".*/
+    template <>
+        struct is_integral_type<long int> : public is_integral_res<true, long int> {};
+
+    /* @brief is_integral_type for long long int. "value is true".*/
+    template <>
+        struct is_integral_type<long long int> : public is_integral_res<true, long long int> {};
+
+    /* @brief is_integral_type for unsigned char. "value is true".*/
+    template <>
+        struct is_integral_type<unsigned char> : public is_integral_res<true, unsigned char> {};
+
+    /* @brief is_integral_type for unsigned short int. "value is true".*/
+    template <>
+        struct is_integral_type<unsigned short int> : public is_integral_res<true, unsigned short int> {};
+
+    /* @brief is_integral_type for unsigned int. "value is true".*/
+    template <>
+        struct is_integral_type<unsigned int> : public is_integral_res<true, unsigned int> {};
+
+    /* @brief is_integral_type for unsigned long int. "value is true".*/
+    template <>
+        struct is_integral_type<unsigned long int> : public is_integral_res<true, unsigned long int> {};
+    
+    /* @brief is_integral_type for unsigned long long int. "value is true".*/
+    template <>
+        struct is_integral_type<unsigned long long int> : public is_integral_res<true, unsigned long long int> {};
+
+    /*
+    ** @brief Give a structure who contain is the
+    ** typename given in template is integral or not,
+    ** stocked in "value".
+    */
+    template <typename T>
+        struct is_integral : public is_integral_type<T> { };
+
+    /*  End of is_integral. */
+
+
+
+
+
 
 
 

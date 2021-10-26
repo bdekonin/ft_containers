@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:56:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/10/21 12:47:44 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/10/26 11:20:22 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,33 +155,6 @@ class reverse_iterator: public iterator<bidirectional_iterator_tag, T>
 		reverse_iterator	operator + (int const &value) { return this->_value + value; }
 		reverse_iterator	operator - (int const &value) { return this->_value - value; }
 };
-/*
-** https://stackoverflow.com/questions/6742008/what-are-the-typical-use-cases-of-an-iterator-trait
-*/
-template <class iterator>
-struct iterator_traits
-{
-	typedef typename iterator::difference_type       difference_type;
-	typedef typename iterator::value_type            value_type;
-	typedef typename iterator::pointer               pointer;
-	typedef typename iterator::reference             reference;
-	typedef typename iterator::iterator_category     iterator_category;
-};
-template<class InputIterator>
-	typename ft::iterator_traits<InputIterator>::difference_type
-		distance (InputIterator first, InputIterator last)
-		{
-			typename ft::iterator_traits<InputIterator>::difference_type res;
-
-			res = 0;
-			while (first != last)
-			{
-				res++;
-				first++;
-			}
-			return res;
-		}
-
 }
 
 #endif // ITERATOR_HPP

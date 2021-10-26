@@ -326,36 +326,15 @@ class vector
 				this->_begin[index] = val;
 			}
 		}
-		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last)
-		{
-			while (first != last)
-			(
-				this->insert(position, *first);
-				first++;
-			)
-		}
-
-			
-
-// return this->end();
-
-
-// 			if (n + this->size() > this->capacity()) // check total size
-// 				this->reserve(this->capacity() * 2);
-
-			
-
-// 			for (int j = 0; j < n; j++)
-// 			{
-// 				for (int i = this->size(); i >= 0; i--)
-// 					this->_begin[i + 1] = this->_begin[i];
-// 				this->_begin[0] = val; // val
-// 			}
-// 			// this->_size += 5;
-// 			return this->end();
-// 		}
-
+		// template <class InputIterator>
+		// void insert (iterator position, InputIterator first, InputIterator last)
+		// {
+		// 	while (first != last)
+		// 	{
+		// 		this->insert(position, *first);
+		// 		first++;
+		// 	}
+		// }
 		
 	private:
 		allocator_type		_alloc;
