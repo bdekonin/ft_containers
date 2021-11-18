@@ -42,6 +42,7 @@ class vector
 	vector(const allocator_type &alloc = allocator_type())
 	: _begin(nullptr), _size(0), _capacity(0), _alloc(alloc)
 	{
+		this->_alloc(alloc);
 	};
 	vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
 	: _begin(nullptr), _size(0), _capacity(0), _alloc(alloc)
@@ -328,13 +329,20 @@ class vector
 		}
 		// template <class InputIterator>
 		// void insert (iterator position, InputIterator first, InputIterator last)
-		// {
-		// 	while (first != last)
-		// 	{
-		// 		this->insert(position, *first);
-		// 		first++;
-		// 	}
-		// }
+		// void insert(iterator position,
+		// typename ft::enable_if<ft::is_integral<InputIterator>::value, InputIterator>::type first,
+		// typename ft::enable_if<ft::is_integral<InputIterator>::value, InputIterator>::type last)
+		// void insert (iterator position, InputIterator first, InputIterator last)
+			template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last,
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
+		{
+			while (first != last)
+			{
+				this->insert(position, *first);
+				first++;
+			}
+		}
 		
 	private:
 		allocator_type		_alloc;

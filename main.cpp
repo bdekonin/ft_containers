@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/10/26 13:00:58 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/18 14:29:33 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ int main(int argc, char **argv)
 	std::cout << ft::is_integral<std::string>::value;
 
 	// my.insert(my.begin(), og.begin(), og.end());
-	// og.insert(og.begin(), 4, 2);
-	// my.insert(my.begin(), 4, 2);
-	// printy(my, og);
+	og.insert(og.begin(), 4, 2);
+	my.insert(my.begin(), 4, 2);
+	printy(my, og);
 
 	// og.insert(og.begin(), 4, 2);
 	// my.insert(my.begin(), 4, 2);
