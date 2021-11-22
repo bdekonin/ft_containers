@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/10/28 09:38:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2021/10/28 09:40:41 by bdekonin      ########   odam.nl          #
+#    Updated: 2021/11/22 14:25:05 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ OBJ := $(addprefix $(OBJDIR), $(FILES:%.cpp=%.o))
 
 CC = clang++
 
-FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
+# FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
+FLAGS = -g
 
 all: $(NAME)
 

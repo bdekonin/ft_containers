@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:56:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/10/26 11:20:22 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/22 14:27:14 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ class random_access_iterator : public iterator<random_access_iterator_tag, T>
 			if (this == &rhs)
 				return *this;
 
-			this->_val = rhs._val;
+			this->_value = rhs._value;
 			return *this;
 		}
 
@@ -133,7 +133,7 @@ class reverse_iterator: public iterator<bidirectional_iterator_tag, T>
 			if (this == &rhs)
 				return *this;
 
-			this->_val = rhs._val;
+			this->_value = rhs._value;
 			return *this;
 		}
 

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/18 14:29:33 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/22 16:59:19 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,17 @@
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
+template < class T >
+std::ostream& operator << (std::ostream& os, const std::vector<T>& v) 
+{
+    os << "[";
+    for (typename std::vector<T>::const_iterator ii = v.begin(); ii != v.end(); ++ii)
+    {
+        os << " " << *ii;
+    }
+    os << " ]";
+    return os;
+}
 
 void printog(std::vector<int> &vec)
 {
@@ -85,49 +96,102 @@ int main(int argc, char **argv)
 	my.insert(my.begin(), 6);
 	printy(my, og);
 
-	std::cout << ft::is_integral<std::string>::value;
-
-	// my.insert(my.begin(), og.begin(), og.end());
 	og.insert(og.begin(), 4, 2);
 	my.insert(my.begin(), 4, 2);
+
+	og.push_back(8);
+	my.push_back(8);
+
+	og.clear();
+	my.clear();
 	printy(my, og);
 
-	// og.insert(og.begin(), 4, 2);
-	// my.insert(my.begin(), 4, 2);
-	// printy(my, og);
-
-	// og.insert(og.begin(), 1, 8);
-	// my.insert(my.begin(), 1, 8);
-	// printy(my, og);
-
-	// og.insert(og.begin(), 5, 7);
-	// my.insert(my.begin(), 5, 7);
-	// printy(my, og);
-
-	// output: 000001999999999955555
-
+	int myints[] = {1776,7,4};
+	og.assign (myints,myints+3); // assigning from array
+	my.assign (myints,myints+3); // assigning from array
+	printy(my, og);
 	
+	og.assign (7,0);
+	my.assign (7,0);
+	printy(my, og);
 
-	// my.resize(16, 3);
-	// og.resize(16, 3);
+	{
+		ft::vector<int> first;
+		ft::vector<int> second;
+		ft::vector<int> third;
+
+		first.assign (7, 100); // 7 ints with a value of 100
+
+		ft::vector<int>::iterator it;
+		it = first.begin() + 1;
+
+		second.assign (it,first.end() - 1); // the 5 central values of first
+
+		int myints[] = {1776, 7, 4};
+		third.assign (myints,myints + 3); // assigning from array.
+
+		second.swap(third);
+
+		std::cout << "Size of first: " << first.size() << " should be (7)\n";
+		std::cout << "Size of second: " << second.size() << " should be (5)\n";
+		std::cout << "Size of third: " << third.size() << " should be (3)\n";
+	}
+
+	og.insert(og.begin(), 1, 2);
+	my.insert(my.begin(), 1, 2);
+	og.insert(og.begin(), 1, 1);
+	my.insert(my.begin(), 1, 1);
+	printy(my, og);
+
+
+	// og.erase (og.begin(), og.begin() + 2);
+	// my.erase (my.begin(), my.begin() + 2);
 	// printy(my, og);
 
-	// my.resize(6);
-	// og.resize(6);
-	// printy(my, og);
-	
-	// my.resize(10, 9);
-	// og.resize(10, 9);
+	// og.erase (og.begin());
+	// my.erase (my.begin());
 	// printy(my, og);
 
-	// my.resize(20, 1);
-	// og.resize(20, 1);
+	// og.clear();
+	// my.clear();
 	// printy(my, og);
 
-	// my.resize(33);
-	// og.resize(33);
-	// printy(my, og);
-	
+{
+	ft::vector<int> myvector;
+
+	// set some values (from 1 to 10)
+	for (int i=1; i<=10; i++) myvector.push_back(i);
+
+	// erase the 6th element
+	myvector.erase (myvector.begin()+5);
+
+	// erase the first 3 elements:
+	myvector.erase (myvector.begin(),myvector.begin()+3);
+
+	std::cout << "myvector contains:";
+	for (unsigned i=0; i<myvector.size(); ++i)
+		std::cout << ' ' << myvector[i];
+	std::cout << " Should be  4 5 7 8 9 10\n";
+}
+
+{
+
+	ft::vector<int> test(my.begin(), my.begin() + 4);
+	std::vector<int> testi(og.begin(), og.begin() + 4);
+
+	std::cout << test << std::endl;
+	std::cout << testi << std::endl;
+}
+{
+
+	ft::vector<int> test(my);
+	std::vector<int> testi(og);
+
+	std::cout << test << std::endl;
+	std::cout << testi << std::endl;
+}
+
+
 	return (1);
 }
 
