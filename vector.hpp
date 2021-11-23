@@ -18,6 +18,13 @@
 # include "iterator.hpp"
 # include "utils.hpp"
 
+
+
+/* TODO
+const iterator it = vec.begin();
+
+*/
+
 namespace ft {
 
 template <class T, class Alloc = std::allocator<T> >
@@ -80,11 +87,12 @@ class vector
 		/* Operator = */
 		vector &operator=(const vector& x)
 		{
-			this->_alloc = x.alloc;
+			this->_alloc = x._alloc;
 			this->_begin = nullptr;
 			this->_size = 0;
 			this->_capacity = 0;
 			this->insert(this->begin(), x.begin(), x.end());
+			return *this;
 		}
 
 	/* Iterators ✅ */ 
@@ -236,11 +244,15 @@ class vector
 		}
 		reference at (size_type n)
 		{
-			return this[n];
+			if (n >= this->size())
+				throw std::out_of_range("");
+			return this->_begin[n];
 		}
 		const_reference at (size_type n) const
 		{
-			return this[n];
+			if (n >= this->size())
+				throw std::out_of_range("");
+			return this->_begin[n];
 		}
 		reference front()
 		{
@@ -287,7 +299,20 @@ class vector
 		/* Add element at the end */
 		void push_back (const value_type &val)
 		{
-			this->insert(this->end(), 1, val);
+
+			/* option 1 */
+			// this->insert(this->end(), 1, val);
+
+			/* option 2 */
+			if (this->_size == this->_capacity)
+			{
+				if (this->_size == 0)
+					reserve(1);
+				else
+					reserve(this->_capacity * 2);
+			}
+			this->_begin[this->_size] = val;
+			this->_size++;
 		}
 		/* Delete last element */
 		void pop_back()
@@ -322,14 +347,26 @@ class vector
 		template <class InputIterator>
 		void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
 		{
-			// while (first != last)
+			// for (int i = 0; first != last; i++, first++)
 			// {
-			// 	this->insert(position, *first);
-			// 	first++;
+			// 	this->insert(position + i, *first);
 			// }
-			for (int i = 0; first != last; i++, first++)
+			vector temp;
+			for (iterator it = position; it != this->end(); it++)
 			{
-				this->insert(position + i, *first);
+				temp.push_back(*it);
+			}
+			this->_size -= ft::distance(position, this->end());
+			while (first != last)
+			{
+				this->push_back(*first);
+				first++;
+			}
+			iterator it = temp.begin();
+			while (it != temp.end())
+			{
+				push_back(*it);
+				it++;
 			}
 		}
 		/* Erase elements */

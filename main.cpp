@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/23 11:41:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/23 13:45:35 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
+#define PRINTERSIZE (int)vec.capacity()
+
 template < class T >
 std::ostream& operator << (std::ostream& os, const std::vector<T>& v) 
 {
@@ -48,7 +50,7 @@ void printog(std::vector<int> &vec)
 {
 	std::vector<int>::iterator it = vec.begin();
 
-	for (int i = 0; i < (int)vec.capacity(); i++, it++)
+	for (int i = 0; i < PRINTERSIZE; i++, it++)
 	{
 		if (i >= (int)vec.size())
 			std::cout << RED;
@@ -61,7 +63,7 @@ void printmy(ft::vector<int> &vec)
 {
 	ft::vector<int>::iterator it = vec.begin();
 
-	for (int i = 0; i < (int)vec.capacity(); i++, it++)
+	for (int i = 0; i < PRINTERSIZE; i++, it++)
 	{
 		if (i >= (int)vec.size())
 			std::cout << RED;
@@ -191,9 +193,36 @@ int main(void)
 	else
 		std::cout << "test1 != test1\n";
 	if (test1 == test3)
-		std::cout << "test1 == test3\n";
+		std::cout << "test1 == test3\n\n";
 	else
-		std::cout << "test1 != test3\n";
+		std::cout << "test1 != test3\n\n";
+
+
+
+	std::vector<int> v1;
+	ft::vector<int> v2;
+
+	v1.push_back(5);
+	v2.push_back(5);
+
+	v1.push_back(12);
+	v2.push_back(12);
+
+	v1.push_back(3);
+	v2.push_back(3);
+
+	printy(v2, v1);
+
+
+	std::cout << "now testing insert without any allocating" << std::endl;
+	{
+		ft::vector<int> my1;
+		std::vector<int> og1;
+		
+		my1.insert(my1.begin(), my.begin(), my.begin() + 4);
+		og1.insert(og1.begin(), og.begin(), og.begin() + 4);
+		printy(my1, og1);
+	}
 	return (1);
 }
 

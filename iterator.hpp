@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:56:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/23 10:25:20 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/23 14:12:37 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ class random_access_iterator : public iterator<random_access_iterator_tag, T>
 		random_access_iterator	operator -= (int const &value) { this->_value -= value;	return *this; }
 		random_access_iterator	operator + (int const &value) { return this->_value + value; }
 		random_access_iterator	operator - (int const &value) { return this->_value - value; }
+		difference_type	operator-(random_access_iterator rhs) const { return this->_value - rhs._value; }
 		value_type			&operator [] (int i) { return *(this->_value + i) ; }
 };
 template<typename T>
