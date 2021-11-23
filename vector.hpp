@@ -41,11 +41,11 @@ class vector
 	/* Constructors */
 		/* Default */
 		vector(const allocator_type &alloc = allocator_type())
-		: _begin(nullptr), _size(0), _capacity(0), _alloc(alloc)
+		: _alloc(alloc), _begin(nullptr), _size(0), _capacity(0)
 		{	}
 		/* Fill */
 		vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
-		: _size(0), _alloc(alloc)
+		: _alloc(alloc), _size(0)
 		{
 			this->_begin = this->_alloc.allocate(n);
 			this->_capacity = n;
@@ -54,7 +54,7 @@ class vector
 		/* Range */
 		template <class InputIterator>
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
-		: _begin(nullptr), _alloc(alloc)
+		: _alloc(alloc), _begin(nullptr)
 		{
 			this->_begin = this->_alloc.allocate(ft::distance(first, last));
 			this->_capacity = ft::distance(first, last);
@@ -80,7 +80,11 @@ class vector
 		/* Operator = */
 		vector &operator=(const vector& x)
 		{
-
+			this->_alloc = x.alloc;
+			this->_begin = nullptr;
+			this->_size = 0;
+			this->_capacity = 0;
+			this->insert(this->begin(), x.begin(), x.end());
 		}
 
 	/* Iterators ✅ */ 
@@ -204,7 +208,7 @@ class vector
 
 			new_begin = this->_alloc.allocate(new_cap);
 
-			for (int i = 0; i < new_cap; i++)
+			for (size_type i = 0; i < new_cap; i++)
 				new_begin[i] = value_type();
 
 			if (!this->empty())
@@ -309,7 +313,7 @@ class vector
 
 			for (; n > 0; n--)
 			{
-				for (int i = this->size(); i > index; i--)
+				for (size_type i = this->size(); i > index; i--)
 					this->_begin[i] = this->_begin[i - 1];
 				this->_size++;
 				this->_begin[index] = val;
@@ -331,7 +335,7 @@ class vector
 		/* Erase elements */
 		iterator erase (iterator position)
 		{
-			int i = 0;
+			size_type i = 0;
 			iterator it = this->begin();
 			pointer newpointer = this->_alloc.allocate(this->capacity());
 
@@ -351,7 +355,7 @@ class vector
 		}
 		iterator erase (iterator first, iterator last)
 		{
-			int i = 0;
+			size_type i = 0;
 			iterator it = this->begin();
 			pointer newpointer = this->_alloc.allocate(this->capacity());
 
@@ -410,23 +414,41 @@ class vector
 };
 
 template< class T, class Alloc>
-bool operator==(const ft::vector<T,Alloc> &lhs, const ft::vector<T,Alloc> &rhs)
+bool operator==(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
 {
 	if (lhs.size() == rhs.size())
 	{
-		for (int i = 0; i != lhs.size(); i++)
+		for (int i = 0; i != (int)lhs.size(); i++)
 			if (lhs[i] != rhs[i])
 				return false;
 		return true;
 	}
 	return false;
 }
+template< class T, class Alloc>
+bool operator != (const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
+{
+	if (lhs.size() != rhs.size())
+	{
+		for (int i = 0; i != lhs.size(); i++)
+			if (lhs[i] == rhs[i])
+				return true;
+		return false;
+	}
+	return true;
+}
+template< class T, class Alloc>
+bool operator<(const std::vector<T, Alloc> &lhs, const std::vector<T, Alloc> &rhs)
+{
+	if (lhs.size() < rhs.size())
+		return true;
 
-
+	return false;
+}
 
 
 template < class T >
-std::ostream& operator << (std::ostream& os, const ft::vector<T>& v) 
+std::ostream& operator << (std::ostream &os, const ft::vector<T> &v) 
 {
     os << "[";
     for (typename ft::vector<T>::const_iterator ii = v.begin(); ii != v.end(); ++ii)

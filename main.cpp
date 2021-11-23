@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/22 16:59:19 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/23 11:41:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ void printog(std::vector<int> &vec)
 {
 	std::vector<int>::iterator it = vec.begin();
 
-	for (int i = 0; i < vec.capacity(); i++, it++)
+	for (int i = 0; i < (int)vec.capacity(); i++, it++)
 	{
-		if (i >= vec.size())
+		if (i >= (int)vec.size())
 			std::cout << RED;
 		std::cout << ' ' << *it << RESET;
 	}
@@ -61,9 +61,9 @@ void printmy(ft::vector<int> &vec)
 {
 	ft::vector<int>::iterator it = vec.begin();
 
-	for (int i = 0; i < vec.capacity(); i++, it++)
+	for (int i = 0; i < (int)vec.capacity(); i++, it++)
 	{
-		if (i >= vec.size())
+		if (i >= (int)vec.size())
 			std::cout << RED;
 		std::cout << ' ' << *it << RESET;
 	}
@@ -82,7 +82,7 @@ void printy(ft::vector<int> &my, std::vector<int> &og)
 	std::cout << "\n";
 }
 
-int main(int argc, char **argv)
+int main(void)
 {
 	std::vector<int> og(5, 5);
 	ft::vector<int> my(5, 5);
@@ -174,24 +174,26 @@ int main(int argc, char **argv)
 	std::cout << " Should be  4 5 7 8 9 10\n";
 }
 
-{
-
-	ft::vector<int> test(my.begin(), my.begin() + 4);
-	std::vector<int> testi(og.begin(), og.begin() + 4);
-
-	std::cout << test << std::endl;
-	std::cout << testi << std::endl;
-}
-{
-
-	ft::vector<int> test(my);
-	std::vector<int> testi(og);
-
-	std::cout << test << std::endl;
-	std::cout << testi << std::endl;
-}
+	ft::vector<int> test1(my.begin(), my.begin() + 4);
+	std::vector<int> test2(og.begin(), og.begin() + 4);
+	ft::vector<int> test3(my);
+	std::vector<int> test4(og);
 
 
+
+	std::cout << "test1: " << test1 << std::endl;
+	std::cout << "test2: " << test2 << std::endl;
+	std::cout << "test3: " << test3 << std::endl;
+	std::cout << "test4: " << test4 << std::endl;
+
+	if (test1 == test1)
+		std::cout << "test1 == test1\n";
+	else
+		std::cout << "test1 != test1\n";
+	if (test1 == test3)
+		std::cout << "test1 == test3\n";
+	else
+		std::cout << "test1 != test3\n";
 	return (1);
 }
 

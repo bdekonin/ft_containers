@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:56:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/22 14:27:14 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/23 10:25:20 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class iterator
 		typedef Reference       reference;
 		typedef Category        iterator_category;
 };
+
 template <typename T>
 class random_access_iterator : public iterator<random_access_iterator_tag, T>
 {
