@@ -17,6 +17,7 @@
 # include <iostream>
 # include "iterator.hpp"
 # include "utils.hpp"
+# include <memory>
 
 
 
@@ -54,7 +55,13 @@ class vector
 		vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 		: _alloc(alloc), _begin(nullptr), _size(0), _capacity(0)
 		{
-			this->insert(this->begin(), n, val);
+			// this->insert(this->begin(), n, val);
+			this->reserve(n);
+			while (n)
+			{
+				this->push_back(val);
+				n--;
+			}
 		}
 		/* Range */
 		template <class InputIterator>
@@ -76,8 +83,9 @@ class vector
 		/* Vector destructor */
 		~vector()
 		{
-			if (this->_capacity != 0)
+			if (this->_begin)
 				this->_alloc.deallocate(this->_begin, this->_capacity);
+			this->_begin = nullptr;
 		}
 
 	/* Operator overloading */
@@ -144,52 +152,12 @@ class vector
 		/* Resizes the container so that it contains n elements. */
 		void resize(size_type n, value_type val = value_type())
 		{
-			if (n < this->size())
-			{
-				while (n != this->size())
-					this->pop_back();
-				return ;
-			}
-
-			if (n > this->capacity())
-			{
-				pointer new_begin;
-
-				new_begin = this->_alloc.allocate(n);
-				
-				for (size_type i = 0; i < n; i++)
-					new_begin[i] = val;
-				for (size_type i = 0; i < this->size(); i++)
-					new_begin[i] = this->_begin[i];
-
-				// this->_alloc.destroy(this->_begin);
-				this->_alloc.deallocate(this->_begin, this->_capacity);
-
-
-				this->_begin = new_begin;
-				this->_capacity = n;
-				this->_size = n;
-			}
-
-			if (n > this->size())
-			{
-
-				for (int i = this->size(); i < (int)n; i++)
-				{
-					*(this->_begin + i) = val;
-					this->_size++;
-				}
-
-			}
-			return;
-
-			// times * 2
-
-			// protects
-			if (n < this->size())
-			{
-				this->_size = n;
-			}
+			while (n < this->_size)
+				this->pop_back();
+			if (n > this->_capacity)
+				this->reserve(n);
+			while (n > this->_size)
+				push_back(val);
 		}
 		/* Return size of allocated storage capacity */
 		size_type capacity() const
@@ -204,32 +172,16 @@ class vector
 		/* Reserves storage */
 		void reserve(size_type new_cap)
 		{
-			pointer new_begin;
-			
-			if (new_cap == 0)
+			if (new_cap <= this->_capacity)
 				return ;
-			if (new_cap <= this->capacity())
-				return ;
-			if (new_cap > this->max_size())
-				throw std::length_error("vector::reserve");
-
-			new_begin = this->_alloc.allocate(new_cap);
-
-			for (size_type i = 0; i < new_cap; i++)
-				new_begin[i] = value_type();
-
-			if (!this->empty())
-			{
-				pointer p1 = new_begin;
-				pointer p2 = this->_begin;
-				
-				for (int i = 0; i < (int)this->size(); i++, p1++, p2++)
-					*p1 = *p2;
-			}
-			// if (this->_capacity != 0)
-				// this->_alloc.destroy(this->_begin);
+			// if (new_cap != 0)
+			// 	new_cap = this->_capacity * 2;
+			pointer tmp = this->_alloc.allocate(new_cap);
+			for (size_type i = 0; i < this->_size; i++)
+				this->_alloc.construct(&(tmp[i]), this->_begin[i]);
+			if (this->_begin)
 				this->_alloc.deallocate(this->_begin, this->_capacity);
-			this->_begin = new_begin;
+			this->_begin = tmp;
 			this->_capacity = new_cap;
 		}
 	
@@ -285,15 +237,20 @@ class vector
 		void assign (InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
 		{
 			this->clear();
-			for (int i = 0; first != last; i++, first++)
+			while (first != last)
 			{
-				this->push_back(*first);
+				push_back(*first);
+				first++;
 			}
 		}
 		void assign (size_type n, const value_type& val)
 		{
 			this->clear();
-			this->insert(this->begin(), n, val);
+			while (n)
+			{
+				this->push_back(val);
+				n--;
+			}
 		}
 
 		/* PUSH_BACK */
@@ -321,31 +278,12 @@ class vector
 		}
 		iterator erase (iterator first, iterator last)
 		{
-			size_type i = 0;
-			iterator it = this->begin();
-			pointer newpointer = this->_alloc.allocate(this->capacity());
-
-			while (i != this->capacity())
+			while (first != last)
 			{
-				if (it == first)
-				{
-					while (first != last)
-					{
-						it++;
-						first++;
-						this->_size--;
-					}
-				}
-				newpointer[i] = *it;
-				it++;
-				i++;
+				first = erase(first);
+				--last;
 			}
-
-			// this->_alloc.destroy(this->_begin);
-			// if (this->_begin)
-			// 	this->_alloc.deallocate(this->_begin, this->_capacity);
-			this->_begin = newpointer;
-			return (this->begin());
+			return first;
 		}
 		/* Swap content */
 		void swap (vector &x)
@@ -385,11 +323,6 @@ class vector
 		/* Add element at the end */
 		void push_back (const value_type &val)
 		{
-
-			/* option 1 */
-			// this->insert(this->end(), 1, val);
-
-			/* option 2 */
 			if (this->_size == this->_capacity)
 			{
 				if (this->_size == 0)
@@ -397,7 +330,7 @@ class vector
 				else
 					reserve(this->_capacity * 2);
 			}
-			this->_begin[this->_size] = val;
+			this->_alloc.construct(&(this->_begin[this->_size]), val); // LEAKIE LEAK
 			this->_size++;
 		}
 			/* Insert elements */
@@ -411,8 +344,11 @@ class vector
 			vector temp(position, this->end());
 			this->_size -= ft::distance(position, this->end());
 
-			for (size_type i = 0; i < n; i++)
-				this->push_back(val);
+			while (n)
+			{
+				push_back(val);
+				n--;
+			}
 			iterator it = temp.begin();
 			while (it != temp.end())
 			{
