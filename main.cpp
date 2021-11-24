@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/23 13:45:35 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/24 10:43:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,22 @@ int main(void)
 		og1.insert(og1.begin(), og.begin(), og.begin() + 4);
 		printy(my1, og1);
 	}
+
+	{
+
+		ft::vector<int> ft_dc;
+		std::vector<int> std_dc;
+		ft::vector<int> ft_fc(42, 'a');
+		std::vector<int> std_fc(42, 'a');
+	
+		ft::vector<int> ft_rc(ft_fc.begin(), ft_fc.end() - 21);
+		std::vector<int> std_rc(std_fc.begin(), std_fc.end() - 21);
+		printy(ft_rc, std_rc);
+	}
+{
+	ft::vector<int> v1(0);
+	v1.empty();
+}
 	return (1);
 }
 
