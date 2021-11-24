@@ -6,13 +6,15 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/24 10:43:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/24 12:35:42 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "iterator.hpp"
 #include "vector.hpp"
 #include <vector>
+# include <sstream>
+#include <string>
 
 #define RESET   "\033[0m"
 #define BLACK   "\033[30m"      /* Black */
@@ -32,7 +34,7 @@
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
-#define PRINTERSIZE (int)vec.capacity()
+#define PRINTERSIZE (int)vec.size()
 
 template < class T >
 std::ostream& operator << (std::ostream& os, const std::vector<T>& v) 
@@ -72,7 +74,6 @@ void printmy(ft::vector<int> &vec)
 	std::cout << "\t\t\t| " << vec.capacity() << " " << vec.size();
 	std::cout  << std::endl;
 }
-
 void printy(ft::vector<int> &my, std::vector<int> &og)
 {
 	std::cout << "my: ";
@@ -84,161 +85,249 @@ void printy(ft::vector<int> &my, std::vector<int> &og)
 	std::cout << "\n";
 }
 
+	# define TEST_SUCCESS "[" GREEN "OK" RESET "] "
+	# define TEST_FAILURE "[" RED	"KO" RESET "] "
+
+
+	template < class T1, class T2 >
+	void	print_difference(T1 expected, T2 received)
+	{
+		std::cout	<< "expected value: " << expected << std::endl\
+					<< "received value: " << received << std::endl;
+	}
+
+template <class ft_vec, class std_vec>
+bool	compare_these_vectors_yo(ft_vec& ft, std_vec& std)
+{
+	if (ft.size() != std.size()) {
+		std::cout << "\nwrong size() :(" << std::endl;
+		print_difference(std.size(), ft.size());
+		return false;
+	}
+	if (ft.max_size() != std.max_size()) {
+		std::cout << "\nwrong max_size() :(" << std::endl;
+		print_difference(std.max_size(), ft.max_size());
+		return false;
+	}
+	if (ft.empty() != std.empty()) {
+		std::cout << "\nwrong empty() :(" << std::endl;
+		print_difference(std.empty(), ft.empty());
+		return false;
+	}
+	for(size_t i = 0; i < ft.size(); ++i) {
+		if (ft[i] != std[i]) {
+			std::cout << "\nindex: " << i << std::endl;
+			print_difference(std[i], ft[i]);
+			return false;
+		}
+	}
+	return (true);
+}
+
+	template < class ft_val, class std_val >
+		void	compare(ft_val& ft_con, std_val& std_con, bool(*comp)(ft_val&, std_val&), const char* test)
+	{
+		if (comp(ft_con, std_con) == true)
+			std::cout << TEST_SUCCESS;
+		else {
+			std::cout << TEST_FAILURE;
+			std::cout << "test: " << test << std::endl;
+		}
+	}
+
+	template < class ft_val, class ft_itr, class std_val, class std_itr >
+		void	compare(ft_val& ft_con, ft_itr ft_i, std_val& std_con, std_itr std_i, bool(*comp)(ft_val&, ft_itr, std_val&, std_itr), const char* test)
+	{
+		if (comp(ft_con, ft_i, std_con, std_i) == true)
+			std::cout << TEST_SUCCESS;
+		else {
+			std::cout << TEST_FAILURE;
+			std::cout << "test: " << test << std::endl;
+		}
+	}
+
+/* Iterators: */
 int main(void)
 {
-	std::vector<int> og(5, 5);
-	ft::vector<int> my(5, 5);
-	printy(my, og);
-
-	og.insert(og.begin(), 10, 9);
-	my.insert(my.begin(), 10, 9);
-	printy(my, og);
-
-	og.insert(og.begin(), 6);
-	my.insert(my.begin(), 6);
-	printy(my, og);
-
-	og.insert(og.begin(), 4, 2);
-	my.insert(my.begin(), 4, 2);
-
-	og.push_back(8);
-	my.push_back(8);
-
-	og.clear();
-	my.clear();
-	printy(my, og);
-
-	int myints[] = {1776,7,4};
-	og.assign (myints,myints+3); // assigning from array
-	my.assign (myints,myints+3); // assigning from array
-	printy(my, og);
-	
-	og.assign (7,0);
-	my.assign (7,0);
-	printy(my, og);
-
 	{
-		ft::vector<int> first;
-		ft::vector<int> second;
-		ft::vector<int> third;
+		std::vector<int> vector;
+		ft::vector<int> myvector;
 
-		first.assign (7, 100); // 7 ints with a value of 100
+		for (int i = 1; i <= 5; i++)
+		{
+			vector.push_back(i);
+			myvector.push_back(i);
+		}
+		printy(myvector, vector);
+	}
+	{
+		std::vector<int> vector (5);  // 5 default-constructed ints
+		ft::vector<int> myvector (5);  // 5 default-constructed ints
 
-		ft::vector<int>::iterator it;
+
+		int i = 0;
+
+		std::vector<int>::reverse_iterator rit = vector.rbegin();
+		for (; rit!= vector.rend(); ++rit)
+			*rit = ++i;
+
+		i = 0;
+		ft::vector<int>::reverse_iterator myrit = myvector.rbegin();
+		for (; myrit!= myvector.rend(); ++myrit)
+			*myrit = ++i;
+		printy(myvector, vector);
+	}
+	{
+		std::vector<int> ints;
+		ft::vector<int> myints;
+
+		for (int i=0; i<10; i++)
+		{
+			ints.push_back(i);
+			myints.push_back(i);
+		}
+		printy(myints, ints);
+		
+		ints.insert (ints.end(),10,100);
+		myints.insert (myints.end(),10,100);
+		printy(myints, ints);
+
+		ints.pop_back();
+		myints.pop_back();
+		printy(myints, ints);
+	}
+	{
+		std::vector<int> vector;
+		ft::vector<int> myvector;
+
+		// set some content in the vector:
+		for (int i = 0; i < 23; i++)
+		{
+			vector.push_back(i);
+			myvector.push_back(i);
+		}
+		printy(myvector, vector);
+	}
+	{
+		std::vector<int> vector;
+		ft::vector<int> myvector;
+
+		// set some initial content:
+		for (int i = 1;i < 10;i++)
+		{
+			vector.push_back(i);
+			myvector.push_back(i);
+		}
+
+		vector.resize(5);
+		myvector.resize(5);
+		printy(myvector, vector);
+
+		vector.resize(8,100);
+		myvector.resize(8,100);
+		printy(myvector, vector);
+
+		vector.resize(12);
+		myvector.resize(12);
+		printy(myvector, vector);
+	}
+	{
+		std::vector<int> vector;
+		ft::vector<int> myvector;
+		int sum(0);
+
+		for (int i=1;i<=10;i++)
+		{
+			vector.push_back(i);
+			myvector.push_back(i);
+		}
+
+		while (!vector.empty())
+		{
+			sum += vector.back();
+			vector.pop_back();
+		}
+		while (!myvector.empty())
+		{
+			sum += myvector.back();
+			myvector.pop_back();
+		}
+		printy(myvector, vector);
+	}
+	{
+		std::vector<int> first, second, third;
+		ft::vector<int> myfirst, mysecond, mythird;
+
+
+		first.assign (7,100);             // 7 ints with a value of 100
+		myfirst.assign (7,100);             // 7 ints with a value of 100
+
+		std::vector<int>::iterator it;
+		ft::vector<int>::iterator myit;
 		it = first.begin() + 1;
-
-		second.assign (it,first.end() - 1); // the 5 central values of first
+		myit = myfirst.begin() + 1;
+		printy(myfirst, first);
+		
+		second.assign (it, first.end() - 1); // the 5 central values of first
+		mysecond.assign (myit, myfirst.end() - 1); // the 5 central values of first
+		printy(mysecond, second);
 
 		int myints[] = {1776, 7, 4};
-		third.assign (myints,myints + 3); // assigning from array.
-
-		second.swap(third);
-
-		std::cout << "Size of first: " << first.size() << " should be (7)\n";
-		std::cout << "Size of second: " << second.size() << " should be (5)\n";
-		std::cout << "Size of third: " << third.size() << " should be (3)\n";
+		third.assign (myints, myints + 3);   // assigning from array.
+		mythird.assign (myints, myints + 3);   // assigning from array.
+		printy(mythird, third);
 	}
 
-	og.insert(og.begin(), 1, 2);
-	my.insert(my.begin(), 1, 2);
-	og.insert(og.begin(), 1, 1);
-	my.insert(my.begin(), 1, 1);
-	printy(my, og);
 
 
-	// og.erase (og.begin(), og.begin() + 2);
-	// my.erase (my.begin(), my.begin() + 2);
-	// printy(my, og);
-
-	// og.erase (og.begin());
-	// my.erase (my.begin());
-	// printy(my, og);
-
-	// og.clear();
-	// my.clear();
-	// printy(my, og);
-
-{
-	ft::vector<int> myvector;
-
-	// set some values (from 1 to 10)
-	for (int i=1; i<=10; i++) myvector.push_back(i);
-
-	// erase the 6th element
-	myvector.erase (myvector.begin()+5);
-
-	// erase the first 3 elements:
-	myvector.erase (myvector.begin(),myvector.begin()+3);
-
-	std::cout << "myvector contains:";
-	for (unsigned i=0; i<myvector.size(); ++i)
-		std::cout << ' ' << myvector[i];
-	std::cout << " Should be  4 5 7 8 9 10\n";
-}
-
-	ft::vector<int> test1(my.begin(), my.begin() + 4);
-	std::vector<int> test2(og.begin(), og.begin() + 4);
-	ft::vector<int> test3(my);
-	std::vector<int> test4(og);
-
-
-
-	std::cout << "test1: " << test1 << std::endl;
-	std::cout << "test2: " << test2 << std::endl;
-	std::cout << "test3: " << test3 << std::endl;
-	std::cout << "test4: " << test4 << std::endl;
-
-	if (test1 == test1)
-		std::cout << "test1 == test1\n";
-	else
-		std::cout << "test1 != test1\n";
-	if (test1 == test3)
-		std::cout << "test1 == test3\n\n";
-	else
-		std::cout << "test1 != test3\n\n";
-
-
-
-	std::vector<int> v1;
-	ft::vector<int> v2;
-
-	v1.push_back(5);
-	v2.push_back(5);
-
-	v1.push_back(12);
-	v2.push_back(12);
-
-	v1.push_back(3);
-	v2.push_back(3);
-
-	printy(v2, v1);
-
-
-	std::cout << "now testing insert without any allocating" << std::endl;
-	{
-		ft::vector<int> my1;
-		std::vector<int> og1;
-		
-		my1.insert(my1.begin(), my.begin(), my.begin() + 4);
-		og1.insert(og1.begin(), og.begin(), og.begin() + 4);
-		printy(my1, og1);
-	}
-
-	{
-
-		ft::vector<int> ft_dc;
-		std::vector<int> std_dc;
-		ft::vector<int> ft_fc(42, 'a');
-		std::vector<int> std_fc(42, 'a');
 	
-		ft::vector<int> ft_rc(ft_fc.begin(), ft_fc.end() - 21);
-		std::vector<int> std_rc(std_fc.begin(), std_fc.end() - 21);
-		printy(ft_rc, std_rc);
-	}
-{
-	ft::vector<int> v1(0);
-	v1.empty();
-}
+	ft::vector<int> ft_dc;
+	std::vector<int> std_dc;
+	compare(ft_dc, std_dc, compare_these_vectors_yo, "Default constructor");
+
+// /* set allocator */
+	ft::vector<std::string, std::allocator<std::string> > ft_sa;
+	std::vector<std::string, std::allocator<std::string> > std_sa;
+	compare(ft_sa, std_sa, compare_these_vectors_yo, "Set allocator");
+
+// /* fill constructor */
+	ft::vector<int> ft_fc(42, 'a');
+	std::vector<int> std_fc(42, 'a');
+	compare(ft_dc, std_dc, compare_these_vectors_yo, "Fill constructor");
+
+// /* range constructor */
+	ft::vector<int> ft_rc(ft_fc.begin(), ft_fc.end() - 21);
+	std::vector<int> std_rc(std_fc.begin(), std_fc.end() - 21);
+	compare(ft_rc, std_rc, compare_these_vectors_yo, "range constructor");
+
+// /* copy constructor */
+	ft::vector<int> ft_cc(ft_rc);
+	std::vector<int> std_cc(std_rc);
+	compare(ft_cc, std_cc, compare_these_vectors_yo, "Copy constructor");
+
+	ft_rc.pop_back();
+	std_rc.pop_back();
+	compare(ft_rc, std_rc, compare_these_vectors_yo, "pop back()");
+	compare(ft_cc, std_cc, compare_these_vectors_yo, "Deep copy (copy constructor)");
+
+// /* assigantion operator */
+	ft::vector<int> ft_ass = ft_cc;
+	std::vector<int> std_ass = std_cc;
+	compare(ft_ass, std_ass, compare_these_vectors_yo, "Assignation operator");
+
+	ft_cc.erase(ft_cc.end() - 5);
+	std_cc.erase(std_cc.end() - 5);
+	compare(ft_cc, std_cc, compare_these_vectors_yo, "erase(pos)");
+	compare(ft_ass, std_ass, compare_these_vectors_yo, "Deep copy (assignation operator)");
+	
+
+
+	ft::vector<std::string>				ft_vec(20, "MANY STRINGS YO");
+	std::vector<std::string>			std_vec(20, "MANY STRINGS YO");
+	ft::vector<std::string>				ft_empty;
+	std::vector<std::string>			std_empty;
+
+	system("leaks ft_containers");
 	return (1);
 }
 

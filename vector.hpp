@@ -14,7 +14,7 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-#include <iostream>
+# include <iostream>
 # include "iterator.hpp"
 # include "utils.hpp"
 
@@ -52,27 +52,23 @@ class vector
 		{	}
 		/* Fill */
 		vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
-		: _alloc(alloc), _size(0)
+		: _alloc(alloc), _begin(nullptr), _size(0), _capacity(0)
 		{
-			this->_begin = this->_alloc.allocate(n);
-			this->_capacity = n;
 			this->insert(this->begin(), n, val);
 		}
 		/* Range */
 		template <class InputIterator>
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
-		: _alloc(alloc), _begin(nullptr)
+		: _alloc(alloc), _begin(nullptr), _size(0), _capacity(0)
 		{
-			this->_begin = this->_alloc.allocate(ft::distance(first, last));
-			this->_capacity = ft::distance(first, last);
-			this->insert(this->begin(), first, last);
+			if (last - first < 0)
+				return ;
+			this->assign(first, last);
 		}
 		/* Copy */
 		vector (const vector &x)
-		: _alloc(x._alloc), _size(0)
+		: _alloc(x._alloc), _begin(nullptr), _size(0), _capacity(0)
 		{
-			this->_begin = this->_alloc.allocate(x._size);
-			this->_capacity = x._size;
 			this->insert(this->begin(), x.begin(), x.end());
 		}
 	
@@ -80,7 +76,8 @@ class vector
 		/* Vector destructor */
 		~vector()
 		{
-			this->_alloc.destroy(this->_begin);
+			if (this->_capacity != 0)
+				this->_alloc.deallocate(this->_begin, this->_capacity);
 		}
 
 	/* Operator overloading */
@@ -165,7 +162,9 @@ class vector
 				for (size_type i = 0; i < this->size(); i++)
 					new_begin[i] = this->_begin[i];
 
-				delete [] this->_begin;
+				// this->_alloc.destroy(this->_begin);
+				this->_alloc.deallocate(this->_begin, this->_capacity);
+
 
 				this->_begin = new_begin;
 				this->_capacity = n;
@@ -227,10 +226,11 @@ class vector
 				for (int i = 0; i < (int)this->size(); i++, p1++, p2++)
 					*p1 = *p2;
 			}
-			delete [] this->_begin;
+			// if (this->_capacity != 0)
+				// this->_alloc.destroy(this->_begin);
+				this->_alloc.deallocate(this->_begin, this->_capacity);
 			this->_begin = new_begin;
 			this->_capacity = new_cap;
-
 		}
 	
 	/* Element Access */
@@ -287,108 +287,37 @@ class vector
 			this->clear();
 			for (int i = 0; first != last; i++, first++)
 			{
-				this->insert(this->begin() + i, *first);
+				this->push_back(*first);
 			}
-			// this->insert(this->begin(), first, last);
 		}
 		void assign (size_type n, const value_type& val)
 		{
 			this->clear();
 			this->insert(this->begin(), n, val);
 		}
-		/* Add element at the end */
-		void push_back (const value_type &val)
-		{
 
-			/* option 1 */
-			// this->insert(this->end(), 1, val);
+		/* PUSH_BACK */
 
-			/* option 2 */
-			if (this->_size == this->_capacity)
-			{
-				if (this->_size == 0)
-					reserve(1);
-				else
-					reserve(this->_capacity * 2);
-			}
-			this->_begin[this->_size] = val;
-			this->_size++;
-		}
 		/* Delete last element */
 		void pop_back()
 		{
 			this->_size--;
-		}	
-		/* Insert elements */
-		iterator insert (iterator position, const value_type &val)
-		{
-			this->insert(position, 1, val);
-			return this->begin();
 		}
-		void insert (iterator position, size_type n, const value_type &val)
-		{
-			size_type index = &(*position) - this->_begin;
 
-			if (this->size() + n <= this->capacity())
-				;
-			else if ((this->size() + n) > this->capacity() * 2)
-				this->reserve(this->size() + n);
-			else
-				this->reserve((this->capacity()) * 2);
+		/* INSERT */
 
-			for (; n > 0; n--)
-			{
-				for (size_type i = this->size(); i > index; i--)
-					this->_begin[i] = this->_begin[i - 1];
-				this->_size++;
-				this->_begin[index] = val;
-			}
-		}
-		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
-		{
-			// for (int i = 0; first != last; i++, first++)
-			// {
-			// 	this->insert(position + i, *first);
-			// }
-			vector temp;
-			for (iterator it = position; it != this->end(); it++)
-			{
-				temp.push_back(*it);
-			}
-			this->_size -= ft::distance(position, this->end());
-			while (first != last)
-			{
-				this->push_back(*first);
-				first++;
-			}
-			iterator it = temp.begin();
-			while (it != temp.end())
-			{
-				push_back(*it);
-				it++;
-			}
-		}
 		/* Erase elements */
 		iterator erase (iterator position)
 		{
-			size_type i = 0;
-			iterator it = this->begin();
-			pointer newpointer = this->_alloc.allocate(this->capacity());
-
-			while (i != this->capacity())
+			iterator temp(position);
+			iterator it_end = this->end() - 1;
+			while (position != it_end)
 			{
-				if (it == position)
-					it++;
-				newpointer[i] = *it;
-				it++;
-				i++;
+				*position = *(position + 1);
+				position++;
 			}
-
-			this->_alloc.destroy(this->_begin);
-			this->_begin = newpointer;
 			this->_size--;
-			return (this->begin());
+			return (temp);
 		}
 		iterator erase (iterator first, iterator last)
 		{
@@ -412,7 +341,9 @@ class vector
 				i++;
 			}
 
-			this->_alloc.destroy(this->_begin);
+			// this->_alloc.destroy(this->_begin);
+			// if (this->_begin)
+			// 	this->_alloc.deallocate(this->_begin, this->_capacity);
 			this->_begin = newpointer;
 			return (this->begin());
 		}
@@ -448,6 +379,65 @@ class vector
 		pointer				_begin;
 		size_type			_size;
 		size_type			_capacity;
+	
+	public:
+
+		/* Add element at the end */
+		void push_back (const value_type &val)
+		{
+
+			/* option 1 */
+			// this->insert(this->end(), 1, val);
+
+			/* option 2 */
+			if (this->_size == this->_capacity)
+			{
+				if (this->_size == 0)
+					reserve(1);
+				else
+					reserve(this->_capacity * 2);
+			}
+			this->_begin[this->_size] = val;
+			this->_size++;
+		}
+			/* Insert elements */
+		iterator insert (iterator position, const value_type &val)
+		{
+			this->insert(position, 1, val);
+			return this->begin();
+		}
+		void insert (iterator position, size_type n, const value_type &val)
+		{
+			vector temp(position, this->end());
+			this->_size -= ft::distance(position, this->end());
+
+			for (size_type i = 0; i < n; i++)
+				this->push_back(val);
+			iterator it = temp.begin();
+			while (it != temp.end())
+			{
+				this->push_back(*it);
+				it++;
+			}
+		}
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
+		{
+			vector temp(position, this->end());
+			this->_size -= ft::distance(position, this->end());
+
+			while (first != last)
+			{
+				this->push_back(*first);
+				first++;
+			}
+			iterator it = temp.begin();
+			while (it != temp.end())
+			{
+				this->push_back(*it);
+				it++;
+			}
+		}
 };
 
 template< class T, class Alloc>
@@ -467,7 +457,7 @@ bool operator != (const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &r
 {
 	if (lhs.size() != rhs.size())
 	{
-		for (int i = 0; i != lhs.size(); i++)
+		for (int i = 0; i != (int)lhs.size(); i++)
 			if (lhs[i] == rhs[i])
 				return true;
 		return false;

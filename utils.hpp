@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/21 12:36:57 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/22 11:30:18 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/24 09:27:28 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ template<class InputIterator>
 	struct is_integral_type<int> : public is_integral_res<true, int> { };
 	template <>
 	struct is_integral_type<long int> : public is_integral_res<true, long int> { };
-	template <>
-	struct is_integral_type<long long int> : public is_integral_res<true, long long int> { };
+	// template <>
+	// struct is_integral_type<long long int> : public is_integral_res<true, long long int> { };
 	template <>
 	struct is_integral_type<unsigned char> : public is_integral_res<true, unsigned char> { };
 	template <>
@@ -112,8 +112,8 @@ template<class InputIterator>
 	struct is_integral_type<unsigned int> : public is_integral_res<true, unsigned int> { };
 	template <>
 	struct is_integral_type<unsigned long int> : public is_integral_res<true, unsigned long int> {};
-	template <>
-	struct is_integral_type<unsigned long long int> : public is_integral_res<true, unsigned long long int> {};
+	// template <>
+	// struct is_integral_type<unsigned long long int> : public is_integral_res<true, unsigned long long int> {};
 	template <typename T>
 	struct is_integral : public is_integral_type<T> { };
 
