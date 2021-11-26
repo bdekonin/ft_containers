@@ -180,7 +180,14 @@ class vector
 			for (size_type i = 0; i < this->_size; i++)
 				this->_alloc.construct(&(tmp[i]), this->_begin[i]);
 			if (this->_begin)
+			{
+				for (size_type i = 0; i < this->_size; i++)
+				{
+					this->_alloc.destroy(&(this->_begin[i])); // destroys old element
+					this->_begin[i] = value_type(); // sets old object to default
+				}
 				this->_alloc.deallocate(this->_begin, this->_capacity);
+			}
 			this->_begin = tmp;
 			this->_capacity = new_cap;
 		}
@@ -258,6 +265,8 @@ class vector
 		/* Delete last element */
 		void pop_back()
 		{
+			this->_alloc.destroy(&(this->_begin[this->_size - 1])); // destroys the object
+			this->_begin[this->_size - 1] = value_type(); // initiliaze the object to default value so string is ""
 			this->_size--;
 		}
 
@@ -308,9 +317,7 @@ class vector
 		void clear()
 		{
 			while(this->_size)
-			{
-				this->_size--;
-			}
+				this->pop_back();
 		}
 	private: // maybe protected?
 		allocator_type		_alloc;
