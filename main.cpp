@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/24 15:00:59 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/26 20:58:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,67 +326,83 @@ int main(void)
 	}
 
 
-	ft::vector<std::string>				ft_vec(2000, "MANY STRINGS YO");
-	std::vector<std::string>			std_vec(2000, "MANY STRINGS YO");
-	ft::vector<std::string>				ft_empty;
-	std::vector<std::string>			std_empty;
-
+{
+		ft::vector<std::string>				ft_vec(2000, "MANY STRINGS YO");
+		std::vector<std::string>			std_vec(2000, "MANY STRINGS YO");
+		ft::vector<std::string>				ft_empty;
+		std::vector<std::string>			std_empty;
 
 	/* iterator range assign */
-	ft_empty.assign(ft_vec.begin() + 42, ft_vec.begin() + 1337);
-	std_empty.assign(std_vec.begin() + 42, std_vec.begin() + 1337);
-	std::cout << "iterator range assign" << std::endl;
-	compare(ft_empty, std_empty, compare_these_vectors_yo, "assign(std_vec.begin() + 42, std_vec.begin + 1337)");
-
+		ft_empty.assign(ft_vec.begin() + 42, ft_vec.begin() + 1337);
+		std_empty.assign(std_vec.begin() + 42, std_vec.begin() + 1337);
+		compare(ft_empty, std_empty, compare_these_vectors_yo, "assign(std_vec.begin() + 42, std_vec.begin + 1337)");
 
 	/* fill assign */
-	std::string assigned("we just got assigned yo");
-	ft_empty.assign(4, assigned);
-	std_empty.assign(4, assigned);
-	std::cout << "fill assign" << std::endl;
-	compare(ft_empty, std_empty, compare_these_vectors_yo, "assign(420, assigned)");
-	// system("leaks ft_containers | grep 'leaks for'");
+		std::string assigned("we just got assigned yo");
+		ft_empty.assign(420, assigned);
+		std_empty.assign(420, assigned);
+		compare(ft_empty, std_empty, compare_these_vectors_yo, "assign(420, assigned)");
 
-	ft_empty.assign(5, std::string("wejoooowww"));
-	std_empty.assign(5, std::string("wejoooowww"));
-	compare(ft_empty, std_empty, compare_these_vectors_yo, "assign(5000, \"wejoow\")");
-	// system("leaks ft_containers | grep 'leaks for'");
-	
+		ft_empty.assign(5000, std::string("wejoooowww"));
+		std_empty.assign(5000, std::string("wejoooowww"));
+		compare(ft_empty, std_empty, compare_these_vectors_yo, "assign(5000, \"wejoow\")");
+		
+	/* push back */
+		for (size_t i = 0; i < 6969; ++i) {
+			ft_empty.push_back(std::to_string(i));
+			std_empty.push_back(std::to_string(i));
+		}
+		compare(ft_empty, std_empty, compare_these_vectors_yo, "push back increment");
 
-	// /* push back */
-	// for (size_t i = 0; i < 6969; ++i) {
-	// 	ft_empty.push_back(std::to_string(i));
-	// 	std_empty.push_back(std::to_string(i));
-	// }
-	// std::cout << "push back" << std::endl;
-	// compare(ft_empty, std_empty, compare_these_vectors_yo, "push back increment");
-	// // system("leaks ft_containers | grep 'leaks for'");
+	/* pop back */
+		for (size_t i = 0; i < 6969; i++) {
+			ft_empty.pop_back();
+			std_empty.pop_back();
+		}
+		compare(ft_empty, std_empty, compare_these_vectors_yo, "pop_back() * 6969");
 
+	/* insert */
+		ft_empty.insert(ft_empty.begin() + 42, "LEGENDARY");
+		std_empty.insert(std_empty.begin() + 42, "LEGENDARY");
+		compare(ft_empty, std_empty, compare_these_vectors_yo, "insert(begin() + 42, \"LEGENDARY\")");
 
-	// /* pop back */
-	// for (size_t i = 0; i < 6969; i++) {
-	// 	ft_empty.pop_back();
-	// 	std_empty.pop_back();
-	// }
-	// std::cout << "pop back" << std::endl;
-	// compare(ft_empty, std_empty, compare_these_vectors_yo, "pop_back() * 6969");
-	// // system("leaks ft_containers | grep 'leaks for'");
+	/* range erase */
+		ft_empty.erase(ft_empty.begin(), ft_empty.end() - 1);
+		std_empty.erase(std_empty.begin(), std_empty.end() - 1);
+		compare(ft_empty, std_empty, compare_these_vectors_yo, "begin(), end() - 1");
 
+	/* fill insert */
+		ft_empty.insert(ft_empty.end() - 1, 1337, "living on the edge");
+		std_empty.insert(std_empty.end() - 1, 1337, "living on the edge");
+		compare(ft_empty, std_empty, compare_these_vectors_yo, "end() - 1, 1337, \"living on the edge");
 
-	// /* insert */
-	// ft_empty.insert(ft_empty.begin() + 42, "LEGENDARY");
-	// std_empty.insert(std_empty.begin() + 42, "LEGENDARY");
-	// std::cout << "insert" << std::endl;
-	// compare(ft_empty, std_empty, compare_these_vectors_yo, "insert(begin() + 42, \"LEGENDARY\")");
+	/* element erase */
+		for (size_t i = 0; i < ft_empty.size(); i++) {
+			ft_empty.erase(ft_empty.begin() + i);
+			std_empty.erase(std_empty.begin() + i);
 
+		}
+		compare(ft_empty, std_empty, compare_these_vectors_yo, "erase(begin() + i)");
 
-	// /* range erase */
-	// ft_empty.erase(ft_empty.begin(), ft_empty.end() - 1);
-	// std_empty.erase(std_empty.begin(), std_empty.end() - 1);
-	// std::cout << "range erase" << std::endl;
-	// compare(ft_empty, std_empty, compare_these_vectors_yo, "begin(), end() - 1");
+	/* Range insert */
+		ft_empty.insert(ft_empty.begin(), ft_vec.begin(), ft_vec.end());
+		std_empty.insert(std_empty.begin(), std_vec.begin(), std_vec.end());
+		compare(ft_empty, std_empty, compare_these_vectors_yo, "empty.begin(), vec.begin(), vec.end()");
 
-	// system("leaks ft_containers | grep 'leaks for'");
+	/* clear test */
+		ft_empty.clear();
+		std_empty.clear();
+		compare(ft_empty, std_empty, compare_these_vectors_yo, "clear()");
+
+	/* swaperoo */
+		ft_empty.insert(ft_empty.begin(), 42, "About to get swapped");
+		std_empty.insert(std_empty.begin(), 42, "About to get swapped");
+		ft_empty.swap(ft_vec);
+		std_empty.swap(std_vec);
+		compare(ft_empty, std_empty, compare_these_vectors_yo, "swap()");
+		compare(ft_vec, std_vec, compare_these_vectors_yo, "swap()");
+
+}
 	std::cout << "press a key please\n";
 	std::cin.ignore();
 	return (1);
