@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/21 12:36:57 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/24 09:27:28 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/26 21:29:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ template<class InputIterator>
 		{
 			typename ft::iterator_traits<InputIterator>::difference_type res;
 
+			if (last - first < 0)
+				return (0); // zorgt voor segfault als first after last is
+			
 			res = 0;
 			while (first != last)
 			{
