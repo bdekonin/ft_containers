@@ -203,14 +203,14 @@ class vector
 		}
 		reference at (size_type n)
 		{
-			if (n >= this->size())
-				throw std::out_of_range("");
+			if (n >= this->size()) // of wel > ? staat op https://www.cplusplus.com/reference/vector/vector/at/ dat het >= moet zijn
+				throw std::out_of_range("vector");
 			return this->_begin[n];
 		}
 		const_reference at (size_type n) const
 		{
 			if (n >= this->size())
-				throw std::out_of_range("");
+				throw std::out_of_range("vector");
 			return this->_begin[n];
 		}
 		reference front()
@@ -223,11 +223,11 @@ class vector
 		}
 		reference back()
 		{
-			return *this->end();
+			return this->_begin[this->_size - 1];
 		}
 		const_reference back() const
 		{
-			return *this->end();
+			return this->_begin[this->_size - 1];
 		}
 		// value_type *data() noexcept
 		// {

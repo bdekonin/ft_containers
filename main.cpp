@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/26 20:58:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/27 10:21:28 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,15 @@ void printy(ft::vector<T> &my, std::vector<T> &og)
 		std::cout	<< "expected value: " << expected << std::endl\
 					<< "received value: " << received << std::endl;
 	}
-
+	template <class ft_val, class std_val>
+		bool	compare_these_values_yo(ft_val& ft, std_val& std)
+	{
+		if (ft != std) {
+			print_difference(std, ft);
+			return false;
+		}
+		return (true);
+	}
 template <class ft_vec, class std_vec>
 bool	compare_these_vectors_yo(ft_vec& ft, std_vec& std)
 {
@@ -126,6 +134,14 @@ bool	compare_these_vectors_yo(ft_vec& ft, std_vec& std)
 	}
 	return (true);
 }
+template < class ft_container, class std_container >
+	void	push_back_increment(ft_container& ft_con, std_container& std_con, size_t n = 420)
+{
+	for (size_t i = 0; i < n; ++i) {
+		ft_con.push_back(i);
+		std_con.push_back(i);
+	}
+}
 
 	template < class ft_val, class std_val >
 		void	compare(ft_val& ft_con, std_val& std_con, bool(*comp)(ft_val&, std_val&), const char* test)
@@ -149,6 +165,15 @@ bool	compare_these_vectors_yo(ft_vec& ft, std_vec& std)
 		}
 	}
 
+bool compare_exceptions(std::string& ft_exc, std::string& std_exc)
+{
+	if (ft_exc != std_exc) {
+		print_difference(std_exc, ft_exc);
+		return false;
+	}
+	else
+		return true;
+}
 /* Iterators: */
 int main(void)
 {
@@ -401,12 +426,67 @@ int main(void)
 		std_empty.swap(std_vec);
 		compare(ft_empty, std_empty, compare_these_vectors_yo, "swap()");
 		compare(ft_vec, std_vec, compare_these_vectors_yo, "swap()");
-
 }
+{
+	ft::vector<size_t> ft_vec;
+	std::vector<size_t> std_vec;
+
+	push_back_increment(ft_vec, std_vec, 1337);
+	compare(ft_vec, std_vec, compare_these_vectors_yo, "[] operator");
+
+/* subscript operator */
+	int j = ft_vec.size() - 1;
+	for (int i = 0; i != j; i++) {
+		ft_vec[j] = std_vec[i];
+		std_vec[j] = std_vec[i];
+	}
+	compare(ft_vec, std_vec, compare_these_vectors_yo, "reversed with [] operator");
+
+/* at */
+	std::string ft_msg;
+	std::string std_msg;
+	try {
+		for (size_t i = 0; i < ft_vec.size() + 1; i++)
+			if (ft_vec.at(i) != std_vec.at(i))
+				break ;
+	} catch (std::exception &e) {
+		ft_msg = std::string(e.what());
+	}
+
+	try {
+		for (size_t i = 0; i < std_vec.size() + 1; i++)
+			std_vec.at(i);
+	} catch (std::exception &e) {
+		std_msg = std::string(e.what());
+	}
+
+	compare(ft_msg, std_msg, compare_exceptions, "at(ft_vec.size() + 1)");
+
+	try {
+		std::cout << ft_vec.at(-1) << std::endl;
+	} catch (std::exception &e) {
+		ft_msg = std::string(e.what());
+	}
+
+	try {
+		std::cout << std_vec.at(-1) << std::endl;
+	} catch (std::exception &e) {
+		std_msg = std::string(e.what());
+	}
+
+	compare(ft_msg, std_msg, compare_exceptions, "at(-1");
+	/* front && back */
+	
+
+
+	
+	// compare(ft_vec.front(), std_vec.front(), compare_these_values_yo, "front()");
+	// compare(ft_vec.back(), std_vec.back(), compare_these_values_yo, "back()");
+
+	std::cout << "back: " << std_vec.back() << " | backmy: " << ft_vec.back() << std::endl;
+}
+
 	std::cout << "press a key please\n";
 	std::cin.ignore();
 	return (1);
 }
-
-
-
