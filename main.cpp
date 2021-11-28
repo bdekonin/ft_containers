@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 14:25:26 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/27 10:21:28 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/28 19:30:01 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
-#define PRINTERSIZE (int)vec.size()
-
 template < class T >
 std::ostream& operator << (std::ostream& os, const std::vector<T>& v) 
 {
@@ -47,45 +45,53 @@ std::ostream& operator << (std::ostream& os, const std::vector<T>& v)
     os << " ]";
     return os;
 }
+#define STD_SIZE_TYPE typename std::vector<T>::size_type
 
-template<typename T>
-void printog(std::vector<T> &vec)
+#define FT_SIZE_TYPE typename ft::vector<T>::size_type
+
+
+template <typename T>
+void	printSize(ft::vector<T> const &vct, bool print_content = true)
 {
-	typename std::vector<T>::iterator it = vec.begin();
+	const FT_SIZE_TYPE size = vct.size();
+	const FT_SIZE_TYPE capacity = vct.capacity();
+	const std::string isCapacityOk = (capacity >= size) ? "OK" : "KO";
+	// Cannot limit capacity's max value because it's implementation dependent
 
-	for (int i = 0; i < PRINTERSIZE; i++, it++)
+	std::cout << "ft::size: " << size << std::endl;
+	std::cout << "ft::capacity: " << isCapacityOk << std::endl;
+	std::cout << "ft::max_size: " << vct.max_size() << std::endl;
+	if (print_content)
 	{
-		if (i >= (int)vec.size())
-			std::cout << RED;
-		std::cout << ' ' << *it << RESET;
+		typename ft::vector<T>::const_iterator it = vct.begin();
+		typename ft::vector<T>::const_iterator ite = vct.end();
+		std::cout << std::endl << "ft::content is:" << std::endl;
+		for (; it != ite; ++it)
+			std::cout << "- " << *it << std::endl;
 	}
-	std::cout << "\t\t\t| " << vec.capacity() << " " << vec.size();
-	std::cout  << std::endl;
+	std::cout << "###############################################" << std::endl;
 }
-template<typename T>
-void printmy(ft::vector<T> &vec)
-{
-	typename ft::vector<T>::iterator it = vec.begin();
 
-	for (int i = 0; i < PRINTERSIZE; i++, it++)
-	{
-		if (i >= (int)vec.size())
-			std::cout << RED;
-		std::cout << ' ' << *it << RESET;
-	}
-	std::cout << "\t\t\t| " << vec.capacity() << " " << vec.size();
-	std::cout  << std::endl;
-}
-template<typename T>
-void printy(ft::vector<T> &my, std::vector<T> &og)
+template <typename T>
+void	printSize(std::vector<T> const &vct, bool print_content = true)
 {
-	std::cout << "my: ";
-	printmy<T>(my);
-	
-	std::cout << "og: ";
-	printog<T>(og);
-	
-	std::cout << "\n";
+	const STD_SIZE_TYPE size = vct.size();
+	const STD_SIZE_TYPE capacity = vct.capacity();
+	const std::string isCapacityOk = (capacity >= size) ? "OK" : "KO";
+	// Cannot limit capacity's max value because it's implementation dependent
+
+	std::cout << "std::size: " << size << std::endl;
+	std::cout << "std::capacity: " << isCapacityOk << std::endl;
+	std::cout << "std::max_size: " << vct.max_size() << std::endl;
+	if (print_content)
+	{
+		typename std::vector<T>::const_iterator it = vct.begin();
+		typename std::vector<T>::const_iterator ite = vct.end();
+		std::cout << std::endl << "std::content is:" << std::endl;
+		for (; it != ite; ++it)
+			std::cout << "- " << *it << std::endl;
+	}
+	std::cout << "###############################################" << std::endl;
 }
 
 	# define TEST_SUCCESS "[" GREEN "OK" RESET "] "
@@ -476,6 +482,43 @@ int main(void)
 
 	compare(ft_msg, std_msg, compare_exceptions, "at(-1");
 	/* front && back */
+
+
+	std::vector<int> vct(5);
+	ft::vector<int> ftvct(5);
+
+	std::vector<int> vct2;
+	ft::vector<int> ftvct2;
+	const int cut = 3;
+
+	for (unsigned long int i = 0; i < vct.size(); ++i)
+		vct[i] = (vct.size() - i) * 7;
+	for (unsigned long int i = 0; i < ftvct.size(); ++i)
+		ftvct[i] = (ftvct.size() - i) * 7;
+	printSize(vct, false);
+	printSize(ftvct, false);
+
+
+	vct2.insert(vct2.begin(), vct.begin(), vct.begin() + cut);
+	ftvct2.insert(ftvct2.begin(), ftvct.begin(), ftvct.begin() + cut);
+	printSize(vct2, false);
+	printSize(ftvct2, false);
+	vct2.insert(vct2.begin(), vct.begin() + cut, vct.end());
+	ftvct2.insert(ftvct2.begin(), ftvct.begin() + cut, ftvct.end());
+	printSize(vct2, false);
+	printSize(ftvct2, false);
+	vct2.insert(vct2.end(), vct.begin(), vct.begin() + cut);
+	ftvct2.insert(ftvct2.end(), ftvct.begin(), ftvct.begin() + cut);
+	printSize(vct2, false);
+	printSize(ftvct2, false);
+
+	std::cout << "insert return:" << std::endl;
+
+	std::cout << *vct2.insert(vct2.end(), 42) << std::endl;
+	std::cout << *ftvct2.insert(ftvct2.end(), 42) << std::endl;
+	std::cout << *vct2.insert(vct2.begin() + 5, 84) << std::endl;
+	std::cout << *ftvct2.insert(ftvct2.begin() + 5, 84) << std::endl;
+	std::cout << "----------------------------------------" << std::endl;
 	
 
 
@@ -485,6 +528,7 @@ int main(void)
 
 	std::cout << "back: " << std_vec.back() << " | backmy: " << ft_vec.back() << std::endl;
 }
+
 
 	std::cout << "press a key please\n";
 	std::cin.ignore();

@@ -344,7 +344,7 @@ class vector
 		iterator insert (iterator position, const value_type &val)
 		{
 			this->insert(position, 1, val);
-			return this->begin();
+			return iterator(this->_begin + ft::distance(this->begin(), position));
 		}
 		void insert (iterator position, size_type n, const value_type &val)
 		{
