@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/21 12:36:57 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/26 21:29:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/29 16:24:56 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ namespace ft
 	/* Iterator Tags */
 		class input_iterator_tag { }; /* https://www.cplusplus.com/reference/iterator/InputIterator/ */
 		class output_iterator_tag { }; /* https://www.cplusplus.com/reference/iterator/OutputIterator/ */
-		class forward_iterator_tag { }; /* https://www.cplusplus.com/reference/iterator/ForwardIterator/ */
-		class bidirectional_iterator_tag { }; /* https://www.cplusplus.com/reference/iterator/BidirectionalIterator/ */
-		class random_access_iterator_tag { }; /* https://www.cplusplus.com/reference/iterator/RandomAccessIterator/ */
+		class forward_iterator_tag : public input_iterator_tag { }; /* https://www.cplusplus.com/reference/iterator/ForwardIterator/ */
+		class bidirectional_iterator_tag : public forward_iterator_tag { }; /* https://www.cplusplus.com/reference/iterator/BidirectionalIterator/ */
+		class random_access_iterator_tag : public bidirectional_iterator_tag { }; /* https://www.cplusplus.com/reference/iterator/RandomAccessIterator/ */
 
 	
 
@@ -36,6 +36,7 @@ struct iterator_traits
 	typedef typename iterator::reference             reference;
 	typedef typename iterator::iterator_category     iterator_category;
 };
+
 template<class InputIterator>
 	typename ft::iterator_traits<InputIterator>::difference_type
 		distance (InputIterator first, InputIterator last)
@@ -55,36 +56,24 @@ template<class InputIterator>
 		}
 
 
-
-
-
-
-	/*
-	** All the next part is an adaptation of is_integral.
-	** "is_integral" for this project in C++98 is a structure 
-	** that contain if the type given to it is a type from this list :
-	**  - bool
-	**  - char
-	**  - char16_t
-	**  - char32_t
-	**  - wchar_t
-	**  - signed char
-	**  - short int
-	**  - int
-	**  - long int
-	**  - long long int
-	**  - unsigned char
-	**  - unsigned short int
-	**  - unsigned int
-	**  - unsigned long int
-	**  - unsigned long long int
-	*/
-
-	/*
-	** @brief The basic struct of is_integral has
-	** has a boolean ("value") that contain true if the type is from.
-	** the list, otherwise false.
-	*/
+template <typename T>
+struct is_iterator
+{
+	private:
+		template <typename U>
+		static int test(...);
+		
+		template <typename U>
+		static char test(
+					typename U::difference_type difference_type,
+					typename U::value_type value_type,
+					typename U::pointer pointer,
+					typename U::iterator_category iterator_category
+				);
+	
+	public:
+		static bool const value = (sizeof(test<T>(0,0,0,0,0)) == sizeof(char));
+};
 	template <bool is_integral, typename T>
 		struct is_integral_res {
 			typedef T type;
@@ -104,9 +93,9 @@ template<class InputIterator>
 	template <>
 	struct is_integral_type<int> : public is_integral_res<true, int> { };
 	template <>
+	struct is_integral_type<const int> : public is_integral_res<true, const int> { };
+	template <>
 	struct is_integral_type<long int> : public is_integral_res<true, long int> { };
-	// template <>
-	// struct is_integral_type<long long int> : public is_integral_res<true, long long int> { };
 	template <>
 	struct is_integral_type<unsigned char> : public is_integral_res<true, unsigned char> { };
 	template <>
@@ -115,8 +104,6 @@ template<class InputIterator>
 	struct is_integral_type<unsigned int> : public is_integral_res<true, unsigned int> { };
 	template <>
 	struct is_integral_type<unsigned long int> : public is_integral_res<true, unsigned long int> {};
-	// template <>
-	// struct is_integral_type<unsigned long long int> : public is_integral_res<true, unsigned long long int> {};
 	template <typename T>
 	struct is_integral : public is_integral_type<T> { };
 

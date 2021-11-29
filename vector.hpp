@@ -23,7 +23,8 @@
 
 /* TODO
 const iterator it = vec.begin();
-
+template <typename Condition>
+using EnableIf = typename std::enable_if<Condition::value, enabler>::type;
 */
 
 namespace ft {
@@ -229,14 +230,6 @@ class vector
 		{
 			return this->_begin[this->_size - 1];
 		}
-		// value_type *data() noexcept
-		// {
-		// 	return this->_begin;
-		// }
-		// const value_type *data() const noexcept
-		// {
-		// 	return this->_begin;
-		// }
 	
 	/* Modifiers */
 		/* Assign vector content */
@@ -266,7 +259,7 @@ class vector
 		void pop_back()
 		{
 			this->_alloc.destroy(&(this->_begin[this->_size - 1])); // destroys the object
-			this->_begin[this->_size - 1] = value_type(); // initiliaze the object to default value so string is ""
+			// this->_begin[this->_size - 1] = value_type(); // initiliaze the object to default value so string is ""
 			this->_size--;
 		}
 
