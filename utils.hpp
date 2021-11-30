@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/21 12:36:57 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/11/29 16:24:56 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/11/30 11:45:12 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,42 @@ template <typename T>
 struct is_iterator
 {
 	private:
-		template <typename U>
+		template <class U>
 		static int test(...);
 		
-		template <typename U>
+		template <class U>
 		static char test(
-					typename U::difference_type difference_type,
-					typename U::value_type value_type,
-					typename U::pointer pointer,
-					typename U::iterator_category iterator_category
-				);
+					typename U::difference_type * = 0,
+					typename U::value_type * = 0,
+					typename U::pointer * = 0,
+					typename U::iterator_category * = 0
+					);
 	
 	public:
-		static bool const value = (sizeof(test<T>(0,0,0,0,0)) == sizeof(char));
+		static bool const value = sizeof(test<T>(0,0,0,0)) == sizeof(char);
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	template <bool is_integral, typename T>
 		struct is_integral_res {
 			typedef T type;
