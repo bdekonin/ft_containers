@@ -56,17 +56,18 @@ class vector
 		vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 		: _alloc(alloc), _begin(nullptr), _size(0), _capacity(0)
 		{
-			// this->insert(this->begin(), n, val);
-			this->reserve(n);
-			while (n)
-			{
-				this->push_back(val);
-				n--;
-			}
+			// this->reserve(n);
+			// while (n)
+			// {
+			// 	this->push_back(val);
+			// 	n--;
+			// }
+			this->assign(n, val);
 		}
 		/* Range */
 		template <class InputIterator>
-		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
+		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
+			typename ft::enable_if<ft::is_iterator<InputIterator>::value, InputIterator>::type* = nullptr)
 		: _alloc(alloc), _begin(nullptr), _size(0), _capacity(0)
 		{
 			if (last - first < 0)
@@ -77,7 +78,8 @@ class vector
 		vector (const vector &x)
 		: _alloc(x._alloc), _begin(nullptr), _size(0), _capacity(0)
 		{
-			this->insert(this->begin(), x.begin(), x.end());
+			// this->insert(this->begin(), x.begin(), x.end());
+			this->assign(x.begin(), x.end());
 		}
 	
 	/* Destructor */
@@ -253,7 +255,19 @@ class vector
 			}
 		}
 
-		/* PUSH_BACK */
+		/* Add element at the end */
+		void push_back (const value_type &val)
+		{
+			if (this->_size == this->_capacity)
+			{
+				if (this->_size == 0)
+					reserve(1);
+				else
+					reserve(this->_capacity * 2);
+			}
+			this->_alloc.construct(&(this->_begin[this->_size]), val); // LEAKIE LEAK
+			this->_size++;
+		}
 
 		/* Delete last element */
 		void pop_back()
@@ -263,7 +277,48 @@ class vector
 			this->_size--;
 		}
 
-		/* INSERT */
+		/* Insert elements */
+		iterator insert (iterator position, const value_type &val)
+		{
+			this->insert(position, 1, val);
+			return iterator(this->_begin + ft::distance(this->begin(), position));
+		}
+		void insert (iterator position, size_type n, const value_type &val)
+		{
+			vector temp(position, this->end());
+			this->_size -= ft::distance(position, this->end());
+
+			while (n)
+			{
+				push_back(val);
+				n--;
+			}
+			iterator it = temp.begin();
+			while (it != temp.end())
+			{
+				this->push_back(*it);
+				it++;
+			}
+		}
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last,
+			typename ft::enable_if<ft::is_iterator<InputIterator>::value, InputIterator>::type* = nullptr)
+		{
+			vector temp(position, this->end());
+			this->_size -= ft::distance(position, this->end());
+
+			while (first != last)
+			{
+				this->push_back(*first);
+				first++;
+			}
+			iterator it = temp.begin();
+			while (it != temp.end())
+			{
+				this->push_back(*it);
+				it++;
+			}
+		}
 
 		/* Erase elements */
 		iterator erase (iterator position)
@@ -317,63 +372,6 @@ class vector
 		pointer				_begin;
 		size_type			_size;
 		size_type			_capacity;
-	
-	public:
-
-		/* Add element at the end */
-		void push_back (const value_type &val)
-		{
-			if (this->_size == this->_capacity)
-			{
-				if (this->_size == 0)
-					reserve(1);
-				else
-					reserve(this->_capacity * 2);
-			}
-			this->_alloc.construct(&(this->_begin[this->_size]), val); // LEAKIE LEAK
-			this->_size++;
-		}
-			/* Insert elements */
-		iterator insert (iterator position, const value_type &val)
-		{
-			this->insert(position, 1, val);
-			return iterator(this->_begin + ft::distance(this->begin(), position));
-		}
-		void insert (iterator position, size_type n, const value_type &val)
-		{
-			vector temp(position, this->end());
-			this->_size -= ft::distance(position, this->end());
-
-			while (n)
-			{
-				push_back(val);
-				n--;
-			}
-			iterator it = temp.begin();
-			while (it != temp.end())
-			{
-				this->push_back(*it);
-				it++;
-			}
-		}
-		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
-		{
-			vector temp(position, this->end());
-			this->_size -= ft::distance(position, this->end());
-
-			while (first != last)
-			{
-				this->push_back(*first);
-				first++;
-			}
-			iterator it = temp.begin();
-			while (it != temp.end())
-			{
-				this->push_back(*it);
-				it++;
-			}
-		}
 };
 
 template< class T, class Alloc>
