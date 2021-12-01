@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:56:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/12/01 21:12:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2021/12/01 22:33:53 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,17 +121,17 @@ class random_access_iterator : public bidirectional_iterator<T, Category>
 		}
 	/* Operator Overloading */
 	public:
-		random_access_iterator	operator + (int const &value) { return this->_value + value; }
-		random_access_iterator	operator + (random_access_iterator const &rhs) { return this->_value + rhs._value; }
-		random_access_iterator	operator - (int const &value) { return this->_value - value; }
-		random_access_iterator	operator - (random_access_iterator const &rhs) { return this->_value - rhs._value; }
-		bool		operator < (random_access_iterator const &rhs) { return this->_value < rhs._value; }
-		bool		operator > (random_access_iterator const &rhs) { return this->_value > rhs._value; }
-		bool		operator <= (random_access_iterator const &rhs) { return this->_value <= rhs._value; }
-		bool		operator >= (random_access_iterator const &rhs) { return this->_value >= rhs._value; }
-		random_access_iterator	operator += (int const &value) { this->_value += value; return *this; }
-		random_access_iterator	operator -= (int const &value) { this->_value -= value;	return *this; }
-		value_type			&operator [] (int i) { return *(this->_value + i) ; }
+		random_access_iterator	operator +		(difference_type const &value) { return this->_value + value; }
+		difference_type			operator +		(random_access_iterator const &rhs) { return this->_value + rhs._value; }
+		random_access_iterator	operator -		(difference_type const &value) { return this->_value - value; }
+		difference_type			operator -		(random_access_iterator const &rhs) { return this->_value - rhs._value; }
+		bool					operator <		(random_access_iterator const &rhs) { return this->_value < rhs._value; }
+		bool					operator >		(random_access_iterator const &rhs) { return this->_value > rhs._value; }
+		bool					operator <= 	(random_access_iterator const &rhs) { return this->_value <= rhs._value; }
+		bool					operator >= 	(random_access_iterator const &rhs) { return this->_value >= rhs._value; }
+		random_access_iterator	operator += 	(int const &value) { this->_value += value; return *this; }
+		random_access_iterator	operator -= 	(int const &value) { this->_value -= value;	return *this; }
+		value_type				&operator [] 	(int i) { return *(this->_value + i) ; }
 };
 
 template <class Iterator>
