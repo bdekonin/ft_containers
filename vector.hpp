@@ -323,24 +323,19 @@ class vector
 		/* Erase elements */
 		iterator erase (iterator position)
 		{
-			iterator temp(position);
-			iterator it_end = this->end() - 1;
-			while (position != it_end)
-			{
-				*position = *(position + 1);
-				position++;
-			}
-			this->_size--;
-			return (temp);
+			return (erase(position, position + 1));
 		}
 		iterator erase (iterator first, iterator last)
 		{
-			while (first != last)
-			{
-				first = erase(first);
-				--last;
-			}
-			return first;
+			difference_type	erasePosition = ft::distance(begin(), first);
+			difference_type	n = ft::distance(first, last);
+
+			for (size_type i = 0; i <= this->_size - n; i++)
+				this->_begin[erasePosition + i] = this->_begin[erasePosition + i + n];
+
+			for (difference_type i = 0; i < n; i++)
+				this->pop_back();
+			return (this->begin() + erasePosition);
 		}
 		/* Swap content */
 		void swap (vector &x)
