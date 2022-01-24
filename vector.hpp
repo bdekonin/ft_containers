@@ -56,12 +56,6 @@ class vector
 		vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 		: _alloc(alloc), _begin(nullptr), _size(0), _capacity(0)
 		{
-			// this->reserve(n);
-			// while (n)
-			// {
-			// 	this->push_back(val);
-			// 	n--;
-			// }
 			this->assign(n, val);
 		}
 		/* Range */
@@ -273,7 +267,6 @@ class vector
 		void pop_back()
 		{
 			this->_alloc.destroy(&(this->_begin[this->_size - 1])); // destroys the object
-			// this->_begin[this->_size - 1] = value_type(); // initiliaze the object to default value so string is ""
 			this->_size--;
 		}
 
@@ -317,7 +310,7 @@ class vector
 			{
 				this->push_back(*it);
 				it++;
-			}
+			} 
 		}
 
 		/* Erase elements */
