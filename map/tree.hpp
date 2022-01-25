@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:56:21 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/01/25 16:29:30 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/01/25 17:20:30 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,9 @@ class tree
 				this->root = new_node;
 			else
 			{
-				node<T>		*current;
 				node<T>		*parent;
-
-				current = this->root;
-				while (current != NULL)
+				
+				for (node<T> *current = this->root; current != NULL;)
 				{
 					parent = current;
 					if (data < current->data)
@@ -75,21 +73,6 @@ class tree
 					parent->left = new_node;
 				else
 					parent->right = new_node;
-			}
-		}
-
-		void		print_tree(void)
-		{
-			this->print_tree(this->root);
-		}
-
-		void		print_tree(node<T> *node)
-		{
-			if (node != NULL)
-			{
-				this->print_tree(node->left);
-				std::cout << node->data << std::endl;
-				this->print_tree(node->right);
 			}
 		}
 		int max(int a , int b)
@@ -107,35 +90,33 @@ class tree
 				return 0;
 			return (1 + max(height(node->left), height(node->right)));
 		}
-	
 
+	/* Start -> Pretty Print Binary Tree */
+		void printBT(const std::string& prefix, const node<T>* node, bool isLeft)
+		{
+			if( node != nullptr )
+			{
+				std::cout << prefix;
 
+				std::cout << (isLeft ? "├──" : "└──" );
 
-void printBT(const std::string& prefix, const node<T>* node, bool isLeft)
-{
-    if( node != nullptr )
-    {
-        std::cout << prefix;
+				// print the value of the node
+				std::cout << node->data << std::endl;
 
-        std::cout << (isLeft ? "├──" : "└──" );
-
-        // print the value of the node
-        std::cout << node->data << std::endl;
-
-        // enter the next tree level - left and right branch
-        printBT( prefix + (isLeft ? "│   " : "    "), node->left, true);
-        printBT( prefix + (isLeft ? "│   " : "    "), node->right, false);
-    }
-}
-
-void printBT(const node<T>* node)
-{
-    printBT("", node, false);    
-}
-void printBT()
-{
-    printBT("", this->root, false);    
-}
+				// enter the next tree level - left and right branch
+				printBT( prefix + (isLeft ? "│   " : "    "), node->left, true);
+				printBT( prefix + (isLeft ? "│   " : "    "), node->right, false);
+			}
+		}
+		void printBT(const node<T>* node)
+		{
+			printBT("", node, false);    
+		}
+		void printBT()
+		{
+			printBT("", this->root, false);    
+		}
+	/* End -> Pretty Print Binary Tree */
 
 };
 
