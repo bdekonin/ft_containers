@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:56:21 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/01/26 16:07:27 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/01/26 17:41:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class node
 		node<T> 	*parent;
 		node<T>		*left;
 		node<T>		*right;
-		size_t		height;
+		int			height;
 
 	public:
 		node(T data)
@@ -77,12 +77,12 @@ class tree
 				if (data < parent->data)
 				{
 					parent->left = new_node;
-					// new_node->parent = parent;
+					new_node->parent = parent;
 				}
 				else
 				{
 					parent->right = new_node;
-					// new_node->parent = parent;
+					new_node->parent = parent;
 				}
 			}
 		}
@@ -126,35 +126,18 @@ class tree
 		}
 		void printBT()
 		{
-			this->recalculate(this->root);
+			this->recalculate(this->root, 0);
 			printBT("", this->root, false);    
 		}
 	/* End -> Pretty Print Binary Tree */
 
-	void recalculate(node<T> *leaf)
+	void recalculate(node<T> *leaf, int count)
 	{
-		int count = 0;
 		if (leaf == NULL)
-			return ;			
-		if (leaf->left == NULL && leaf->right == NULL)
-		{
-			// There is no child so height must be 0
-			// leaf->height = 0;
 			return ;
-		}
-		if (leaf->left != NULL)
-		{
-			recalculate(leaf->left);
-			count = this->height(leaf->left);
-		}
-		if (leaf->right != NULL)
-		{
-			recalculate(leaf->right);
-			count = max(count, this->height(leaf->right));
-		}
-		
-		// Include Leaf in Height
-		leaf->height = count + 1;
+		leaf->height = count;
+		recalculate(leaf->left, count + 1);
+		recalculate(leaf->right, count + 1);
 	}
 };
 
