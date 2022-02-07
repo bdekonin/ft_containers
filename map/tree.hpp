@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:56:21 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/01/29 13:34:55 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/02/07 11:53:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class node
 		node<T>		*left;
 		node<T>		*right;
 		int			height;
-		int			depth;
+		int			balanceFactor;
 
 	public:
 		node(T data)
@@ -110,7 +110,7 @@ class tree
 
 				// print the value of the node
 				
-				std::cout << node->data << " (" << node->depth << ") " << std::endl;
+				std::cout << node->data << " (" << node->balanceFactor << ") " << std::endl;
 
 				// enter the next tree level - left and right branch
 				printBT( prefix + (isLeft ? "│   " : "    "), node->left, true);
@@ -123,40 +123,11 @@ class tree
 		}
 		void printBT()
 		{
-			this->recalculate(this->root, 0);
+			// this->recalculate(this->root, 0);
+			reloop(this->root);
 			printBT("", this->root, false);    
 		}
 	/* End -> Pretty Print Binary Tree */
-
-	void find(node<T> *root, int level, int &maxLevel, node<T> **res)
-	{
-		if (root != NULL)
-		{
-			find(root->left, ++level, maxLevel, res);
-	
-			// Update level and rescue
-			if (level > maxLevel)
-			{
-				*res = root;
-				maxLevel = level;
-			}
-	
-			find(root->right, level, maxLevel, res);
-		}
-	}
-	// Returns value of deepest node
-	node<T> *deepestNode(node<T> *root)
-	{
-		// Initialize result and max level
-		node<T> *res = NULL;
-		int maxLevel = -1;
-	
-		// Updates value "res" and "maxLevel"
-		// Note that res and maxLen are passed
-		// by reference.
-		find(root, 0, maxLevel, &res);
-		return res;
-	}
 	
 
 	/* https://stackoverflow.com/questions/2603692/what-is-the-difference-between-tree-depth-and-height */
@@ -164,17 +135,29 @@ class tree
 	{
 		if (leaf == NULL)
 			return ;
-		leaf->depth = count; // or height
+		leaf->height = count; // or height
 		recalculate(leaf->left, count + 1);
 		recalculate(leaf->right, count + 1);
 	}
-
-	signed getBalancedFactor()
+	void reloop(node<T> *leaf)
 	{
-		signed left_h = this->deepestNode(this->root->left)->depth;
-		signed right_h = this->deepestNode(this->root->right)->depth;
+		if (leaf == NULL)
+			return ;
 		
-		return right_h - left_h;
+		// int temp;
+
+
+		reloop(leaf->left);
+		reloop(leaf->right);
+		// get height of left and right
+		int left = height(leaf->left);
+		int right = height(leaf->right);
+
+		if (leaf->left)
+			leaf->left->height = left;
+		if (leaf->right)
+			leaf->right->height = right;
+		leaf->balanceFactor = left - right;
 	}
 };
 
