@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:56:21 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/02/07 11:53:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/02/07 15:17:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,36 +56,96 @@ class tree
 			this->root = NULL;
 		}
 
-		void		insert(T data)
+		int getBalance(node<T> *N)
 		{
-			node<T>		*new_node;
+			if (N == NULL)
+				return 0;
+			return height(N->left) - height(N->right);
+		}
 
-			new_node = new node<T>(data);
-			if (this->root == NULL)
-				this->root = new_node;
+	/* https://www.geeksforgeeks.org/avl-tree-set-1-insertion/ */
+		node<T> *rightRotate(node<T> *y)
+		{
+			node<T> *x = y->left;
+			node<T> *T2 = x->right;
+		
+			// Perform rotation
+			x->right = y;
+			y->left = T2;
+		
+			// Update heights
+			y->height = max(height(y->left),
+							height(y->right)) + 1;
+			x->height = max(height(x->left),
+							height(x->right)) + 1;
+		
+			// Return new root
+			return x;
+		}
+		
+		node<T> *leftRotate(node<T> *x)
+		{
+			node<T> *y = x->right;
+			node<T> *T2 = y->left;
+		
+			// Perform rotation
+			y->left = x;
+			x->right = T2;
+		
+			// Update heights
+			x->height = max(height(x->left),   
+							height(x->right)) + 1;
+			y->height = max(height(y->left),
+							height(y->right)) + 1;
+		
+			// Return new root
+			return y;
+		}
+
+		node<T>		*insert(node<T> *node, T data)
+		{
+			if (node == NULL)
+				return (new ::node<T>(data));
+
+			if (data < node->data)
+				node->left = this->insert(node->left, data);
+			else if (data > node->data)
+				node->right = this->insert(node->right, data);
 			else
+				return node;
+
+			node->height = 1 + max(this->height(node->left), this->height(node->right));
+
+			int balance = getBalance(node);
+
+			// If this node becomes unbalanced, then
+			// there are 4 cases
+		
+			// Left Left Case
+			if (balance > 1 && data < node->left->data)
+				return rightRotate(node);
+		
+			// Right Right Case
+			if (balance < -1 && data > node->right->data)
+				return leftRotate(node);
+		
+			// Left Right Case
+			if (balance > 1 && data > node->left->data)
 			{
-				node<T>		*parent;
-				
-				for (node<T> *current = this->root; current != NULL;)
-				{
-					parent = current;
-					if (data < current->data)
-						current = current->left;
-					else
-						current = current->right;
-				}
-				if (data < parent->data)
-				{
-					parent->left = new_node;
-					new_node->parent = parent;
-				}
-				else
-				{
-					parent->right = new_node;
-					new_node->parent = parent;
-				}
+				node->left = leftRotate(node->left);
+				return rightRotate(node);
 			}
+		
+			// Right Left Case
+			if (balance < -1 && data < node->right->data)
+			{
+				node->right = rightRotate(node->right);
+				return leftRotate(node);
+			}
+		
+			/* return the (unchanged) node pointer */
+			return node;
+			
 		}
 		int max(int a , int b)
 		{
@@ -127,18 +187,30 @@ class tree
 			reloop(this->root);
 			printBT("", this->root, false);    
 		}
-	/* End -> Pretty Print Binary Tree */
-	
 
-	/* https://stackoverflow.com/questions/2603692/what-is-the-difference-between-tree-depth-and-height */
-	void recalculate(node<T> *leaf, int count = 0)
-	{
-		if (leaf == NULL)
-			return ;
-		leaf->height = count; // or height
-		recalculate(leaf->left, count + 1);
-		recalculate(leaf->right, count + 1);
-	}
+			node<T> *getnext()
+			{
+				node<T> *it(this);
+
+				if (it->right)
+				{
+					it = it->right;
+					while (it->left)
+						it = it->left;
+				}
+				else
+				{
+					node<T> *tmp = it;
+					it = it->parent;
+					while (it->left != tmp)
+					{
+						tmp = it;
+						it = it->parent;
+					}
+				}
+				return (it);
+			}
+
 	void reloop(node<T> *leaf)
 	{
 		if (leaf == NULL)
@@ -159,6 +231,8 @@ class tree
 			leaf->right->height = right;
 		leaf->balanceFactor = left - right;
 	}
+		
+	/* End -> Pretty Print Binary Tree */
 };
 
 #endif // TREE_HPP
