@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 12:50:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/02/07 15:18:44 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/02/07 17:53:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,25 @@ int main()
 	tree.root = tree.insert(tree.root, 2);
 	tree.root = tree.insert(tree.root, 3);
 	tree.root = tree.insert(tree.root, 4);
+	tree.root = tree.insert(tree.root, 5);
 	tree.root = tree.insert(tree.root, 6);
-	tree.root = tree.insert(tree.root, 4);
+	tree.root = tree.insert(tree.root, 7);
+	tree.root = tree.insert(tree.root, 8);
+	tree.root = tree.insert(tree.root, 9);
+	tree.root = tree.insert(tree.root, 10);
 
-	// print getnext
-	std::cout << "getnext: ";
-	std::cout << tree.getnext()->data << std::endl << std::endl;
-	
-		tree.printBT();
-		std::cout << "height: " + std::to_string(tree.height(tree.root)) << std::endl;
+
+
+
+
+
+
+
+
+
+
+	tree.printBT();
+	std::cout << "height: " + std::to_string(tree.height(tree.root)) << std::endl;
 	}
 	exit(4);
 	

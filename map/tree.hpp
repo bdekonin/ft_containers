@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:56:21 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/02/07 15:17:55 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/02/07 16:07:15 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,45 @@ class node
 			this->left = NULL;
 			this->right = NULL;
 			this->height = 0; // maybe -1 because empty node has height -1
+		}
+		node<T> *getnext()
+		{
+			node<T> *it(this);
+
+			if (it->right)
+			{
+				it = it->right;
+				while (it->left)
+					it = it->left;
+			}
+			else
+			{
+				node<T> *tmp = it;
+				it = it->parent;
+				while (it->left != tmp)
+				{
+					tmp = it;
+					it = it->parent;
+				}
+			}
+			return (it);
+		}
+		node*   getprevious()
+		{
+			if (this == this->first_node || this == this->last_node)
+				return this->parent;
+			node* it(this);
+
+			if (it->left)
+			{
+				it = it->left;
+				while (it->right)
+					it = it->right;
+			}
+			else
+				while (it->data >= this->data)
+					it = it->parent;
+			return (it);
 		}
 };
 
@@ -187,29 +226,6 @@ class tree
 			reloop(this->root);
 			printBT("", this->root, false);    
 		}
-
-			node<T> *getnext()
-			{
-				node<T> *it(this);
-
-				if (it->right)
-				{
-					it = it->right;
-					while (it->left)
-						it = it->left;
-				}
-				else
-				{
-					node<T> *tmp = it;
-					it = it->parent;
-					while (it->left != tmp)
-					{
-						tmp = it;
-						it = it->parent;
-					}
-				}
-				return (it);
-			}
 
 	void reloop(node<T> *leaf)
 	{
