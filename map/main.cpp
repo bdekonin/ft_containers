@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 12:50:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/02/07 17:53:45 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/04/19 18:27:29 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,53 +15,34 @@
 #include <map>
 #include <algorithm>    // std::sort
 #include <vector>       // std::vector
+#include "pair.hpp"
 
 int main()
 {
 	{
+		ft::pair<char, int> p1('a', 10);
+		ft::pair<char, int> p2('b', 20);
+		ft::pair<char, int> p3('c', 30);
+		ft::pair<char, int> p4('d', 40);
+		
+
+		std::cout << p1.first << "-" << p1.second << std::endl;
+		std::cout << p2.first << "-" << p2.second << std::endl;
+		std::cout << p3.first << "-" << p3.second << std::endl;
+		std::cout << p4.first << "-" << p4.second << std::endl;
+
+		
+		exit(4);
 		tree <int>		tree;
-
-		// tree.insert(33);
-		// tree.insert(9);
-		// tree.insert(53);
-		// tree.insert(61);
-		// tree.insert(8);
-		// tree.insert(21);
-		// tree.insert(11);
-		// tree.insert(80);
-
-	// tree.root = tree.insert(tree.root, 42);
-	// tree.root = tree.insert(tree.root, 35);
-	// tree.root = tree.insert(tree.root, 19);
-	// tree.root = tree.insert(tree.root, 31);
-	// tree.root = tree.insert(tree.root, 14);
-	// tree.root = tree.insert(tree.root, 25);
-	// tree.root = tree.insert(tree.root, 27);
-	// tree.root = tree.insert(tree.root, 10);
-
-	tree.root = tree.insert(tree.root, 1);
-	tree.root = tree.insert(tree.root, 2);
-	tree.root = tree.insert(tree.root, 3);
-	tree.root = tree.insert(tree.root, 4);
-	tree.root = tree.insert(tree.root, 5);
-	tree.root = tree.insert(tree.root, 6);
-	tree.root = tree.insert(tree.root, 7);
-	tree.root = tree.insert(tree.root, 8);
-	tree.root = tree.insert(tree.root, 9);
-	tree.root = tree.insert(tree.root, 10);
-
-
-
-
-
-
-
-
-
-
-
-	tree.printBT();
-	std::cout << "height: " + std::to_string(tree.height(tree.root)) << std::endl;
+		for (int i = 1; i < 30; i++)
+		{
+			std::cout << "Adding: " << i << std::endl;
+			tree.root = tree.insert(tree.root, i);
+			tree.printBT();
+			std::cout << "height: " + std::to_string(tree.height(tree.root)) << std::endl;
+			getchar();
+			system("clear");
+		}
 	}
 	exit(4);
 	

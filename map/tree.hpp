@@ -209,7 +209,7 @@ class tree
 
 				// print the value of the node
 				
-				std::cout << node->data << " (" << node->balanceFactor << ") " << std::endl;
+				std::cout << node->data << " (" << node->height << ") " << std::endl;
 
 				// enter the next tree level - left and right branch
 				printBT( prefix + (isLeft ? "│   " : "    "), node->left, true);
@@ -218,13 +218,13 @@ class tree
 		}
 		void printBT(const node<T>* node)
 		{
-			printBT("", node, false);    
+			printBT("", node, true);    
 		}
 		void printBT()
 		{
 			// this->recalculate(this->root, 0);
 			reloop(this->root);
-			printBT("", this->root, false);    
+			printBT("", this->root, true);    
 		}
 
 	void reloop(node<T> *leaf)
