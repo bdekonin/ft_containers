@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 12:50:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/04/19 18:27:29 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/04/19 18:53:07 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <algorithm>    // std::sort
 #include <vector>       // std::vector
 #include "pair.hpp"
+#include "map.hpp"
 
 int main()
 {
@@ -31,7 +32,7 @@ int main()
 		std::cout << p3.first << "-" << p3.second << std::endl;
 		std::cout << p4.first << "-" << p4.second << std::endl;
 
-		
+		ft::map<char, int> test;
 		exit(4);
 		tree <int>		tree;
 		for (int i = 1; i < 30; i++)

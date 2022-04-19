@@ -6,13 +6,15 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:56:21 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/02/07 16:07:15 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/04/19 19:43:57 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TREE_HPP
 # define TREE_HPP
 
+
+// TODO https://www.geeksforgeeks.org/avl-tree-set-2-deletion/
 #include <iostream>
 
 

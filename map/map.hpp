@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 11:09:54 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/04/19 18:44:10 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/04/19 19:41:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MAP_HPP
 
 #include <functional>
+#include "pair.hpp"
+
 
 namespace ft
 {
@@ -21,14 +23,14 @@ namespace ft
 template < class Key,										// map::key_type
 		class T,											// map::mapped_type
 		class Compare = std::less<Key>,						// map::key_compare
-		class Alloc = std::allocator<pair<const Key,T> >	// map::allocator_type
+		class Alloc = std::allocator<ft::pair<const Key,T> >	// map::allocator_type
 		>
 class map
 {
 	public: // Member Types
 		typedef Key													key_type;
 		typedef T													mapped_type;
-		typedef pair<const Key, T>									value_type;	
+		typedef ft::pair<const Key, T>									value_type;	
 		typedef Compare												key_compare; // Defaults to: less<key_type>
 		typedef Compare												value_compare; // change -> https://www.cplusplus.com/reference/map/map/value_comp/
 		typedef Alloc												allocator_type; // Defaults to: std::allocator<value_type>
@@ -44,8 +46,22 @@ class map
 		// typedef typename allocator_type::size_type							size_type;
 
 	/* Constructor */
-		// temp
-
+		explicit map (const key_compare& comp = key_compare(),
+			const allocator_type& alloc = allocator_type())
+		{
+			
+		}
+		template <class InputIterator>
+		map (InputIterator first, InputIterator last,
+			const key_compare& comp = key_compare(),
+			const allocator_type& alloc = allocator_type())
+		{
+		
+		}
+		map (const map& x)
+		{
+			
+		}
 	/* Destructors
 		// temp
 
