@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 11:09:54 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/04/19 19:41:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/04/24 15:33:59 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@ template < class Key,										// map::key_type
 		>
 class map
 {
+	private:
+		int _size;
 	public: // Member Types
 		typedef Key													key_type;
 		typedef T													mapped_type;
-		typedef ft::pair<const Key, T>									value_type;	
+		typedef ft::pair<const Key, T>								value_type;	
 		typedef Compare												key_compare; // Defaults to: less<key_type>
 		typedef Compare												value_compare; // change -> https://www.cplusplus.com/reference/map/map/value_comp/
 		typedef Alloc												allocator_type; // Defaults to: std::allocator<value_type>
@@ -62,7 +64,7 @@ class map
 		{
 			
 		}
-	/* Destructors
+	/* Destructors */
 		// temp
 
 	/* Iterators*/

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/19 18:08:25 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/04/19 18:38:50 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/04/24 20:03:43 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,7 @@
 # define PAIR_HPP
 
 namespace ft
-{
-	/* https://www.cplusplus.com/reference/utility/make_pair/ */
-	template <class T1,class T2>
-	pair<T1,T2> make_pair (T1 x, T2 y)
-	{
-		return (pair<T1, T2>(x, y));
-	}
-	
+{	
 	/* https://www.cplusplus.com/reference/utility/pair/ */
 	template < class T1, class T2 >
 	struct pair
@@ -59,6 +52,13 @@ namespace ft
 			second = pr.second;
 		}
 	};
+
+	/* https://www.cplusplus.com/reference/utility/make_pair/ */
+	template <class T1,class T2>
+	pair<T1,T2> make_pair (T1 x, T2 y)
+	{
+		return (pair<T1, T2>(x, y));
+	}
 }
 
 #endif // PAIR_HPP

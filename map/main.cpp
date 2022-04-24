@@ -6,45 +6,57 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 12:50:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/04/19 18:53:07 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/04/24 20:00:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tree.hpp"
+// #include "tree.hpp"
 #include <sstream>
 #include <map>
 #include <algorithm>    // std::sort
 #include <vector>       // std::vector
 #include "pair.hpp"
 #include "map.hpp"
+#include "utils.hpp"
 
 int main()
 {
-	{
-		ft::pair<char, int> p1('a', 10);
-		ft::pair<char, int> p2('b', 20);
-		ft::pair<char, int> p3('c', 30);
-		ft::pair<char, int> p4('d', 40);
+	avltree<int> tree;
+
+	tree.insert(10);
+	tree.insert(12);
+
+
+	tree.printBT();
+
+	
+
+	exit(3);
+	// {
+	// 	ft::pair<char, int> p1('a', 10);
+	// 	ft::pair<char, int> p2('b', 20);
+	// 	ft::pair<char, int> p3('c', 30);
+	// 	ft::pair<char, int> p4('d', 40);
 		
 
-		std::cout << p1.first << "-" << p1.second << std::endl;
-		std::cout << p2.first << "-" << p2.second << std::endl;
-		std::cout << p3.first << "-" << p3.second << std::endl;
-		std::cout << p4.first << "-" << p4.second << std::endl;
+	// 	std::cout << p1.first << "-" << p1.second << std::endl;
+	// 	std::cout << p2.first << "-" << p2.second << std::endl;
+	// 	std::cout << p3.first << "-" << p3.second << std::endl;
+	// 	std::cout << p4.first << "-" << p4.second << std::endl;
 
-		ft::map<char, int> test;
-		exit(4);
-		tree <int>		tree;
-		for (int i = 1; i < 30; i++)
-		{
-			std::cout << "Adding: " << i << std::endl;
-			tree.root = tree.insert(tree.root, i);
-			tree.printBT();
-			std::cout << "height: " + std::to_string(tree.height(tree.root)) << std::endl;
-			getchar();
-			system("clear");
-		}
-	}
+	// 	ft::map<char, int> test;
+	// 	exit(4);
+	// 	tree <int>		tree;
+	// 	for (int i = 1; i < 30; i++)
+	// 	{
+	// 		std::cout << "Adding: " << i << std::endl;
+	// 		tree.root = tree.insert(tree.root, i);
+	// 		tree.printBT();
+	// 		std::cout << "height: " + std::to_string(tree.height(tree.root)) << std::endl;
+	// 		getchar();
+	// 		system("clear");
+	// 	}
+	// }
 	exit(4);
 	
 

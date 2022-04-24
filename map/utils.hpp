@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   tree.hpp                                           :+:    :+:            */
+/*   utils.hpp                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/01/25 14:56:21 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/04/24 16:40:25 by bdekonin      ########   odam.nl         */
+/*   Created: 2022/04/23 14:23:32 by bdekonin      #+#    #+#                 */
+/*   Updated: 2022/04/24 20:00:08 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TREE_HPP
-# define TREE_HPP
+#ifndef UTILS_HPP
+# define UTILS_HPP
 
-
-// TODO https://www.geeksforgeeks.org/avl-tree-set-2-deletion/
 #include <iostream>
-
 
 template <typename T>
 class node
@@ -38,7 +35,7 @@ class node
 			this->right = NULL;
 			this->height = 0; // maybe -1 because empty node has height -1
 		}
-		node<T> *getnext()
+		node<T>	*getnext()
 		{
 			node<T> *it(this);
 
@@ -60,7 +57,7 @@ class node
 			}
 			return (it);
 		}
-		node*   getprevious()
+		node<T>*	getprevious()
 		{
 			if (this == this->first_node || this == this->last_node)
 				return this->parent;
@@ -79,29 +76,38 @@ class node
 		}
 };
 
-
 template <typename T>
-class tree
+class avltree
 {
 	public:
-		node<T>		*root;
+		node<T> *root;
 
-	public:
-		tree(void)
+		avltree(void)
 		{
 			this->root = NULL;
 		}
 
-		~tree(void)
+		~avltree(void)
 		{
 			this->root = NULL;
 		}
 
-		int getBalance(node<T> *N)
+		/* helper */
+		int getBalanceFactor(node<T> *node)
 		{
-			if (N == NULL)
+			if (!node)
 				return 0;
-			return height(N->left) - height(N->right);
+			return height(node->left) - height(node->right);
+		}
+		int max(int a, int b)
+		{
+			return (a > b ? a : b);
+		}
+		int height(node<T> *node) /* Returns amount of nodes, if you wanted amount of links return -1 instead of 0 */
+		{
+			if (node == NULL)
+				return 0;
+			return (1 + max(height(node->left), height(node->right)));
 		}
 
 	/* https://www.geeksforgeeks.org/avl-tree-set-1-insertion/ */
@@ -144,7 +150,8 @@ class tree
 		}
 		node<T>		*insert(T data)
 		{
-			return this->insert(this->root, data);
+			this->root = this->insert(this->root, data);
+			return root;
 		}
 		node<T>		*insert(node<T> *node, T data)
 		{
@@ -160,7 +167,7 @@ class tree
 
 			node->height = 1 + max(this->height(node->left), this->height(node->right));
 
-			int balance = getBalance(node);
+			int balance = getBalanceFactor(node);
 
 			// If this node becomes unbalanced, then
 			// there are 4 cases
@@ -190,17 +197,6 @@ class tree
 			/* return the (unchanged) node pointer */
 			return node;
 			
-		}
-		int max(int a , int b)
-		{
-			int res = (a > b) ? a : b;
-			return res;
-		}
-		int height(node<T> *node) /* Returns amount of nodes, if you wanted amount of links return -1 instead of 0 */
-		{
-			if (node == NULL)
-				return 0;
-			return (1 + max(height(node->left), height(node->right)));
 		}
 
 	/* Start -> Pretty Print Binary Tree */
@@ -256,4 +252,5 @@ class tree
 	/* End -> Pretty Print Binary Tree */
 };
 
-#endif // TREE_HPP
+
+#endif // UTILS_HPP
