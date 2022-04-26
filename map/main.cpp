@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 12:50:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/04/24 20:00:41 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/04/26 13:46:22 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ int main()
 {
 	avltree<int> tree;
 
-	tree.insert(10);
-	tree.insert(12);
-
-
-	tree.printBT();
+	for (int i = 0; i < 11; i++)
+	{
+		tree.insert(i);
+		// getchar();
+		// system("clear");
+	}
+		tree.printBT();
 
 	
 

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 14:23:32 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/04/24 20:00:08 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/04/26 14:11:17 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ class node
 		}
 };
 
-template <typename T>
+template <typename T, class Compare = std::less<int> >
 class avltree
 {
 	public:
@@ -114,6 +114,8 @@ class avltree
 		node<T> *rightRotate(node<T> *y)
 		{
 			node<T> *x = y->left;
+			if (!x)
+				return (x);
 			node<T> *T2 = x->right;
 		
 			// Perform rotation
@@ -129,10 +131,11 @@ class avltree
 			// Return new root
 			return x;
 		}
-		
 		node<T> *leftRotate(node<T> *x)
 		{
 			node<T> *y = x->right;
+			if (!y)
+				return (x);
 			node<T> *T2 = y->left;
 		
 			// Perform rotation
@@ -148,6 +151,8 @@ class avltree
 			// Return new root
 			return y;
 		}
+
+	/* Inserting Data */
 		node<T>		*insert(T data)
 		{
 			this->root = this->insert(this->root, data);
@@ -158,10 +163,16 @@ class avltree
 			if (node == NULL)
 				return (new ::node<T>(data));
 
-			if (data < node->data)
+			Compare comp = Compare();
+
+			if (comp(data, node->data) == true)
+			{
 				node->left = this->insert(node->left, data);
-			else if (data > node->data)
+			}
+			else if (comp(data, node->data) == false) // maybe true
+			{
 				node->right = this->insert(node->right, data);
+			}
 			else
 				return node;
 
@@ -198,6 +209,119 @@ class avltree
 			return node;
 			
 		}
+
+	/* Deleting Data */
+		/* Given a non-empty binary search tree,
+	return the node with minimum key value
+	found in that tree. Note that the entire
+	tree does not need to be searched. */
+		node<T> *minValueNode(node<T> *node)
+		{
+			::node<T> *curr = node;
+		
+			/* loop down to find the leftmost leaf */
+			while (curr->left != NULL)
+				curr = curr->left;
+		
+			return curr;
+		}
+		node<T> *deleteNode(T key)
+		{
+			this->root = this->deleteNode(this->root, key);
+			return root;
+		}
+		node<T> *deleteNode(node<T> *root, T key) // change to T
+		{
+			// STEP 1: Perform standard Standard BST Delete
+			if (root == NULL)
+				return root;
+
+			if ( key < root->data )
+				root->left = deleteNode(root->left, key);
+
+			else if (key > root->data)
+				root->right = deleteNode(root->right, key);
+
+			else
+			{
+				if( (root->left == NULL) ||
+					(root->right == NULL) )
+				{
+					node<T> *temp = root->left ? root->left : root->right;
+
+					if (temp == NULL)
+					{
+						temp = root; 
+						root = NULL;
+					}
+					else
+						*root = *temp;
+					
+					delete temp; // maybe not
+				}
+				else
+				{
+					node<T> *temp = minValueNode(root->right);
+
+					root->data = temp->data;
+
+					root->right = deleteNode(root->right, temp->data);
+				}
+			}
+			if (root == NULL)
+				return root;
+
+			root->height = 1 + max(this->height(root->left), this->height(root->right));
+
+			int balance = getBalanceFactor(root);
+		
+			// If this node becomes unbalanced,
+			// then there are 4 cases
+		
+			// Left Left Case
+			if (balance > 1 &&
+				getBalanceFactor(root->left) >= 0)
+				return rightRotate(root);
+		
+			// Left Right Case
+			if (balance > 1 &&
+				getBalanceFactor(root->left) < 0)
+			{
+				root->left = leftRotate(root->left);
+				return rightRotate(root);
+			}
+		
+			// Right Right Case
+			if (balance < -1 &&
+				getBalanceFactor(root->right) <= 0)
+				return leftRotate(root);
+		
+			// Right Left Case
+			if (balance < -1 &&
+				getBalanceFactor(root->right) > 0)
+			{
+				root->right = rightRotate(root->right);
+				return leftRotate(root);
+			}
+		
+			return root;
+		}
+
+
+
+		node<T> *findNode(T key, node<T> *node = this->root, Compare comp = Compare())
+		{
+			if (comp(node->data, key) == true) // defaults to less
+				findNode(key, node->left);
+			if (comp(node->data, key) == false) // defaults to less
+				findNode(key, node->right);
+			else
+				return NULL;
+
+		}
+
+
+
 
 	/* Start -> Pretty Print Binary Tree */
 		void printBT(const std::string& prefix, const node<T>* node, bool isLeft)
