@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 14:23:32 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/04/26 14:11:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/05/16 14:21:58 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,9 +212,9 @@ class avltree
 
 	/* Deleting Data */
 		/* Given a non-empty binary search tree,
-	return the node with minimum key value
-	found in that tree. Note that the entire
-	tree does not need to be searched. */
+		return the node with minimum key value
+		found in that tree. Note that the entire
+		tree does not need to be searched. */
 		node<T> *minValueNode(node<T> *node)
 		{
 			::node<T> *curr = node;
@@ -307,9 +307,53 @@ class avltree
 			return root;
 		}
 
+		node<T> *rebalance()
+		{
+			node<T> *root = this->root;
+			root->height = 1 + max(this->height(root->left), this->height(root->right));
+
+			int balance = getBalanceFactor(root);
+		
+			// If this node becomes unbalanced,
+			// then there are 4 cases
+		
+			// Left Left Case
+			if (balance > 1 &&
+				getBalanceFactor(root->left) >= 0)
+				return rightRotate(root);
+		
+			// Left Right Case
+			if (balance > 1 &&
+				getBalanceFactor(root->left) < 0)
+			{
+				root->left = leftRotate(root->left);
+				return rightRotate(root);
+			}
+		
+			// Right Right Case
+			if (balance < -1 &&
+				getBalanceFactor(root->right) <= 0)
+				return leftRotate(root);
+		
+			// Right Left Case
+			if (balance < -1 &&
+				getBalanceFactor(root->right) > 0)
+			{
+				root->right = rightRotate(root->right);
+				return leftRotate(root);
+			}
+
+			return root;
+		}
 
 
-		node<T> *findNode(T key, node<T> *node = this->root, Compare comp = Compare())
+
+
+		node<T> *findNode(T key)
+		{
+			return this->findNode(key, this->root);
+		}
+		node<T> *findNode(T key, node<T> *node, Compare comp = Compare())
 		{
 			if (comp(node->data, key) == true) // defaults to less
 				findNode(key, node->left);
@@ -317,7 +361,6 @@ class avltree
 				findNode(key, node->right);
 			else
 				return NULL;
-
 		}
 
 
