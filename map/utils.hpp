@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 14:23:32 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/05/16 14:21:58 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/05/24 17:30:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,11 +261,11 @@ class avltree
 				}
 				else
 				{
-					node<T> *temp = minValueNode(root->right);
+					node<T> *temp = minValueNode(root->left);
 
 					root->data = temp->data;
 
-					root->right = deleteNode(root->right, temp->data);
+					root->left = deleteNode(root->left, temp->data);
 				}
 			}
 			if (root == NULL)
@@ -344,23 +344,6 @@ class avltree
 			}
 
 			return root;
-		}
-
-
-
-
-		node<T> *findNode(T key)
-		{
-			return this->findNode(key, this->root);
-		}
-		node<T> *findNode(T key, node<T> *node, Compare comp = Compare())
-		{
-			if (comp(node->data, key) == true) // defaults to less
-				findNode(key, node->left);
-			if (comp(node->data, key) == false) // defaults to less
-				findNode(key, node->right);
-			else
-				return NULL;
 		}
 
 
