@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 12:50:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/05/24 13:13:55 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/05/25 14:06:14 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int main()
 {
 	avltree<int> tree;
 
-	node<int> *temp;
 	for (int i = 0; i < 11; i++)
 	{
 		tree.insert(i);
@@ -33,8 +32,9 @@ int main()
 	}
 	tree.printBT();
 	tree.deleteNode(9);
-	tree.deleteNode(7);
 	tree.printBT();
+	// tree.deleteNode(7);
+	// tree.printBT();
 
 	
 

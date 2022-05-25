@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 14:23:32 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/05/24 17:30:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/05/25 14:07:33 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,10 +168,12 @@ class avltree
 			if (comp(data, node->data) == true)
 			{
 				node->left = this->insert(node->left, data);
+				node->left->parent = node;
 			}
 			else if (comp(data, node->data) == false) // maybe true
 			{
 				node->right = this->insert(node->right, data);
+				node->right->parent = node;
 			}
 			else
 				return node;
@@ -232,79 +234,52 @@ class avltree
 		}
 		node<T> *deleteNode(node<T> *root, T key) // change to T
 		{
-			// STEP 1: Perform standard Standard BST Delete
+			// if key > current key -> right
+			// else if key < current key -> left
+
+			// if key == current key -> delete
+			// {
+				// if node has 2 children find largest noge in left subtree
+
+				// copy largest value of left subtree into node to delete
+				// remove we just copied
+			// }
+
 			if (root == NULL)
 				return root;
+			
+			Compare comp = Compare();
 
-			if ( key < root->data )
-				root->left = deleteNode(root->left, key);
-
-			else if (key > root->data)
-				root->right = deleteNode(root->right, key);
-
-			else
+			if (key < root->data)
 			{
-				if( (root->left == NULL) ||
-					(root->right == NULL) )
+				deleteNode(root->left, key);
+			}
+			else if (key > root->data)
+			{
+				deleteNode(root->right, key);
+			}
+			else // data == key
+			{
+				// if node has 2 children find largest noge in left subtree
+				if (root->left && root->right)
 				{
-					node<T> *temp = root->left ? root->left : root->right;
+					node<T> *temp = minValueNode(root->right); // change to smallest
+					root->data = temp->data;
 
-					if (temp == NULL)
-					{
-						temp = root; 
-						root = NULL;
-					}
-					else
-						*root = *temp;
 					
-					delete temp; // maybe not
+					delete (temp);
 				}
 				else
 				{
-					node<T> *temp = minValueNode(root->left);
-
-					root->data = temp->data;
-
-					root->left = deleteNode(root->left, temp->data);
+					node<T> *temp = root;
+					if (root->left == NULL)
+						root = root->right;
+					else if (root->right == NULL)
+						root = root->left;
+					delete temp;
 				}
 			}
-			if (root == NULL)
-				return root;
-
-			root->height = 1 + max(this->height(root->left), this->height(root->right));
-
-			int balance = getBalanceFactor(root);
-		
-			// If this node becomes unbalanced,
-			// then there are 4 cases
-		
-			// Left Left Case
-			if (balance > 1 &&
-				getBalanceFactor(root->left) >= 0)
-				return rightRotate(root);
-		
-			// Left Right Case
-			if (balance > 1 &&
-				getBalanceFactor(root->left) < 0)
-			{
-				root->left = leftRotate(root->left);
-				return rightRotate(root);
-			}
-		
-			// Right Right Case
-			if (balance < -1 &&
-				getBalanceFactor(root->right) <= 0)
-				return leftRotate(root);
-		
-			// Right Left Case
-			if (balance < -1 &&
-				getBalanceFactor(root->right) > 0)
-			{
-				root->right = rightRotate(root->right);
-				return leftRotate(root);
-			}
-		
-			return root;
+			return this->root;
 		}
 
 		node<T> *rebalance()
@@ -360,7 +335,10 @@ class avltree
 
 				// print the value of the node
 				
-				std::cout << node->data << " (" << node->height << ") " << std::endl;
+				if (node->parent)
+					std::cout << node->data << " (" << node->parent->data << ") " << std::endl;
+				else
+					std::cout << node->data << " (" << node->parent << ") " << std::endl;
 
 				// enter the next tree level - left and right branch
 				printBT( prefix + (isLeft ? "│   " : "    "), node->left, true);
