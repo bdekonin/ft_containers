@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 12:50:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/05/25 14:06:14 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/05/28 13:33:54 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,42 @@
 
 int main()
 {
-	avltree<int> tree;
+	AVL<int> tree;
 
 	for (int i = 0; i < 11; i++)
 	{
 		tree.insert(i);
-		// tree.printBT();
-		// getchar();
-		// system("clear");
 	}
 	tree.printBT();
-	tree.deleteNode(9);
+	tree.remove(3); 
+
 	tree.printBT();
-	// tree.deleteNode(7);
+
+	
+	tree.inorder();
+
+	exit(4);
+
+
+	
+	// avltree<int> tree;
+
+	// for (int i = 0; i < 11; i++)
+	// {
+	// 	tree.insert(i);
+	// 	// tree.printBT();
+	// 	// getchar();
+	// 	// system("clear");
+	// }
 	// tree.printBT();
+	// tree.deleteNode(9);
+	// tree.printBT();
+	// // tree.deleteNode(7);
+	// // tree.printBT();
 
 	
 
-	exit(3);
+	// exit(3);
 	// {
 	// 	ft::pair<char, int> p1('a', 10);
 	// 	ft::pair<char, int> p2('b', 20);
