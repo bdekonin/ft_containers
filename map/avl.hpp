@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 14:23:32 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/05/30 20:59:33 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/05/30 20:23:07 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,10 @@ class AVL
 	AVL()
 	: root(NULL), n(0)
 	{
-		this->comp = Compare();
+		
 	}
 	node *root;
 	int n;
-	Compare comp;
 
 	/* Main functions */
 		void insert(T key)
@@ -78,8 +77,7 @@ class AVL
 	/* Utils functions */
 		void insertUtil(node *elem, node *tree)
 		{
-			// if (elem->key < tree->key) // Comp()
-			if (this->comp(elem->key, tree->key) == true)
+			if (elem->key < tree->key)
 			{
 				if (tree->left == NULL)
 				{
@@ -93,7 +91,6 @@ class AVL
 				}
 				else
 				{
-					this->insertUtil(elem, tree->left);
 					if (tree->height < tree->left->height + 1)
 					{
 						tree->height = tree->left->height + 1;
@@ -101,8 +98,7 @@ class AVL
 					if ((tree->right != NULL && tree->left->height > tree->right->height + 1) ||
 						(tree->right == NULL && tree->left->height > 1))
 					{
-						// if (elem->key < tree->left->key) // Comp()
-						if (this->comp(elem->key, tree->left->key) == true)
+						if (elem->key < tree->left->key)
 						{
 							this->singleRotateRight(tree);
 						}
@@ -113,7 +109,7 @@ class AVL
 					}
 				}
 			}
-			else // Comp()
+			else
 			{
 				if (tree->right == NULL)
 				{
@@ -128,7 +124,7 @@ class AVL
 					}
 					
 				}
-				else 
+				else
 				{
 					this->insertUtil(elem, tree->right);
 					if (tree->height < tree->right->height + 1)
@@ -156,8 +152,7 @@ class AVL
 				return NULL;
 			if (x == tree->key)
 				return tree;
-			// if (x < tree->key) // Comp()
-			if (this->comp(x, tree->key) == true)
+			if (x < tree->key)
 				return this->searchUtil(x, tree->left);
 			else
 				return this->searchUtil(x, tree->right);
@@ -322,8 +317,7 @@ class AVL
 						delete oldnode;
 					}
 				}
-				// else if (key < tree->key) // Comp()
-				else if (this->comp(key, tree->key) == true)
+				else if (key < tree->key)
 				{
 					this->removeUtil(tree->left, key);
 					if (height(tree->right)- height(tree->left) > 1)
@@ -342,7 +336,7 @@ class AVL
 						tree->height = std::max(height(tree->left), height(tree->right)) + 1;
 					}
 				}
-				else // Comp()
+				else
 				{
 					this->removeUtil(tree->right, key);
 					if (height(tree->left)- height(tree->right) > 1)

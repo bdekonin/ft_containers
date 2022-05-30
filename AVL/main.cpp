@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 12:50:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/05/30 19:23:09 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/05/30 20:59:52 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,31 @@ int main()
 	{
 		tree.insert(i);
 	}
-
-	while (tree.n != 2)
-	{
-		tree.remove(tree.n);
-		tree.printBT();
-	}
-
-			tree.remove(1);
-		tree.printBT();
-					tree.remove(0);
-		tree.printBT();
-					tree.remove(2);
-		tree.printBT();
+	tree.printBT();
+/*
+├──3 (0) 
+│   ├──1 (3) 
+│   │   ├──0 (1) 
+│   │   └──2 (1) 
+│   └──7 (3) 
+│       ├──5 (7) 
+│       │   ├──4 (5) 
+│       │   └──6 (5) 
+│       └──8 (7) 
+│           └──9 (8) 
+*/
+/*
+├──3 (0) 
+│   ├──7 (3) 
+│   │   ├──8 (7) 
+│   │   │   ├──9 (8) 
+│   │   └──5 (7) 
+│   │       ├──6 (5) 
+│   │       └──4 (5) 
+│   └──1 (3) 
+│       ├──2 (1) 
+│       └──0 (1)
+*/
 	
 	
 	exit(4);

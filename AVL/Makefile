@@ -6,13 +6,13 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/10/28 09:38:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2022/05/30 14:57:48 by bdekonin      ########   odam.nl          #
+#    Updated: 2022/05/30 21:23:48 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_containers
 
-FILES =	*.cpp
+FILES =	main.cpp
 OBJDIR = obj/
 
 OBJ := $(addprefix $(OBJDIR), $(FILES:%.cpp=%.o))
