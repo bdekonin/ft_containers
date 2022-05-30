@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 12:50:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/05/28 13:33:54 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/05/30 14:35:16 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int main()
 	tree.printBT();
 
 	
-	tree.inorder();
+	// tree.inorder();
 
 	exit(4);
 
