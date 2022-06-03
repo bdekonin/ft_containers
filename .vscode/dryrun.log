@@ -1,6 +1,6 @@
-make --dry-run --keep-going --print-directory
-make: Entering directory '/mnt/c/Users/Bob/Downloads/ft_containers-main/ft_containers-main'
-make: Leaving directory '/mnt/c/Users/Bob/Downloads/ft_containers-main/ft_containers-main'
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/mnt/c/Users/Bob/Documents/ft_containers'
+make: Leaving directory '/mnt/c/Users/Bob/Documents/ft_containers'
  
 make: *** No targets specified and no makefile found.  Stop.
 

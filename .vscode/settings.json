@@ -61,6 +61,11 @@
         "typeinfo": "cpp",
         "unordered_map": "cpp",
         "utility": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "*.tcc": "cpp",
+        "clocale": "cpp",
+        "deque": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp"
     }
 }

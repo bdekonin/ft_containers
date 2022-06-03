@@ -16,42 +16,24 @@
 #include <algorithm>    // std::sort
 #include <vector>       // std::vector
 
-#include "utils.hpp"
+#include "AVL.hpp"
+#include "pair.hpp"
 
 int main()
 {
-	AVL<int> tree;
+	ft::pair<char, int> pair1('a', 2);
 
-	for (int i = 0; i < 10; i++)
+	AVL<ft::pair<char, int> > tree;
+
+	for (int l = 'a', i = 0; i < 15; l++, i++)
 	{
-		tree.insert(i);
+		tree.insert(ft::pair<char, int>(l, i));
 	}
+
+	AVL<int>::node
+
 	tree.printBT();
-/*
-├──3 (0) 
-│   ├──1 (3) 
-│   │   ├──0 (1) 
-│   │   └──2 (1) 
-│   └──7 (3) 
-│       ├──5 (7) 
-│       │   ├──4 (5) 
-│       │   └──6 (5) 
-│       └──8 (7) 
-│           └──9 (8) 
-*/
-/*
-├──3 (0) 
-│   ├──7 (3) 
-│   │   ├──8 (7) 
-│   │   │   ├──9 (8) 
-│   │   └──5 (7) 
-│   │       ├──6 (5) 
-│   │       └──4 (5) 
-│   └──1 (3) 
-│       ├──2 (1) 
-│       └──0 (1)
-*/
-	
+	tree.inorder();
 	
 	exit(4);
 }

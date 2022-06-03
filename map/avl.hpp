@@ -6,27 +6,30 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 14:23:32 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/05/30 20:23:07 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/05/30 20:59:33 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AVL_HPP
-# define AVL_HPP
+#ifndef MAP_AVL_HPP
+# define MAP_AVL_HPP
 
 #include <iostream>
-template <typename T, class Compare = std::less<T> >
-class AVL
+
+template <typename value_type,
+		class Compare = std::less<value_type>,
+		class Alloc = std::allocator<value_type> >
+class MAP_AVL
 {
 	public:
 		class node
 		{
 			public:
-				T key;
+				value_type key;
 				int height;
 				node *left;
 				node *right;
 				node *parent;
-				node(T k)
+				node(value_type k)
 				{
 					height = 1;
 					key = k;
@@ -35,16 +38,23 @@ class AVL
 				}
 		};
 	
-	AVL()
-	: root(NULL), n(0)
-	{
-		
-	}
-	node *root;
-	int n;
+	private:
+	/* Private Member Variables */
+		node *root;
+		int n;
+		Compare comp;
+		Alloc _alloc;
+
+	public:
+		MAP_AVL()
+		: root(NULL), n(0), comp(), _alloc()
+		{
+			this->comp = Compare();
+			this->_alloc = Alloc();
+		}
 
 	/* Main functions */
-		void insert(T key)
+		void insert(value_type key)
 		{
 			if (this->root == NULL)
 			{
@@ -59,12 +69,17 @@ class AVL
 				n++;
 			}
 		}
-		node *search(T x)
+		node *search(value_type x)
 		{
 			return this->searchUtil(x, this->root);
 		}
-		void remove(T x)
+		void remove(value_type x)
 		{
+			if (n == 0)
+			{
+				std::cout << "Tree is empty" << std::endl;
+				return ;
+			}
 			this->removeUtil(this->root, x);
 			n--;
 		}
@@ -72,12 +87,43 @@ class AVL
 		{
 			this->inorderUtil(this->root);
 		}
+	
+	/* Getters */
+		const int size() const
+		{
+			return this->n;
+		}
+		const node *getRoot() const
+		{
+			return this->root;
+		}
+		const Compare getComp() const
+		{
+			return this->comp;
+		}
+		
+		node *begin() // Get most left node (smallest)
+		{
+			node *temp = this->root;
 
-	private:
+			while (temp->left != NULL)
+				temp = temp->left;
+			return temp;
+		}
+		const node*end() const // Get most right node (biggest)
+		{
+			node *temp = this->root;
+
+			while (temp->right != NULL)
+				temp = temp->right;
+			return temp;
+		}
+
 	/* Utils functions */
 		void insertUtil(node *elem, node *tree)
 		{
-			if (elem->key < tree->key)
+			// if (elem->key < tree->key) // Comp()
+			if (this->comp(elem->key, tree->key) == true)
 			{
 				if (tree->left == NULL)
 				{
@@ -85,119 +131,87 @@ class AVL
 					elem->parent = tree;
 					
 					if (tree->height < tree->left->height + 1)
-					{
 						tree->height = tree->left->height + 1;
-					}
 				}
 				else
 				{
+					this->insertUtil(elem, tree->left);
 					if (tree->height < tree->left->height + 1)
-					{
 						tree->height = tree->left->height + 1;
-					}
 					if ((tree->right != NULL && tree->left->height > tree->right->height + 1) ||
 						(tree->right == NULL && tree->left->height > 1))
 					{
-						if (elem->key < tree->left->key)
-						{
+						if (this->comp(elem->key, tree->left->key) == true)
 							this->singleRotateRight(tree);
-						}
 						else
-						{
 							this->doubleRotateRight(tree);
-						}
 					}
 				}
 			}
-			else
+			else // Comp()
 			{
 				if (tree->right == NULL)
 				{
 					tree->right = elem;
 					elem->parent = tree;
-					
-					// this->resizeTree();
 
 					if (tree->height < tree->right->height + 1)
-					{
 						tree->height = tree->right->height + 1;
-					}
-					
 				}
-				else
+				else 
 				{
 					this->insertUtil(elem, tree->right);
 					if (tree->height < tree->right->height + 1)
-					{
 						tree->height = tree->right->height + 1;
-					}
 					if ((tree->left != NULL && tree->right->height > tree->left->height + 1) ||
 						(tree->left == NULL && tree->right->height > 1))
 					{
 						if (elem->key >= tree->right->key)
-						{
 							this->singleRotateLeft(tree);
-						}
 						else
-						{
 							this->doubleRotateLeft(tree);
-						}
 					}
 				}
 			}
 		}
-		node *searchUtil(T x, node *tree)
+		node *searchUtil(value_type x, node *tree)
 		{
 			if (tree == NULL)
 				return NULL;
 			if (x == tree->key)
 				return tree;
-			if (x < tree->key)
+			if (this->comp(x, tree->key) == true)
 				return this->searchUtil(x, tree->left);
 			else
 				return this->searchUtil(x, tree->right);
 		}
-		void removeUtil(node *tree, T key)
+		void removeUtil(node *tree, value_type key)
 		{
 			bool leftchild = false;
 			if (tree != NULL)
 			{
 				if (tree->parent != NULL)
-				{
 					leftchild = tree->parent->left == tree;
-				}
 
 				if (key == tree->key)
 				{
 					if (tree->left == NULL && tree->right == NULL)
 					{
 						if (leftchild && tree->parent != NULL)
-						{
 							tree->parent->left = NULL;
-						}
 						else if (tree->parent != NULL)
-						{
 							tree->parent->right = NULL;
-						}
 						else
-						{
 							this->root = NULL;
-						}
-						// this->resizeTree();
-						
 					}
 					else if (tree->left == NULL)
 					{
 						if (tree->parent != NULL)
 						{
 							if (leftchild)
-							{
 								tree->parent->left = tree->right;
-							}
 							else
-							{
 								tree->parent->right = tree->right;
-							}
 							tree->right->parent = tree->parent;
 						}
 						else
@@ -205,20 +219,15 @@ class AVL
 							this->root = tree->right;
 							this->root->parent = NULL;
 						}
-						// this.resizeTree();
 					}
 					else if (tree->right == NULL)
 					{
 						if (tree->parent != NULL)
 						{
 							if (leftchild)
-							{
 								tree->parent->left = tree->left;
-							}
 							else
-							{
 								tree->parent->right = tree->left;
-							}
 							tree->left->parent = tree->parent;
 						}
 						else
@@ -226,32 +235,22 @@ class AVL
 							this->root = tree->left;
 							this->root->parent = NULL;
 						}
-						// this.resizeTree();
 					}
 					else // tree.left != null && tree.right != null
 					{
 						node *tmp = tree;
 						tmp = tree->left;
 						while (tmp->right != NULL)
-						{
 							tmp = tmp->right;
-						}
-						
-	//					delete tree->key; ????
-						
+
 						tree->key = tmp->key; // COPY
 						
 						if (tmp->left == NULL)
 						{
 							if (tmp->parent != tree)
-							{
 								tmp->parent->right = NULL;
-							}
 							else
-							{
 								tree->left = NULL;
-							}
-							// this.resizeTree();
 						}
 						else
 						{
@@ -265,7 +264,6 @@ class AVL
 								tree->left = tmp->left;
 								tmp->left->parent = tree;
 							}
-							// this.resizeTree();
 						}
 						
 						node *oldnode = tmp;
@@ -273,11 +271,7 @@ class AVL
 						tmp = tmp->parent;
 						
 						if (height(tmp) != std::max(height(tmp->left), height(tmp->right)) + 1)
-						{
 							tmp->height = std::max(height(tmp->left), height(tmp->right)) + 1;	
-						}
-						// std::max(height(tree->left), height(tree->right)) + 1;
-
 						while (tmp != tree)
 						{
 							node *tmpPar = tmp->parent;
@@ -285,75 +279,53 @@ class AVL
 							if (height(tmp->left)- height(tmp->right) > 1)
 							{
 								if (height(tmp->left->right) > height(tmp->left->left))
-								{
 									this->doubleRotateRight(tmp);
-								}
 								else
-								{
 									this->singleRotateRight(tmp);
-								}
 							}
 							if (tmpPar->right != NULL)
 							{
 								if (height(tmpPar) != std::max(height(tmpPar->left), height(tmpPar->right)) + 1)
-								{
 									tmpPar->height = std::max(height(tmpPar->left), height(tmpPar->right)) + 1;
-								}
 							}
 							tmp = tmpPar;
 						}
 						if (height(tree->right)- height(tree->left) > 1)
 						{
 							if (height(tree->right->left) > height(tree->right->right))
-							{
 								this->doubleRotateLeft(tree);
-							}
 							else
-							{
 								this->singleRotateLeft(tree);
-							}
 						}
 						
 						delete oldnode;
 					}
 				}
-				else if (key < tree->key)
+				else if (this->comp(key, tree->key) == true)
 				{
 					this->removeUtil(tree->left, key);
 					if (height(tree->right)- height(tree->left) > 1)
 					{
 						if (height(tree->right->left) > height(tree->right->right))
-						{
 							this->doubleRotateLeft(tree);
-						}
 						else
-						{
 							this->singleRotateLeft(tree);
-						}					
 					}
 					if (height(tree) != std::max(height(tree->left), height(tree->right)) + 1)
-					{
 						tree->height = std::max(height(tree->left), height(tree->right)) + 1;
-					}
 				}
-				else
+				else // Comp()
 				{
 					this->removeUtil(tree->right, key);
 					if (height(tree->left)- height(tree->right) > 1)
 					{
 						if (height(tree->left->right) > height(tree->left->left))
-						{
 							this->doubleRotateRight(tree);
-						}
 						else
-						{
 							this->singleRotateRight(tree);
-						}					
 					}
 					if (height(tree) != std::max(height(tree->left), height(tree->right)) + 1)
-					{
 						tree->height = std::max(height(tree->left), height(tree->right)) + 1;
-					}
 				}
 			}	
 		}
@@ -376,32 +348,27 @@ class AVL
 			node *t3 = B->right;
 			
 			if (t2 != NULL)
-			{
 				t2->parent = A;
-			}
+
 			B->parent = A->parent;
+
 			if (this->root == A)
-			{
 				this->root = B;
-			}
 			else
 			{
 				if (this->isLeftChild(A))
-				{
 					A->parent->left = B;
-				}
 				else
-				{
 					A->parent->right = B;
-				}
 			}
+
 			B->left = A;
 			A->parent = B;
 			A->right = t2;
+
 			this->resetHeight(A);
 			this->resetHeight(B);
 
-			// this->resizeTree();
 		}
 		void singleRotateRight(node *tree)
 		{
@@ -412,31 +379,26 @@ class AVL
 			node *t2 = A->right;
 			
 			if (t2 != NULL)
-			{
 				t2->parent = B;
-			}
+
 			A->parent = B->parent;
+
 			if (this->root == B)
-			{
 				this->root = A;
-			}
 			else
 			{
 				if (this->isLeftChild(B))
-				{
 					B->parent->left = A;
-				}
 				else
-				{
 					B->parent->right = A;
-				}
 			}
+
 			A->right = B;
 			B->parent = A;
 			B->left = t2;
+
 			this->resetHeight(B);
 			this->resetHeight(A);
-			// this.resizeTree();			
 		}
 		void doubleRotateRight(node *tree)
 		{
@@ -466,27 +428,24 @@ class AVL
 			else
 			{
 				if (this->isLeftChild(C))
-				{
 					C->parent->left = B;
-				}
 				else
-				{
 					C->parent->right = B;
-				}
+
 				B->parent = C->parent;
 				C->parent = B;
 			}
+
 			B->left = A;
 			A->parent = B;
 			B->right=C;
 			C->parent=B;
 			A->right=t2;
 			C->left = t3;
+
 			this->resetHeight(A);
 			this->resetHeight(C);
 			this->resetHeight(B);
-			
-			// this->resizeTree();
 		}
 		void doubleRotateLeft(node *tree)
 		{
@@ -518,36 +477,32 @@ class AVL
 			else
 			{
 				if (this->isLeftChild(A))
-				{
 					A->parent->left = B;
-				}
 				else
-				{
 					A->parent->right = B;
-				}
+
 				B->parent = A->parent;
 				A->parent = B;
 			}
+
 			B->left = A;
 			A->parent = B;
 			B->right=C;
 			C->parent=B;
 			A->right=t2;
 			C->left = t3;
+
 			this->resetHeight(A);
 			this->resetHeight(C);
 			this->resetHeight(B);
-			
-			// this.resizeTree();
 		}
 
 	/* Utilities */
 		bool isLeftChild(node *node)
 		{
 			if (node->parent == NULL)
-			{
 				return true;
-			}
+
 			return node->parent->left == node;	
 		}
 		void resetHeight(node *tree)
@@ -557,9 +512,7 @@ class AVL
 				int newHeight = std::max(height(tree->left), height(tree->right)) + 1;
 				
 				if (tree->height != newHeight)
-				{
 					tree->height = newHeight;
-				}
 			}
 		}
 		int height(node * head)
@@ -594,10 +547,6 @@ class AVL
 		}
 		
 	public:
-		void printBT(const node* node)
-		{
-			printBT("", node, true);    
-		}
 		void printBT()
 		{
 			// this->recalculate(this->root, 0);

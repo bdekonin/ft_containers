@@ -17,7 +17,7 @@ OBJDIR = obj/
 
 OBJ := $(addprefix $(OBJDIR), $(FILES:%.cpp=%.o))
 
-CC = clang++
+CC = g++
 
 FLAGS = -g
 # FLAGS = -Wall -Wextra -Werror -std=c++98 

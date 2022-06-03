@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon May 30 20:21:49 2022
+# Make data base, printed on Fri Jun  3 09:57:04 2022
 
 # Variables
 
@@ -29,7 +29,7 @@ VSCODE_LOG_NATIVE = false
 # automatic
 @F = $(notdir $@)
 # makefile
-CURDIR := /mnt/c/Users/Bob/Downloads/ft_containers-main/ft_containers-main
+CURDIR := /mnt/c/Users/Bob/Documents/ft_containers
 # makefile
 SHELL = /bin/sh
 # environment
@@ -55,7 +55,7 @@ PATH = /home/bob/.vscode-server/bin/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5/bin
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-278712d6-6fac-4e1c-8a2d-6fe3e705398c.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-c1bce0b4-f82c-47ac-b11c-593009252d14.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -65,11 +65,11 @@ LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /mnt/c/Users/Bob/Downloads/ft_containers-main/ft_containers-main
+PWD = /mnt/c/Users/Bob/Documents/ft_containers
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/14_interop
+WSL_INTEROP = /run/WSL/11_interop
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
@@ -146,8 +146,10 @@ TERM = xterm-256color
 VSCODE_EXTHOST_WILL_SEND_SOCKET = true
 # environment
 WSL_DISTRO_NAME = Ubuntu
+# environment
+MOTD_SHOWN = update-motd
 # variable set hash-table stats:
-# Load=67/1024=7%, Rehash=0, Collisions=4/89=4%
+# Load=68/1024=7%, Rehash=0, Collisions=4/90=4%
 
 # Pattern-specific Variable Values
 
@@ -155,9 +157,9 @@ WSL_DISTRO_NAME = Ubuntu
 
 # Directories
 
-# . (device 47, inode 1970324837081810): 7 files, no impossibilities.
+# . (device 47, inode 4222124650706642): 8 files, no impossibilities.
 
-# 7 files, no impossibilities in 1 directories.
+# 8 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -207,12 +209,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 15 / storage = 123 B / avg = 8 B
-# current buf: size = 8162 B / used = 123 B / count = 15 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 16 / storage = 128 B / avg = 8 B
+# current buf: size = 8162 B / used = 128 B / count = 16 / avg = 8 B
 
-# strcache performance: lookups = 18 / hit rate = 16%
+# strcache performance: lookups = 19 / hit rate = 15%
 # hash-table stats:
-# Load=15/8192=0%, Rehash=0, Collisions=1/18=6%
-# Finished Make data base on Mon May 30 20:21:49 2022
+# Load=16/8192=0%, Rehash=0, Collisions=1/19=5%
+# Finished Make data base on Fri Jun  3 09:57:04 2022
 
  
