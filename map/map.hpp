@@ -47,6 +47,10 @@ class map
 				{
 					return (key_compare()(lhs.first, rhs.first));
 				}
+				bool operator()(const key_type& lhs, const key_type& rhs) const
+				{
+					return (key_compare()(lhs, rhs));
+				}
 		};
 
 	public:

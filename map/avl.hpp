@@ -78,15 +78,19 @@ class MAP_AVL
 				n++;
 			}
 		}
-		node *search(value_type x)
+		node *search(Key k)
 		{
-			return this->searchUtil(x, this->root);
+			return this->searchUtil(k, this->root);
 		}
-		void remove(value_type x)
+		void remove(Key x)
 		{
 			if (n == 0)
 			{
 				std::cout << "Tree is empty" << std::endl;
+				return ;
+			}
+			if (this->search(x) == NULL)
+			{
 				return ;
 			}
 			this->removeUtil(this->root, x);
@@ -183,18 +187,18 @@ class MAP_AVL
 				}
 			}
 		}
-		node *searchUtil(value_type x, node *tree)
+		node *searchUtil(Key k, node *tree)
 		{
 			if (tree == NULL)
 				return NULL;
-			if (x.first == tree->key.first)
+			if (k == tree->key.first)
 				return tree;
-			if (this->comp(x, tree->key) == true)
-				return this->searchUtil(x, tree->left);
+			if (this->comp(k, tree->key.first) == true)
+				return this->searchUtil(k, tree->left);
 			else
-				return this->searchUtil(x, tree->right);
+				return this->searchUtil(k, tree->right);
 		}
-		void removeUtil(node *tree, value_type key)
+		void removeUtil(node *tree, Key key)
 		{
 			bool leftchild = false;
 			if (tree != NULL)
@@ -202,7 +206,7 @@ class MAP_AVL
 				if (tree->parent != NULL)
 					leftchild = tree->parent->left == tree;
 
-				if (key == tree->key)
+				if (key == tree->key.first)
 				{
 					if (tree->left == NULL && tree->right == NULL)
 					{
@@ -310,7 +314,7 @@ class MAP_AVL
 						delete oldnode;
 					}
 				}
-				else if (this->comp(key, tree->key) == true)
+				else if (this->comp(key, tree->key.first) == true)
 				{
 					this->removeUtil(tree->left, key);
 					if (height(tree->right)- height(tree->left) > 1)

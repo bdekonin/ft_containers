@@ -25,38 +25,15 @@
 #include <iostream>
 #include <thread>
 
-int main()
-{
-	ft::map<int, std::string> myMap;
-
-	
-	std::string s = "Hallo ik ben bob";
-
-	int max = 1;
-	for (int i = 0; i < max; i++)
-	{
-		myMap._tree.insert(ft::make_pair(i, s));
-	}
-
-	for (int i = 0; i < max; i++)
-	{
-		myMap._tree.search(ft::make_pair(i, s));
-	}
-
-	std::cout << "Size: " << myMap._tree.size() << std::endl;
-} 
-
-
-
-// void ftlong_operation()
+# define MAXSIZE 50000
+// int main()
 // {
 // 	ft::map<int, std::string> myMap;
 
 	
 // 	std::string s = "Hallo ik ben bob";
 
-// 	int max = 500000;
-// 	// insert elements
+// 	int max = 1;
 // 	for (int i = 0; i < max; i++)
 // 	{
 // 		myMap._tree.insert(ft::make_pair(i, s));
@@ -64,82 +41,119 @@ int main()
 
 // 	for (int i = 0; i < max; i++)
 // 	{
-// 		myMap._tree.search(ft::make_pair(i, s));
+// 		myMap._tree.search(i);
 // 	}
 
-// 	// ft::map<int, std::string>::iterator it = myMap.begin();
-// 	// myMap._tree.printBT();
-// 	// myMap._tree.inorder();
-// }
+// 	std::cout << "Size: " << myMap._tree.size() << std::endl;
+// } 
 
-// void stdlong_operation()
-// {
-// 	std::map<int, std::string> myMap;
+
+
+
+void ftlong_operation()
+{
+	ft::map<int, std::string> myMap;
 
 	
-// 	std::string s = "Hallo ik ben bob";
+	std::string s = "Hallo ik ben bob";
 
-// 	int max = 500000;
-// 	// insert elements
-// 	for (int i = 0; i < max; i++)
-// 	{
-// 		myMap.insert(std::make_pair(i, s));
-// 	}
+	int max = MAXSIZE;
+	// insert elements
+	for (int i = 0; i < max; i++)
+	{
+		myMap._tree.insert(ft::make_pair(i, s));
+	}
+
+	std::cout << "ft: Size: " << myMap._tree.size() << std::endl;
+
+	for (int i = 0; i < max; i++)
+	{
+		myMap._tree.search(i);
+	}
+
+	for (int i = max; i > 0; i--)
+	{
+		myMap._tree.remove(i);
+	}
+
+	std::cout << "ft: Size: " << myMap._tree.size() << std::endl;
+}
+
+void stdlong_operation()
+{
+	std::map<int, std::string> myMap;
+
 	
-// 	for (int i = 0; i < max; i++)
-// 	{
-// 		myMap.find(i);
-// 	}
+	std::string s = "Hallo ik ben bob";
 
-// 	// ft::map<int, std::string>::iterator it = myMap.begin();
-// 	// myMap._tree.printBT();
-// 	// myMap._tree.inorder();
-// }
+	int max = MAXSIZE;
+	// insert elements
+	for (int i = 0; i < max; i++)
+	{
+		myMap.insert(std::make_pair(i, s));
+	}
 
-// int main()
-// {
-//     using std::chrono::high_resolution_clock;
-//     using std::chrono::duration_cast;
-//     using std::chrono::duration;
-//     using std::chrono::milliseconds;
+	std::cout << "std: Size: " << myMap.size() << std::endl;
+	
+	for (int i = 0; i < max; i++)
+	{
+		myMap.find(i);
+	}
 
-// 	{
-// 		auto t1 = high_resolution_clock::now();
-// 		stdlong_operation();
-// 		// stdlong_operation();
-// 		auto t2 = high_resolution_clock::now();
+	for (int i = max; i > 0; i--)
+	{
+		myMap.erase(i);
+	}
 
-// 		/* Getting number of milliseconds as an integer. */
-// 		auto ms_int = duration_cast<milliseconds>(t2 - t1);
+	// ft::map<int, std::string>::iterator it = myMap.begin();
+	// myMap._tree.printBT();
+	// myMap._tree.inorder();
 
-// 		/* Getting number of milliseconds as a double. */
-// 		duration<double, std::milli> ms_double = t2 - t1;
+	std::cout << "std: Size: " << myMap.size() << std::endl;
+}
 
-// 		std::cout << "std: " << ms_int.count() << "ms\n";
-// 		std::cout << "std: " << ms_double.count() << "ms\n";
-// 	}
-// 	{
-// 		auto t1 = high_resolution_clock::now();
-// 		ftlong_operation();
-// 		// stdlong_operation();
-// 		auto t2 = high_resolution_clock::now();
+int main()
+{
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
 
-// 		/* Getting number of milliseconds as an integer. */
-// 		auto ms_int = duration_cast<milliseconds>(t2 - t1);
+	{
+		auto t1 = high_resolution_clock::now();
+		stdlong_operation();
+		// stdlong_operation();
+		auto t2 = high_resolution_clock::now();
 
-// 		/* Getting number of milliseconds as a double. */
-// 		duration<double, std::milli> ms_double = t2 - t1;
+		/* Getting number of milliseconds as an integer. */
+		auto ms_int = duration_cast<milliseconds>(t2 - t1);
 
-// 		std::cout << "ft: " << ms_int.count() << "ms\n";
-// 		std::cout << "ft: " << ms_double.count() << "ms\n";
-// 	}
-//     return 0;
-// }
+		/* Getting number of milliseconds as a double. */
+		duration<double, std::milli> ms_double = t2 - t1;
 
-// ft
-// 9ms
-// 9.34675ms
+		std::cout << "std: " << ms_int.count() << "ms\n";
+		std::cout << "std: " << ms_double.count() << "ms\n";
+	}
+	std::cout << std::endl << std::endl;
+	{
+		auto t1 = high_resolution_clock::now();
+		ftlong_operation();
+		// stdlong_operation();
+		auto t2 = high_resolution_clock::now();
 
-// std
-// 239ms
-// 239.582ms
+		/* Getting number of milliseconds as an integer. */
+		auto ms_int = duration_cast<milliseconds>(t2 - t1);
+
+		/* Getting number of milliseconds as a double. */
+		duration<double, std::milli> ms_double = t2 - t1;
+
+		std::cout << "ft: " << ms_int.count() << "ms\n";
+		std::cout << "ft: " << ms_double.count() << "ms\n";
+	}
+    return 0;
+}
+
+// std: 393ms
+// std: 393.804ms
+// ft: 236ms
+// ft: 236.85ms
