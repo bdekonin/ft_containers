@@ -66,6 +66,7 @@
         "clocale": "cpp",
         "deque": "cpp",
         "fstream": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "thread": "cpp"
     }
 }

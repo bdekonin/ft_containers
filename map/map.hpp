@@ -51,8 +51,8 @@ class map
 
 	public:
 
-		typedef MAP_AVL<value_type, AVL_key_compare, Alloc>					tree_type;
-		typedef typename MAP_AVL<value_type, AVL_key_compare, Alloc>::node			node_type;
+		typedef MAP_AVL<key_type, mapped_type, AVL_key_compare, allocator_type>					tree_type;
+		typedef typename MAP_AVL<key_type, mapped_type, AVL_key_compare, allocator_type>::node			node_type;
 
 		typedef typename allocator_type::reference						reference;
 		typedef typename allocator_type::const_reference				const_reference;

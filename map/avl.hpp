@@ -14,17 +14,26 @@
 # define MAP_AVL_HPP
 
 #include <iostream>
+#include <functional>
 
-template <typename value_type,
-		class Compare = std::less<value_type>,
-		class Alloc = std::allocator<value_type> >
+template  <class Key,
+		class T,
+		class Compare = std::less<Key>,
+		class Alloc = std::allocator<ft::pair<Key,T> >
+		>
 class MAP_AVL
 {
+	public:
+		typedef ft::pair<Key, T>									value_type;
+
 	public:
 		class node
 		{
 			public:
 				value_type key;
+				// class Key;
+				// class T;
+				
 				int height;
 				node *left;
 				node *right;
@@ -178,7 +187,7 @@ class MAP_AVL
 		{
 			if (tree == NULL)
 				return NULL;
-			if (x == tree->key)
+			if (x.first == tree->key.first)
 				return tree;
 			if (this->comp(x, tree->key) == true)
 				return this->searchUtil(x, tree->left);
