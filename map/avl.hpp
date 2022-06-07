@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <functional>
+#include "pair.hpp"
 
 template  <class Key,
 		class T,
@@ -31,19 +32,15 @@ class MAP_AVL
 		{
 			public:
 				value_type key;
-				// class Key;
-				// class T;
-				
+
 				int height;
 				node *left;
 				node *right;
 				node *parent;
-				node(value_type k)
+
+				node(value_type k):
+				height(1), key(k), left(nullptr), right(nullptr), parent(nullptr)
 				{
-					height = 1;
-					key = k;
-					left = NULL;
-					right = NULL;
 				}
 		};
 	
@@ -82,19 +79,16 @@ class MAP_AVL
 		{
 			return this->searchUtil(k, this->root);
 		}
-		void remove(Key x)
+		bool remove(Key x)
 		{
+			// std::cout << "remove: " << x << std::endl;
 			if (n == 0)
 			{
 				std::cout << "Tree is empty" << std::endl;
-				return ;
+				return false; // no element deleted
 			}
-			if (this->search(x) == NULL)
-			{
-				return ;
-			}
-			this->removeUtil(this->root, x);
-			n--;
+			bool isRemoved = this->removeUtil(this->root, x);
+			return isRemoved;
 		}
 		void inorder()
 		{
@@ -198,8 +192,9 @@ class MAP_AVL
 			else
 				return this->searchUtil(k, tree->right);
 		}
-		void removeUtil(node *tree, Key key)
+		bool removeUtil(node *tree, Key key)
 		{
+			bool removed = false;
 			bool leftchild = false;
 			if (tree != NULL)
 			{
@@ -313,6 +308,7 @@ class MAP_AVL
 						
 						delete oldnode;
 					}
+					removed = true;
 				}
 				else if (this->comp(key, tree->key.first) == true)
 				{
@@ -340,7 +336,12 @@ class MAP_AVL
 					if (height(tree) != std::max(height(tree->left), height(tree->right)) + 1)
 						tree->height = std::max(height(tree->left), height(tree->right)) + 1;
 				}
-			}	
+			}
+			if (removed)
+				this->n--;
+
+			return removed;
+			// return
 		}
 		void inorderUtil(node * head)
 		{
@@ -532,6 +533,7 @@ class MAP_AVL
 		{
 			if (head == NULL)
 				return 0;
+			this->root->parent = NULL; // NOT WORKING I THINK REMOVE
 			return head->height;
 		}
 
@@ -548,7 +550,7 @@ class MAP_AVL
 				
 				// std::cout << node->key << " (" << node->parent << ") " << std::endl;
 				if (node->parent)
-					std::cout << node->key << " (" << node->parent->key << ") " << std::endl;
+					std::cout << node->key << " (" << node->key << ") " << std::endl;
 				else
 					std::cout << node->key << " (" << "0" << ") " << std::endl;
 

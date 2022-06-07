@@ -62,7 +62,7 @@ class map
 		typedef typename allocator_type::const_reference				const_reference;
 		typedef typename allocator_type::pointer						pointer;
 		typedef typename allocator_type::const_pointer					const_pointer;
-		// typedef typename ft::bidirectional_iterator<node_type>	iterator;
+		typedef typename ft::bidirectional_iterator<node_type>	iterator;
 		// typename typename ft::bidirectional_iterator<const value_type> const_iterator;
 		// typedef typename ft::reverse_iterator<iterator> iterator;
 		// typedef typename ft::reverse_iterator<const_iterator> const_iterator;
@@ -119,10 +119,10 @@ class map
 
 
 	/* TEMP */
-	// iterator begin()
-	// {
-	// 	return iterator(_tree.begin());
-	// }
+	iterator begin()
+	{
+		return iterator(_tree.begin());
+	}
 
 	/* Iterators*/
 		// temp

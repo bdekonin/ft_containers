@@ -113,9 +113,9 @@ namespace ft
 				this->prevNode();
 				return (old);
 			} // a--
-		private:
+		public:
 
-					void nextNode (void)
+					void nextNode (void) // werkt niet waarschijnlijk door de std::less of std::greater
 					{
 						if (this->_value->right != this->_value->right->left)
 						{
