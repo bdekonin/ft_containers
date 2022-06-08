@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/20 11:56:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2021/12/01 22:33:53 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/06/08 14:03:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 */
 
 # include <iostream>
-# include "AVL.hpp"
+# include "avl.hpp"
 
 namespace ft
 {
@@ -94,12 +94,27 @@ namespace ft
 			value_type	*operator -> (void) { return this->_value; } // a->
 			bidirectional_iterator	&operator++() 
 			{
-				this->_value++; return (*this);
+				
+				if (this->_value->right)
+				{
+					this->_value = this->_value->right;
+					while (this->_value->left)
+						this->_value = this->_value->left;
+				}
+				else
+				{
+					pointer tmp;
+					do
+					{
+						tmp = this->_value;
+						this->_value = this->_value->parent;
+					} while (this->_value && tmp == this->_value->right);
+				}
+				return *this;
 			} // ++a
 			bidirectional_iterator	operator++(int)
 			{
 				bidirectional_iterator old = *this;
-				// this->_value++;
 				this->nextNode();
 				return (old);
 			} // a++
@@ -115,42 +130,70 @@ namespace ft
 			} // a--
 		public:
 
-					void nextNode (void) // werkt niet waarschijnlijk door de std::less of std::greater
+					void nextNode (void) // https://github.dev/42pde-bakk/ft_containers
 					{
-						if (this->_value->right != this->_value->right->left)
-						{
-							this->_value = this->_value->right;
-							while (this->_value->left != this->_value->left->left)
-								this->_value = this->_value->left;
+						pointer it = this->_value;
+
+						if (it->right) {
+							it = it->right;
+							while (it->left)
+								it = it->left;
 						}
-						else
-						{
-							while (this->_value == this->_value->parent->right && this->_value != this->_value->parent)
-								this->_value = this->_value->parent;
-							this->_value = this->_value->parent;
+						else {
+							pointer tmp = it;
+							it = it->parent;
+							while (it->left != tmp) { //it->data <= this->data)
+								tmp = it;
+								it = it->parent;
+							}
 						}
+						this->_value = it;
 					}
 
 					void prevNode (void)
 					{
-						if (this->_value == this->_value->parent)
+						setreferencenodes();
+						if (this == this->first_node || this == this->last_node)
+							return this->parent;
+						pointer it(this);
+
+						if (it->left)
 						{
-							while (this->_value->right != this->_value->right->left)
-								this->_value = this->_value->right;
-						}
-						else if (this->_value->left != this->_value->left->left)
-						{
-							this->_value = this->_value->left;
-							while (this->_value->right != this->_value->right->left)
-								this->_value = this->_value->right;
+							it = it->left;
+							while (it->right)
+								it = it->right;
 						}
 						else
-						{
-							while (this->_value == this->_value->parent->left && this->_value != this->_value->parent)
-								this->_value = this->_value->parent;
-							this->_value = this->_value->parent;
-						}
+							while (it->data >= this->data)
+								it = it->parent;
+						return (it);
 					}
+
+
+		private:
+			void	setreferencenodes()
+			{
+				pointer	tmp(this);
+				while (tmp->parent)
+					tmp = tmp->parent;
+
+				this->root_node = tmp;
+
+				while (tmp->left)
+					tmp = tmp->left;
+
+				this->first_node = tmp;
+				tmp = this->root_node;
+
+				while (tmp->right)
+					tmp = tmp->right;
+					
+				this->last_node = tmp;
+			}
+			// ?
+			pointer root_node;
+			pointer first_node;
+			pointer last_node;
 	};
 
 } // namespace ft

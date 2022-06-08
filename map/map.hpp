@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 11:09:54 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/04/26 11:25:37 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/06/08 11:02:27 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <functional>
 #include "pair.hpp"
-# include "AVL.hpp"
+# include "avl.hpp"
 # include "iterator.hpp"
 
 

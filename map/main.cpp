@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 12:50:28 by bdekonin      #+#    #+#                 */
-/*   Updated: 2022/05/30 20:31:19 by bdekonin      ########   odam.nl         */
+/*   Updated: 2022/06/08 13:46:12 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <vector>       // std::vector
 #include "pair.hpp"
 #include "map.hpp"
-#include "AVL.hpp"
+#include "avl.hpp"
 
 #include <chrono>
 
@@ -25,7 +25,7 @@
 #include <iostream>
 #include <thread>
 
-# define MAXSIZE 500
+# define MAXSIZE 50000
 # define STRING "Hi"
 
 int main()
@@ -45,9 +45,13 @@ int main()
 	mymap._tree.printBT();
 	ft::map<int, int>::iterator it = mymap.begin();
 
+	for (int i = 0; i <= 10; i++)
+	{
 		std::cout << it->key << std::endl;
-
 		it.nextNode();
+
+	}
+
 	
 	// std::cout << it->first << " => " << it->second << '\n';
 
@@ -64,7 +68,7 @@ int main()
 // 	std::cout << "ft: adding " << max << " elements" << std::endl;
 
 // 	for (int i = 0; i < max; i++)
-// 		myMap._tree.insert(ft::make_pair(i, i * 2 / 3.14));
+// 		myMap._tree.insert(ft::make_pair(i, i * 2 / 3.14 ));
 // 	std::cout << "ft: Size: " << myMap._tree.size() << std::endl;
 
 // 	for (int i = 0; i < max; i++)
