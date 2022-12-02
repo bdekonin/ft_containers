@@ -1,5 +1,7 @@
 # ft_containers
 
+[![CodeFactor](https://www.codefactor.io/repository/github/bdekonin/ft_containers/badge)](https://www.codefactor.io/repository/github/bdekonin/ft_containers)
+
 This repository contains the implementation of custom C++ containers with advanced templates and data structures. All containers are compatible with the C++ Standard Library.
 
 ## Getting Started
